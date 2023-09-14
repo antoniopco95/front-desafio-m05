@@ -1,0 +1,8 @@
+.login-header {
+    display: flex;
+    margin: 0px 32px 0px calc(108px + 30px);
+    flex-direction: row;
+    justify-content: right;
+    padding: 40px 137px 24px 200px;
+    border-bottom: 1px solid #ACD9C5;
+}
