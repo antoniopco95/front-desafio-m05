@@ -1,35 +1,10 @@
 import React from 'react';
-import { useState } from "react";
 import HomeIcon from '../../assets/HomeIcon.svg';
 import ClientsIcon from '../../assets/ChargesIcon.svg';
 import ChargesIcon from '../../assets/ClientsIcon.svg';
 import './styles.css'
 
-function VerticalHeader() {
-    const [home, setHome] = useState(true);
-    const [clients, setClients] = useState(false);
-    const [charges, setCharges] = useState(false);
-
-    const toggleHome = (e) => {
-        e.preventDefault();
-        setHome(true);
-        setClients(false);
-        setCharges(false);
-    };
-
-    const toggleClients = (e) => {
-        e.preventDefault();
-        setHome(false);
-        setClients(true);
-        setCharges(false);
-    };
-
-    const toggleCharges = (e) => {
-        e.preventDefault();
-        setHome(false);
-        setClients(false);
-        setCharges(true);
-    };
+function VerticalHeader({ home, clients, charges, toggleHome, toggleClients, toggleCharges }) {
 
     return (
         <div className='vertical-header'>
