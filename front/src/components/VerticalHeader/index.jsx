@@ -38,21 +38,21 @@ function VerticalHeader() {
                 <img className={home ? 'selected-icon' : null}
                     onClick={toggleHome} src={HomeIcon} alt="homeicon" />
                 <span>Home</span>
-                <line className={home ? 'pink-line' : null}></line>
+                <i className={home ? 'pink-line' : null}></i>
             </button>
             <button className={`header-button secondary ${clients ? 'selected-module' : null}`}
                 onClick={toggleClients}>
                 <img className={clients ? 'selected-icon' : null}
                     onClick={toggleClients} src={ClientsIcon} alt="homeicon" />
                 <span>Clientes</span>
-                <line className={clients ? 'pink-line' : null}></line>
+                <i className={clients ? 'pink-line' : null}></i>
             </button>
             <button className={`header-button secondary ${charges ? 'selected-module' : null}`}
                 onClick={toggleCharges}>
                 <img className={charges ? 'selected-icon' : null}
                     onClick={toggleCharges} src={ChargesIcon} alt="homeicon" />
                 <span>Cobranças</span>
-                <line className={charges ? 'pink-line' : null}></line>
+                <i className={charges ? 'pink-line' : null}></i>
             </button>
         </div >
     )

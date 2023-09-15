@@ -46,8 +46,8 @@ export default function AccountMenu() {
                     fontWeight: '600',
                     margin: '0px 8px 0px 16px',
                 }}>Nelson</Typography>
-                <IconButton sx={{ padding: '0px', }}>
-                    <KeyboardArrowDownIcon sx={{ color: '#0E8750', }} onClick={handleClick} />
+                <IconButton onClick={handleClick} sx={{ padding: '0px', }}>
+                    <KeyboardArrowDownIcon sx={{ color: '#0E8750', }} />
                 </IconButton>
             </Box>
             <Menu
