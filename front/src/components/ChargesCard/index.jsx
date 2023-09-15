@@ -40,7 +40,7 @@ function ChargesCard({ chargesName, chargesNumber, chargesColor }) {
                     </tr>
                 </tbody>
             </table>
-            <span className='see-all'><a href="">Ver todos</a></span>
+            <span className='see-all'><a className='link' href="">Ver todos</a></span>
         </div>
 
     )
