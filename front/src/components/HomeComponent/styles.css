@@ -1,6 +1,11 @@
-.homecomponent-box {
+.homecard-box,
+.clientscard-box {
     display: flex;
     justify-content: space-between;
     font-family: Nunito;
-    padding: 24px 80px 32px calc(108px + 80px);
+    padding: 24px 64px 0px calc(108px + 64px);
+}
+
+.clientscard-box {
+    padding-top: 32px;
 }
