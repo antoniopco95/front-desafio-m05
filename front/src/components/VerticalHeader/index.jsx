@@ -1,7 +1,7 @@
 import React from 'react';
 import HomeIcon from '../../assets/HomeIcon.svg';
-import ClientsIcon from '../../assets/ChargesIcon.svg';
-import ChargesIcon from '../../assets/ClientsIcon.svg';
+import ClientsIcon from '../../assets/ClientsIcon.svg';
+import ChargesIcon from '../../assets/ChargesIcon.svg';
 import './styles.css'
 
 function VerticalHeader({ home, clients, charges, toggleHome, toggleClients, toggleCharges }) {
