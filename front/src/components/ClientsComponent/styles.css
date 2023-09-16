@@ -2,5 +2,12 @@
     display: flex;
     justify-content: space-between;
     font-family: Nunito;
-    padding: 24px 80px 32px calc(108px + 80px);
+    margin: 24px 80px 24px calc(108px + 80px);
+}
+
+.clientscomponent-title {
+    position: absolute;
+    top: 84px;
+    font-size: 16px;
+    color: #0E8750;
 }
