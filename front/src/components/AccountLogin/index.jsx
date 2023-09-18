@@ -24,7 +24,8 @@ function stringAvatar(name) {
     };
 }
 
-export default function AccountMenu() {
+export default function AccountMenu({ handleOpenEdit }) {
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -90,7 +91,7 @@ export default function AccountMenu() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleOpenEdit}>
                     <ListItemIcon>
                         <DriveFileRenameOutlineIcon sx={{ filter: 'invert(50%) sepia(6%) saturate(925%) hue-rotate(202deg) brightness(91%) contrast(89%)', }} />
                     </ListItemIcon>

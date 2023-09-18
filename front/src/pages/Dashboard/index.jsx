@@ -4,12 +4,17 @@ import React, { useState, useEffect } from 'react';
 import AccountLogin from '../../components/AccountLogin';
 import HomeComponent from '../../components/HomeComponent';
 import ClientsComponent from '../../components/ClientsComponent';
+import EditModal from '../../components/EditModal';
 
 function Dashboard() {
 
     const [home, setHome] = useState(true);
     const [clients, setClients] = useState(false);
     const [charges, setCharges] = useState(false);
+
+    const [openEdit, setOpenEdit] = useState(false);
+    const handleOpenEdit = () => setOpenEdit(true);
+    const handleCloseEdit = () => setOpenEdit(false);
 
     const toggleHome = (e) => {
         e.preventDefault();
@@ -39,10 +44,11 @@ function Dashboard() {
         <div className='box-size'>
             <VerticalHeader home={home} clients={clients} charges={charges} toggleHome={toggleHome} toggleClients={toggleClients} toggleCharges={toggleCharges} />
             <div className='login-header'>
-                <AccountLogin />
+                <AccountLogin handleOpenEdit={handleOpenEdit} />
             </div>
             {home && <HomeComponent />}
             {clients && <ClientsComponent />}
+            <EditModal openEdit={openEdit} handleOpenEdit={handleOpenEdit} handleCloseEdit={handleCloseEdit} />
         </div>
     )
 };
