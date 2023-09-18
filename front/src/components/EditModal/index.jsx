@@ -19,19 +19,65 @@ const style = {
 
 export default function EditModal({ openEdit, handleCloseEdit }) {
 
-    const [inputValue, setInputValue] = useState('');
-    const [showError, setShowError] = useState(false);
+    const [inputName, setInputName] = useState('');
+    const [inputEmail, setInputEmail] = useState('');
+    const [inputPassword, setInputPassword] = useState('');
+    const [inputConfirm, setInputConfirm] = useState('');
 
-    const handleInputChange = (e) => {
+    const [showErrorName, setShowErrorName] = useState(false);
+    const [showErrorEmail, setShowErrorEmail] = useState(false);
+    const [showErrorPassword, setShowErrorPassword] = useState(false);
+    const [showErrorConfirm, setShowErrorConfirm] = useState(false);
+
+    const handleChangeName = (e) => {
         e.preventDefault()
 
         const value = e.target.value;
-        setInputValue(value);
+        setInputName(value);
 
         if (value.trim() === '') {
-            setShowError(true);
+            setShowErrorName(true);
         } else {
-            setShowError(false);
+            setShowErrorName(false);
+        }
+    };
+
+    const handleChangeEmail = (e) => {
+        e.preventDefault()
+
+        const value = e.target.value;
+        setInputEmail(value);
+
+        if (value.trim() === '') {
+            setShowErrorEmail(true);
+        } else {
+            setShowErrorEmail(false);
+        }
+    };
+
+    const handleChangePassword = (e) => {
+        e.preventDefault()
+
+        const value = e.target.value;
+        setInputPassword(value);
+
+        if (value.trim() === '') {
+            setShowErrorPassword(true);
+        } else {
+            setShowErrorPassword(false);
+        }
+    };
+
+    const handleChangeConfirm = (e) => {
+        e.preventDefault()
+
+        const value = e.target.value;
+        setInputConfirm(value);
+
+        if (value.trim() === '') {
+            setShowErrorConfirm(true);
+        } else {
+            setShowErrorConfirm(false);
         }
     };
 
@@ -46,19 +92,20 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         <label className='editmodal-title'>Edite seu Cadastro</label>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nome*</label>
-                            <input value={inputValue}
-                                onChange={handleInputChange}
-                                className={`editmodal-input ${showError ? 'border-red' : ''}`} placeholder='Digite seu nome' type="text" id='nome' />
-                            {showError && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            <input
+                                onChange={handleChangeName}
+                                value={inputName}
+                                className={`editmodal-input ${showErrorName ? 'border-red' : ''}`} placeholder='Digite seu nome' type="text" id='nome' />
+                            {showErrorName && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>E-mail*</label>
                             <input
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                className={`editmodal-input ${showError ? 'border-red' : ''}`}
+                                onChange={handleChangeEmail}
+                                value={inputEmail}
+                                className={`editmodal-input ${showErrorEmail ? 'border-red' : ''}`}
                                 placeholder='Digite seu e-mail' type="email" id='email' />
-                            {showError && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            {showErrorEmail && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <div className='editmodal-telandcpf'>
                             <div className='editmodal-textfield middle'>
@@ -73,16 +120,19 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nova Senha*</label>
                             <input
-                                className={`editmodal-input ${showError ? 'border-red' : ''}`}
+                                value={inputPassword}
+                                onChange={handleChangePassword}
+                                className={`editmodal-input ${showErrorPassword ? 'border-red' : ''}`}
                                 placeholder='••••••••' type="password" id='senha'
                             />
-                            {showError && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            {showErrorPassword && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Confirmar Senha*</label>
-                            <input className={`editmodal-input ${showError ? 'border-red' : ''}`}
-                                placeholder='••••••••' type="password" id='confirmarsenha' />
-                            {showError && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            <input className={`editmodal-input ${showErrorConfirm ? 'border-red' : ''}`}
+                                onChange={handleChangeConfirm}
+                                value={inputConfirm} placeholder='••••••••' type="password" id='confirmarsenha' />
+                            {showErrorConfirm && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <button className='editmodal-button' type='submit' id='aplicar'>Aplicar</button>
                     </form>
