@@ -20,7 +20,7 @@ const style = {
 export default function EditModal({ openEdit, handleCloseEdit }) {
 
     const [inputValue, setInputValue] = useState('');
-    const [showError, setShowError] = useState(true);
+    const [showError, setShowError] = useState(false);
 
     const handleInputChange = (e) => {
         e.preventDefault()
