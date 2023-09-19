@@ -8,14 +8,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SignUp from './pages/SignUp/SignUp.jsx';
 import LoginUser from './pages/LoginUser/LoginUser.jsx';
 import Dashboard from './pages/Dashboard/index.jsx';
-import { Login } from '@mui/icons-material';
 
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <App />,
     children: [
 
       {
