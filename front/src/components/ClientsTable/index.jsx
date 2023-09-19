@@ -5,7 +5,7 @@ import FilterIcon from '../../assets/FilterIcon.svg';
 import SearchIcon from '../../assets/SearchIcon.svg';
 import AddCharge from '../../assets/AddCharge.svg';
 
-function ClientsTable() {
+function ClientsTable({ handleOpenAdd }) {
 
     return (
         <div className='clientstable-box'>
@@ -14,7 +14,7 @@ function ClientsTable() {
                     <img className='clientstable-icon' src={ClientsIcon} alt='clientsicon' />
                     <span className='clientstable-title'>Clientes</span>
                 </div>
-                <button className='clientstable-addbutton'>+ Adicionar cliente</button>
+                <button className='clientstable-addbutton' onClick={handleOpenAdd}>+ Adicionar cliente</button>
                 <button className='clientstable-filterbutton'><img src={FilterIcon} alt="filtericon" /></button>
                 <div className='clientstable-search'>
                     <input className='clientstable-searchinput' type="text" placeholder='Pesquisa'></input>

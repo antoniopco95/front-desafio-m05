@@ -87,7 +87,7 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                 open={openEdit}
                 onClose={handleCloseEdit}
             >
-                <Box sx={style}>
+                <Box className='edit-box' sx={style}>
                     <form className='editmodal-box'>
                         <label className='editmodal-title'>Edite seu Cadastro</label>
                         <div className='editmodal-textfield'>

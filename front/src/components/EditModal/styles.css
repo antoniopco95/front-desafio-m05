@@ -1,3 +1,7 @@
+.edit-box {
+    padding: 32px;
+}
+
 .editmodal-box {
     display: flex;
     flex-direction: column;

@@ -16,6 +16,10 @@ function Dashboard() {
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
 
+    const [openAdd, setOpenAdd] = useState(false);
+    const handleOpenAdd = () => setOpenAdd(true);
+    const handleCloseAdd = () => setOpenAdd(false);
+
     const toggleHome = (e) => {
         e.preventDefault();
         setHome(true);
@@ -47,8 +51,8 @@ function Dashboard() {
                 <AccountLogin handleOpenEdit={handleOpenEdit} />
             </div>
             {home && <HomeComponent />}
-            {clients && <ClientsComponent />}
-            <EditModal openEdit={openEdit} handleOpenEdit={handleOpenEdit} handleCloseEdit={handleCloseEdit} />
+            {clients && <ClientsComponent openAdd={openAdd} handleOpenAdd={handleOpenAdd} handleCloseAdd={handleCloseAdd} />}
+            <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} />
         </div>
     )
 };
