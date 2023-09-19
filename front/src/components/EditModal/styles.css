@@ -58,6 +58,23 @@
     color: #667085;
 }
 
+.editmodal-hidebtn1,
+.editmodal-hidebtn2 {
+    position: absolute;
+    right: 70px;
+    background: white;
+    border: none;
+    cursor: pointer;
+}
+
+.editmodal-hidebtn1 {
+    bottom: 182px;
+}
+
+.editmodal-hidebtn2 {
+    bottom: 100px;
+}
+
 .editmodal-telandcpf {
     display: flex;
 }

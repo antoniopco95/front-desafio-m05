@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './styles.css'
+import EyeOff from '../../assets/EyeOff.svg';
 import { IMaskInput } from "react-imask";
 
 const style = {
@@ -28,6 +29,19 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
     const [showErrorEmail, setShowErrorEmail] = useState(false);
     const [showErrorPassword, setShowErrorPassword] = useState(false);
     const [showErrorConfirm, setShowErrorConfirm] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!inputName || !inputEmail || !inputPassword || !inputConfirm) {
+
+        } else {
+            handleCloseEdit();
+        }
+    }
 
     const handleChangeName = (e) => {
         e.preventDefault()
@@ -88,7 +102,7 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                 onClose={handleCloseEdit}
             >
                 <Box className='edit-box' sx={style}>
-                    <form className='editmodal-box'>
+                    <form className='editmodal-box' onSubmit={handleSubmit}>
                         <label className='editmodal-title'>Edite seu Cadastro</label>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nome*</label>
@@ -119,19 +133,25 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nova Senha*</label>
-                            <input
-                                value={inputPassword}
-                                onChange={handleChangePassword}
-                                className={`editmodal-input ${showErrorPassword ? 'border-red' : ''}`}
-                                placeholder='••••••••' type="password" id='senha'
-                            />
+                            <div>
+                                <input
+                                    value={inputPassword}
+                                    onChange={(e) => setInputPassword(e.target.value)}
+                                    className={`editmodal-input ${showErrorPassword ? 'border-red' : ''}`}
+                                    placeholder='••••••••' type={showPassword ? 'text' : 'password'} id='senha'
+                                />
+                                <button onClick={(e) => setShowPassword(!showPassword)} className='editmodal-hidebtn1'><img src={EyeOff} alt="eyeofficon" /></button>
+                            </div>
                             {showErrorPassword && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Confirmar Senha*</label>
-                            <input className={`editmodal-input ${showErrorConfirm ? 'border-red' : ''}`}
-                                onChange={handleChangeConfirm}
-                                value={inputConfirm} placeholder='••••••••' type="password" id='confirmarsenha' />
+                            <div>
+                                <input className={`editmodal-input ${showErrorConfirm ? 'border-red' : ''}`}
+                                    onChange={(e) => setInputConfirm(e.target.value) && handleChangeConfirm}
+                                    value={inputConfirm} placeholder='••••••••' type={showConfirm ? 'text' : 'password'} id='confirmarsenha' />
+                                <button onClick={(e) => setShowConfirm(!showConfirm)} className='editmodal-hidebtn2'><img src={EyeOff} alt="eyeofficon" /></button>
+                            </div>
                             {showErrorConfirm && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
                         </div>
                         <button className='editmodal-button' type='submit' id='aplicar'>Aplicar</button>
