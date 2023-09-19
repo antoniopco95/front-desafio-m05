@@ -1,0 +1,11 @@
+
+.container {
+  display: flex;
+  width: 1440px;
+  height: 1024px;
+}
+
+ .MuiStepConnector-line.custom-border {
+     border-left: 4px solid #0E8750 !important;
+ }
+

@@ -1,0 +1,22 @@
+.home-title {
+    position: absolute;
+    top: 54px;
+    margin-left: 190px;
+    font-family: Nunito;
+    font-size: 26px;
+    font-weight: bold;
+    color: #343447;
+}
+
+.homecard-box,
+.totalcard-box,
+.clientscard-box {
+    display: flex;
+    justify-content: space-between;
+    font-family: Nunito;
+    padding: 24px 64px 0px calc(108px + 64px);
+}
+
+.clientscard-box {
+    padding-top: 32px;
+}

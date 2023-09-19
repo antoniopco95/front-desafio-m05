@@ -1,0 +1,82 @@
+.clients-card {
+    display: flex;
+    flex-direction: column;
+    width: 556px;
+    color: #3F3F55;
+    justify-content: center;
+    box-shadow: 0px 4px 4px rgba(172, 217, 197, 0.25);
+    border-radius: 20px;
+    margin: 0px 16px 37px 16px;
+}
+
+.clients-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 18.5px 16px 16.5px 16px;
+}
+
+.clients-iconandtitle {
+    display: flex;
+}
+
+.clients-name {
+    margin-left: 8px;
+}
+
+.clients-table {
+    border-collapse: collapse;
+}
+
+.clients-head {
+    line-height: 50px;
+    text-align: left;
+}
+
+.clients-body {
+    text-align: left;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.07px;
+    line-height: 40px;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #EFF0F6;
+}
+
+.clients-left {
+    padding-left: 16px;
+}
+
+.clients-middle {
+    padding: 0px 16px 0px 16px;
+}
+
+.clients-right {
+    padding-right: 16px;
+}
+
+.clients-number {
+    padding: 0px 15px;
+    border-radius: 8px;
+}
+
+.red {
+    color: #971D1D;
+    background: #FFEFEF;
+}
+
+.blue {
+    color: #1FA7AF;
+    background: #EEF6F6;
+}
+
+.see-all .link {
+    display: flex;
+    justify-content: center;
+    color: #DA0175;
+    padding: 13px 0px 12px 0px;
+}
