@@ -78,7 +78,15 @@
 }
 
 .middle-input-both {
-    width: 161.7px;
+    width: 158px;
+}
+
+.middle-city {
+    width: 220px;
+}
+
+.middle-uf {
+    width: 95px;
 }
 
 .addclientmodal-buttons {

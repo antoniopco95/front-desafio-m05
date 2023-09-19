@@ -121,19 +121,16 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                                 <input className='addclientmodal-input middle-input-both' placeholder='Digite o bairro' type="text" id='bairro' />
                             </div>
                         </div>
-
                         <div className='addclientmodal-telandcpf'>
                             <div className='addclientmodal-textfield middle'>
                                 <label className='addclientmodal-span'>Cidade</label>
-                                <IMaskInput className='addclientmodal-input middle-input-both' placeholder='Digite a cidade' type="text" id='cep' mask="00000-000" />
+                                <IMaskInput className='addclientmodal-input middle-city' placeholder='Digite a cidade' type="text" id='cep' mask="00000-000" />
                             </div>
                             <div className='addclientmodal-textfield'>
                                 <label className='addclientmodal-span'>UF</label>
-                                <input className='addclientmodal-input middle-input-both' placeholder='Digite a UF' type="text" id='uf' maxLength='2' />
+                                <input className='addclientmodal-input middle-uf' placeholder='Digite a UF' type="text" id='uf' maxLength='2' />
                             </div>
                         </div>
-
-
                         <div className='addclientmodal-buttons'>
                             <button className='addclientmodal-cancelbtn' onClick={cleanInput} id='aplicar'>Cancelar</button>
                             <button className='addclientmodal-button' type='submit' id='aplicar'>Aplicar</button>
