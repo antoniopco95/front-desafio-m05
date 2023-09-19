@@ -7,6 +7,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SignUp from './pages/SignUp/SignUp.jsx';
 import LoginUser from './pages/LoginUser/LoginUser.jsx';
+import Dashboard from './pages/Dashboard/index.jsx';
 
 
 
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginUser />
+      },
+
+      {
+        path: "/dashboard",
+        element: <Dashboard />
       },
 
     ],

@@ -475,7 +475,16 @@ const SignUp = () => {
                                             lineHeight: '130%',
                                             textAlign: 'center',
                                             mx: 'auto'
-                                        }}>Já possui uma conta? Faça seu login</span>
+                                        }}>Já possui uma conta?Faça seu <Link to={"/login"} style={{
+                                            color: '#DA0175',
+                                            fontFamily: 'Nunito',
+                                            fontSize: '18px',
+                                            fontStyle: 'normal',
+                                            fontWeight: '600',
+                                            lineHeight: '130%',
+                                            textDecorationLine: 'underline',
+
+                                        }}>Login</Link></span>
                                     )}
                                 </div>
                             )}
