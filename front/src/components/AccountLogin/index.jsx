@@ -11,6 +11,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Logout from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 function stringAvatar(name) {
   return {
@@ -28,10 +29,9 @@ function stringAvatar(name) {
 }
 
 export default function AccountMenu({ handleOpenEdit, handleExit }) {
+  const { name} = useUser();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const nome = localStorage.getItem("nome");
-  const [name, setName] = React.useState(nome);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
