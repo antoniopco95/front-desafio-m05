@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Logout from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 function stringAvatar(name) {
   return {
@@ -38,7 +39,7 @@ export default function AccountMenu({ handleOpenEdit }) {
   const handleExit = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("nome");
-    navigate("/");
+    useNavigate("/");
   };
 
   return (
@@ -119,7 +120,7 @@ export default function AccountMenu({ handleOpenEdit }) {
               sx={{
                 filter:
                   "invert(50%) sepia(6%) saturate(925%) hue-rotate(202deg) brightness(91%) contrast(89%)",
-              }} 
+              }}
             />
           </ListItemIcon>
           Sair
