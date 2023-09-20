@@ -46,8 +46,6 @@ const LoginUser = () => {
       if (res.status === 200) {
         useToast("Usuário logado com sucesso");
 
-        console.log("Resposta do servidor:", res.data);
-
         const token = res.data.token;
         localStorage.setItem("token", token);
 
