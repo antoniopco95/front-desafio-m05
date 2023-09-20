@@ -515,7 +515,7 @@ const SignUp = () => {
                                         },
                                     }}
                                 >
-                                    <Link to={"/login"} style={{ textDecoration: 'none', color: '#F8F8F9' }}>Ir para Login</Link>
+                                    <Link to={"/"} style={{ textDecoration: 'none', color: '#F8F8F9' }}>Ir para Login</Link>
                                 </Button>
                             )}
                         </div>
