@@ -7,19 +7,22 @@ import Dashboard from "./pages/Dashboard/index.jsx";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { UserProvider } from "./context/userContext";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginUser />} />
-        <Route path="/register" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </Router>
-    <ToastContainer />
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginUser />} />
+          <Route path="/register" element={<SignUp />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Router>
+      <ToastContainer />
+    </UserProvider>
   </StrictMode>
 );
