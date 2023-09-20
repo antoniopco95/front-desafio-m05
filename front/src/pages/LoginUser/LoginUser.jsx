@@ -1,317 +1,306 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import useToast from '../../hooks/useToast';
-import { Link, useNavigate } from 'react-router-dom';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import useToast from "../../hooks/useToast";
+import { Link, useNavigate } from "react-router-dom";
 
+import "./LoginStyles.css";
 
-
-
-import './LoginStyles.css';
-
-import PasswordInput from '../../components/PasswordInput';
-import registerUserFecth from '../../axios/config';
-
-
+import PasswordInput from "../../components/PasswordInput";
+import registerUserFecth from "../../axios/config";
 
 const LoginUser = () => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const navigate = useNavigate();
 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-    const navigate = useNavigate()
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
+  if (isAuthenticated) {
+    return navigate("/dashboard");
+  }
 
-    React.useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setIsAuthenticated(true);
-        }
-    }, []);
+  const handleSignIn = async (e) => {
+    e.preventDefault();
 
-    if (isAuthenticated) {
-        return navigate('/dashboard');
+    if (!email || !password) {
+      useToast("Por favor preencha todos os campos", "error");
+      return;
     }
 
-    const handleSignIn = async (e) => {
-        e.preventDefault()
+    try {
+      const userLogin = {
+        email,
+        senha: password,
+      };
 
-        if (!email || !password) {
-            useToast('Por favor preencha todos os campos', 'error');
-            return;
-        }
+      const res = await registerUserFecth.post("/login", userLogin);
 
-        try {
+      if (res.status === 200) {
+        useToast("Usuário logado com sucesso");
 
-            const userLogin = {
-                email,
-                senha: password
-            };
+        console.log("Resposta do servidor:", res.data);
 
-            const res = await registerUserFecth.post("/login", userLogin);
+        const token = res.data.token;
+        localStorage.setItem("token", token);
 
-            if (res.status === 200) {
-                useToast('Usuário logado com sucesso');
-
-                console.log('Resposta do servidor:', res.data);
-
-                const token = res.data.token;
-                localStorage.setItem('token', token);
-
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 2000);
-
-            }
-
-        } catch (error) {
-
-            if (error.response) {
-                const errorMessage = error.response.data.mensagem;
-                useToast(errorMessage, "error");
-                console.log("Erro na requisição:", errorMessage);
-            } else {
-                console.error("Erro desconhecido:", error.message);
-            }
-        }
-
-
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      }
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.mensagem;
+        useToast(errorMessage, "error");
+        console.log("Erro na requisição:", errorMessage);
+      } else {
+        console.error("Erro desconhecido:", error.message);
+      }
     }
+  };
 
-    return (
-        <div style={{ display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    backgroundColor: '#F0F0F5',
-                    width: '35%',
-                    minHeight: '100vh',
-                    backgroundImage: 'url("src/assets/pageLogin.png")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center'
+  return (
+    <div style={{ display: "flex", flexDirection: "row", overflow: "hidden" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#F0F0F5",
+          width: "35%",
+          minHeight: "100vh",
+          backgroundImage: 'url("src/assets/pageLogin.png")',
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        <span
+          style={{
+            color: "#034A2A",
+            textAlign: "center",
+            fontFamily: "Montserrat",
+            fontSize: "24px",
+            fontStyle: "normal",
+            fontWeight: "600",
+            lineheight: "130%",
+            marginTop: "163px",
+            width: "388px",
+          }}
+        >
+          Gerencie todos os pagamentos da sua empresa em um só lugar.
+        </span>
+      </Box>
 
-                }}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#F8F8F9",
+          width: "65%",
+          minHeight: "100vh",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-
-                <span style={{
-                    color: '#034A2A',
-                    textAlign: 'center',
-                    fontFamily: 'Montserrat',
-                    fontSize: '24px',
-                    fontStyle: 'normal',
-                    fontWeight: '600',
-                    lineheight: '130%',
-                    marginTop: '163px',
-                    width: '388px'
-
-                }}>Gerencie todos os pagamentos da sua empresa em um só lugar.</span>
-
-            </Box>
-
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#F8F8F9',
-                    width: '65%',
-                    minHeight: '100vh',
-
+              <span
+                style={{
+                  marginBottom: "1rem",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                  color: "#343447",
+                  textAlign: "center",
+                  fontFamily: "Montserrat",
+                  fontSize: "24px",
+                  fontStyle: "normal",
+                  fontWeight: "700",
+                  lineHeight: "130%",
                 }}
+              >
+                Faça seu Login!
+              </span>
+
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  marginBottom: "1rem",
+                  padding: "5px",
+                  gap: "5px",
+                  fontFamily: "Nunito",
+                  fontSize: "14px",
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  lineHeight: "20px",
+                }}
+              >
+                E-mail*
+                <input
+                  type="text"
+                  placeholder="Digite seu e-mail"
+                  required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  style={{
+                    borderRadius: "8px",
+                    border: "1px solid #D0D5DD",
+                    background: "#fff",
+                    width: "368px",
+                    height: "70px",
+                    paddingLeft: "10px",
+                    fontFamily: "Inter",
+                    fontSize: "16px",
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    lineHeight: "24px",
+                  }}
+                />
+              </label>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "368px",
+                  marginBottom: "0.1rem",
+                  padding: "5px",
+                  gap: "5px",
+                  fontFamily: "Nunito",
+                  fontSize: "14px",
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  lineHeight: "20px",
+                }}
+              >
+                <label style={{ alignSelf: "flex-start" }}>Senha*</label>
+                <span
+                  style={{
+                    alignSelf: "flex-end",
+                    fontFamily: "Nunito",
+                    fontSize: "14px",
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    lineHeight: "130%",
+                    color: "#DA0175",
+                  }}
+                >
+                  Esqueceu a senha?
+                </span>
+              </div>
+              <PasswordInput
+                value={password}
+                onChange={(e) => {
+                  const newPassword = e.target.value;
+                  setPassword(newPassword);
+                }}
+              />
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center", // Isso centraliza os elementos horizontalmente na div pai
+              }}
             >
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <form style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} onSubmit={(e) => {
-                        e.preventDefault();
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={handleSignIn}
+                sx={{
+                  mt: 2,
+                  width: "190px",
+                  height: "40px",
+                  borderRadius: "10px",
+                  background: "#DA0175",
+                  color: "#F8F8F9",
+                  "&:hover": {
+                    backgroundColor: "#DA0175",
+                  },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mx: "auto",
+                  "& .MuiButton-label": {
+                    fontFamily: "Nunito",
+                    fontSize: "18px",
+                    fontWeight: "400",
+                    lineHeight: "normal",
+                    whiteSpace: "nowrap",
+                  },
+                }}
+              >
+                Entrar
+              </Button>
 
-
-
-                    }}>
-
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center'
-                        }}>
-                            <span style={{
-                                marginBottom: '1rem',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                color: '#343447',
-                                textAlign: 'center',
-                                fontFamily: 'Montserrat',
-                                fontSize: '24px',
-                                fontStyle: 'normal',
-                                fontWeight: '700',
-                                lineHeight: '130%'
-
-                            }}>Faça seu Login!</span>
-
-                            <label style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'start',
-                                marginBottom: '1rem',
-                                padding: '5px',
-                                gap: '5px',
-                                fontFamily: 'Nunito',
-                                fontSize: '14px',
-                                fontStyle: 'normal',
-                                fontWeight: '600',
-                                lineHeight: '20px'
-                            }}>
-                                E-mail*
-
-                                <input
-                                    type="text"
-                                    placeholder="Digite seu e-mail"
-                                    required
-                                    value={email}
-                                    onChange={(e) => {
-                                        setEmail(e.target.value);
-
-                                    }}
-
-
-
-
-                                    style={{
-                                        borderRadius: '8px',
-                                        border: '1px solid #D0D5DD',
-                                        background: '#fff',
-                                        width: '368px',
-                                        height: '70px',
-                                        paddingLeft: '10px',
-                                        fontFamily: 'Inter',
-                                        fontSize: '16px',
-                                        fontStyle: 'normal',
-                                        fontWeight: '400',
-                                        lineHeight: '24px'
-
-
-
-                                    }} />
-                            </label>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                width: '368px',
-                                marginBottom: '0.1rem',
-                                padding: '5px',
-                                gap: '5px',
-                                fontFamily: 'Nunito',
-                                fontSize: '14px',
-                                fontStyle: 'normal',
-                                fontWeight: '600',
-                                lineHeight: '20px'
-                            }}>
-                                <label style={{ alignSelf: 'flex-start' }}>Senha*</label>
-                                <span style={{
-                                    alignSelf: 'flex-end',
-                                    fontFamily: 'Nunito',
-                                    fontSize: '14px',
-                                    fontStyle: 'normal',
-                                    fontWeight: '600',
-                                    lineHeight: '130%',
-                                    color: '#DA0175'
-
-
-                                }}
-
-
-
-                                >Esqueceu a senha?</span>
-
-
-
-                            </div>
-                            <PasswordInput
-                                value={password}
-                                onChange={(e) => {
-                                    const newPassword = e.target.value;
-                                    setPassword(newPassword);
-                                    console.log(newPassword);
-
-
-                                }}
-
-
-
-                            />
-
-                        </div>
-
-
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center', // Isso centraliza os elementos horizontalmente na div pai
-                        }}>
-                            <Button type='submit' variant="contained" onClick={handleSignIn} sx={{
-                                mt: 2,
-                                width: '190px',
-                                height: '40px',
-                                borderRadius: '10px',
-                                background: '#DA0175',
-                                color: '#F8F8F9',
-                                '&:hover': {
-                                    backgroundColor: '#DA0175',
-                                },
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                mx: 'auto',
-                                '& .MuiButton-label': {
-                                    fontFamily: 'Nunito',
-                                    fontSize: '18px',
-                                    fontWeight: '400',
-                                    lineHeight: 'normal',
-                                    whiteSpace: 'nowrap',
-                                },
-
-
-                            }} >
-                                Entrar
-                            </Button>
-
-
-                            <span style={{
-                                display: 'flex',
-                                marginTop: '1rem',
-                                fontFamily: 'Nunito',
-                                fontSize: '18px',
-                                fontStyle: 'normal',
-                                fontWeight: '600',
-                                lineHeight: '130%',
-                                textAlign: 'center',
-                                mx: 'auto'
-
-                            }}
-                            >Ainda não possui uma conta? <Link to={"/register"} style={{
-                                color: '#DA0175',
-                                fontFamily: 'Nunito',
-                                fontSize: '14px',
-                                fontStyle: 'normal',
-                                fontWeight: '600',
-                                lineHeight: '130%',
-                                textDecorationLine: 'underline'
-                            }}>Cadastra-se</Link>
-                            </span>
-
-                        </div>
-
-
-
-                    </form>
-                </div>
-
-            </Box >
-        </div >
-    );
+              <span
+                style={{
+                  display: "flex",
+                  marginTop: "1rem",
+                  fontFamily: "Nunito",
+                  fontSize: "18px",
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  lineHeight: "130%",
+                  textAlign: "center",
+                  mx: "auto",
+                }}
+              >
+                Ainda não possui uma conta?{" "}
+                <Link
+                  to={"/register"}
+                  style={{
+                    color: "#DA0175",
+                    fontFamily: "Nunito",
+                    fontSize: "14px",
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    lineHeight: "130%",
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Cadastra-se
+                </Link>
+              </span>
+            </div>
+          </form>
+        </div>
+      </Box>
+    </div>
+  );
 };
 
 export default LoginUser;
