@@ -49,7 +49,7 @@ const LoginUser = () => {
                 senha: password
             };
 
-            const res = await registerUserFecth.post("/login", userLogin);
+            const res = await registerUserFecth.post("/", userLogin);
 
             if (res.status === 200) {
                 useToast('Usuário logado com sucesso');
