@@ -47,7 +47,9 @@ const LoginUser = () => {
         useToast("Usuário logado com sucesso");
 
         const token = res.data.token;
+        const nome = res.data.nome;
         localStorage.setItem("token", token);
+        localStorage.setItem("nome", nome);
 
         setTimeout(() => {
           navigate("/dashboard");
