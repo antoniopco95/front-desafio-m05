@@ -113,13 +113,13 @@ export default function AccountMenu({ handleOpenEdit }) {
           </ListItemIcon>
           Editar
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleExit}>
           <ListItemIcon>
             <Logout
               sx={{
                 filter:
                   "invert(50%) sepia(6%) saturate(925%) hue-rotate(202deg) brightness(91%) contrast(89%)",
-              }} onClick={handleExit}
+              }} 
             />
           </ListItemIcon>
           Sair
