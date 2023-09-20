@@ -1,0 +1,114 @@
+.edit-box {
+    padding: 32px;
+}
+
+.editmodal-box {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 24px;
+}
+
+.editmodal-title {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0px 12px 0px;
+    color: #343447;
+    font-family: Nunito;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+}
+
+.editmodal-textfield {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.editmodal-span {
+    color: #344054;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.editmodal-input {
+    padding: 10px 14px;
+    align-items: center;
+    width: 351px;
+    gap: 8px;
+    align-self: stretch;
+
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #D0D5DD;
+    background: #FFF;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.editmodal-input:focus {
+    outline: none;
+}
+
+.editmodal-input::placeholder {
+    font-size: 16px;
+    color: #667085;
+}
+
+.editmodal-hidebtn1,
+.editmodal-hidebtn2 {
+    position: absolute;
+    right: 70px;
+    background: white;
+    border: none;
+    cursor: pointer;
+}
+
+.editmodal-hidebtn1 {
+    bottom: 182px;
+}
+
+.editmodal-hidebtn2 {
+    bottom: 100px;
+}
+
+.editmodal-telandcpf {
+    display: flex;
+}
+
+.middle {
+    margin-right: 24px;
+}
+
+.middle-input {
+    width: 163px;
+}
+
+.editmodal-button {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 160px;
+    padding: 4px 40px;
+    margin: 16px 0px 8px 0px;
+    gap: 4px;
+
+    color: #F8F8F9;
+    font-family: Nunito;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    border-radius: 10px;
+    border: none;
+    background: #DA0175;
+    cursor: pointer;
+}
+
+.border-red {
+    border: 1px solid red;
+}
