@@ -36,8 +36,8 @@ export default function AccountMenu({ handleOpenEdit }) {
   };
 
   const handleExit = () => {
-    localStorage.removeItem(token);
-    localStorage.removeItem(nome);
+    localStorage.removeItem("token");
+    localStorage.removeItem("nome");
     navigate("/");
   };
 
