@@ -47,7 +47,7 @@ const LoginUser = () => {
         useToast("Usuário logado com sucesso");
         console.log(res.data);
         const token = res.data.token;
-        const nome = res.data.nome;
+        const nome = res.data.usuario.nome;
         localStorage.setItem("token", token);
         localStorage.setItem("nome", nome);
 

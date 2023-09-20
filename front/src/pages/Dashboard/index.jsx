@@ -56,6 +56,12 @@ function Dashboard() {
 
   useEffect(() => {}, [home, clients]);
 
+  const handleExit = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("nome");
+    return navigate("/");
+  };
+
   return (
     <div className="box-size">
       <VerticalHeader
@@ -67,7 +73,7 @@ function Dashboard() {
         toggleCharges={toggleCharges}
       />
       <div className="login-header">
-        <AccountLogin handleOpenEdit={handleOpenEdit} />
+        <AccountLogin handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
       {home && <HomeComponent />}
       {clients && (

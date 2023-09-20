@@ -21,13 +21,17 @@ function stringAvatar(name) {
       fontSize: "22px",
       fontWeight: "600",
     },
-    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    children: `${name.split(" ")[0][0].toUpperCase()}${name
+      .split(" ")[0][1]
+      .toUpperCase()}`,
   };
 }
 
-export default function AccountMenu({ handleOpenEdit }) {
+export default function AccountMenu({ handleOpenEdit, handleExit }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const nome = localStorage.getItem("nome");
+  const [name, setName] = React.useState(nome);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,16 +40,10 @@ export default function AccountMenu({ handleOpenEdit }) {
     setAnchorEl(null);
   };
 
-  const handleExit = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("nome");
-    useNavigate("/");
-  };
-
   return (
     <React.Fragment>
       <Stack direction="row" spacing={2}>
-        <Avatar {...stringAvatar("Nelson Pedroza")} />
+        <Avatar {...stringAvatar(name)} />
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Typography
@@ -57,7 +55,7 @@ export default function AccountMenu({ handleOpenEdit }) {
             margin: "0px 8px 0px 16px",
           }}
         >
-          Nelson
+          {name.toUpperCase()}
         </Typography>
         <IconButton onClick={handleClick} sx={{ padding: "0px" }}>
           <KeyboardArrowDownIcon sx={{ color: "#0E8750" }} />
