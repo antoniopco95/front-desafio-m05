@@ -1,8 +1,9 @@
 {
   "name": "front",
-  "homepage": "https://github.com/Matheulucas/front-equipe-09",
+  "homepage": "https://antoniopco95.github.io/front-equipe-09/",
   "private": true,
   "version": "0.0.0",
+  
   "type": "module",
   "scripts": {
     "dev": "vite",
