@@ -1,14 +1,31 @@
+
 import React from 'react'
-import Dashboard from '../src/pages/Dashboard'
+
+
+
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+
+import { ToastContainer } from 'react-toastify'
+
+
 
 function App() {
 
+
+
   return (
-    <>
-      <Dashboard />
-    </>
+
+    <div>
+      <ToastContainer />
+      <Link to="/login" >aaaaaaaaa</Link> 
+      <Outlet />
+    </div>
+
+
+
   )
 }
 
-export default App
+export default App;
