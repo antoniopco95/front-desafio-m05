@@ -7,6 +7,7 @@ import ClientsComponent from '../../components/ClientsComponent';
 import EditModal from '../../components/EditModal';
 
 function Dashboard() {
+    
 
     const [home, setHome] = useState(true);
     const [clients, setClients] = useState(false);
@@ -19,6 +20,19 @@ function Dashboard() {
     const [openAdd, setOpenAdd] = useState(false);
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+    const navigate = useNavigate()
+
+
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setIsAuthenticated(false);
+        }
+    }, []);
+
+    if (!isAuthenticated) {
+        return navigate('/');}
 
     const toggleHome = (e) => {
         e.preventDefault();
