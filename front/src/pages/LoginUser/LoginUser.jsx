@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import useToast from "../../hooks/useToast";
 import { Link, useNavigate } from "react-router-dom";
+import loginImage from "../../assets/pageLogin.png";
 
 import "./LoginStyles.css";
 
@@ -75,7 +76,7 @@ const LoginUser = () => {
           backgroundColor: "#F0F0F5",
           width: "35%",
           minHeight: "100vh",
-          backgroundImage: 'url("src/assets/pageLogin.png")',
+          backgroundImage: `url(${loginImage})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
