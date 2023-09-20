@@ -475,7 +475,7 @@ const SignUp = () => {
                                             lineHeight: '130%',
                                             textAlign: 'center',
                                             mx: 'auto'
-                                        }}>Já possui uma conta?Faça seu <Link to={"/login"} style={{
+                                        }}>Já possui uma conta?Faça seu <Link to={"/"} style={{
                                             color: '#DA0175',
                                             fontFamily: 'Nunito',
                                             fontSize: '18px',
