@@ -13,16 +13,14 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <StrictMode>
-    <UserProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginUser />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </Router>
-      <ToastContainer />
-    </UserProvider>
-  </StrictMode>
+  <React.StrictMode>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginUser />} />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+    <ToastContainer />
+  </React.StrictMode>
 );

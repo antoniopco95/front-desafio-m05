@@ -6,8 +6,10 @@ import HomeComponent from "../../components/HomeComponent";
 import ClientsComponent from "../../components/ClientsComponent";
 import EditModal from "../../components/EditModal";
 import { useNavigate } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 function Dashboard() {
+  const { setName, setId } = useUser();
   const [home, setHome] = useState(true);
   const [clients, setClients] = useState(false);
   const [charges, setCharges] = useState(false);
@@ -58,7 +60,8 @@ function Dashboard() {
 
   const handleExit = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("nome");
+    setName("");
+    setId("");
     return navigate("/");
   };
 

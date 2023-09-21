@@ -13,7 +13,7 @@ import Logout from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 
-function stringAvatar(name) {
+function stringAvatar(nome) {
   return {
     sx: {
       color: "#0E8750",
@@ -22,16 +22,17 @@ function stringAvatar(name) {
       fontSize: "22px",
       fontWeight: "600",
     },
-    children: `${name.split(" ")[0][0].toUpperCase()}${name
+    children: `${nome.split(" ")[0][0].toUpperCase()}${nome
       .split(" ")[0][1]
       .toUpperCase()}`,
   };
 }
 
 export default function AccountMenu({ handleOpenEdit, handleExit }) {
-  const { name} = useUser();
+  const { name, id } = useUser();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  console.log(name, id);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

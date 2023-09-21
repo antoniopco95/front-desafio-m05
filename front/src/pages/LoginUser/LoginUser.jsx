@@ -51,7 +51,7 @@ const LoginUser = () => {
         setName(res.data.usuario.nome);
         setId(res.data.usuario.id);
         localStorage.setItem("token", token);
-        console.log(name, id);
+        
 
         setTimeout(() => {
           navigate("/dashboard");
