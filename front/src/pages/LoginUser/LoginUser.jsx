@@ -5,9 +5,8 @@ import Button from "@mui/material/Button";
 import useToast from "../../hooks/useToast";
 import { Link, useNavigate } from "react-router-dom";
 import loginImage from "../../assets/pageLogin.png";
-
+import useUser from "../../hooks/useUser";
 import "./LoginStyles.css";
-
 import PasswordInput from "../../components/PasswordInput";
 import registerUserFecth from "../../axios/config";
 
@@ -16,6 +15,7 @@ const LoginUser = () => {
   const [password, setPassword] = React.useState("");
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const navigate = useNavigate();
+  const { id, setId, name, setName } = useUser();
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -48,9 +48,10 @@ const LoginUser = () => {
         useToast("Usuário logado com sucesso");
         console.log(res.data);
         const token = res.data.token;
-        const nome = res.data.usuario.nome;
+        setName(res.data.usuario.nome);
+        setId(res.data.usuario.id);
         localStorage.setItem("token", token);
-        localStorage.setItem("nome", nome);
+        
 
         setTimeout(() => {
           navigate("/dashboard");
