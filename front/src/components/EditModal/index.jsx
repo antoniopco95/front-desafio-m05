@@ -5,6 +5,7 @@ import './styles.css'
 import EyeOff from '../../assets/EyeOff.svg';
 import registerUserFecth from '../../axios/config'
 import { IMaskInput } from "react-imask";
+import CheckFinal from '../../assets/CheckFinal.svg'
 
 const style = {
     display: 'flex',
@@ -37,6 +38,8 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("token");
@@ -79,20 +82,27 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
 
         try {
             const response = await registerUserFecth.put(`/editar/${id}`, {
-                nome: inputName,
-                email: inputEmail,
-                senha: inputConfirm,
+                nome: inputName.toString(),
+                email: inputEmail.toString(),
+                senha: inputConfirm.toString(),
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
+            console.log(response.data)
             const nome = response.data.userEdit.nome;
             localStorage.setItem("name", nome);
             localStorage.getItem("name");
 
             handleCloseEdit();
+            setConfirmModalOpen(true);
+
+            setTimeout(() => {
+                setConfirmModalOpen(false);
+            }, 3000);
+
 
             setShowErrorName(false);
             setShowErrorEmail(false);
@@ -172,6 +182,14 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                     </form>
                 </Box>
             </Modal>
+            {isConfirmModalOpen && (
+                <div className='shadow-modal'>
+                    <div className="confirm-modal">
+                        <img className='check-modal' src={CheckFinal} alt="checkfinal-cin" />
+                        <span className='text-modal'>Cadastro Alterado com sucesso!</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
