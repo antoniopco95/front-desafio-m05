@@ -234,7 +234,7 @@ const LoginUser = () => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center", // Isso centraliza os elementos horizontalmente na div pai
+                alignItems: "center",
               }}
             >
               <Button
@@ -291,6 +291,7 @@ const LoginUser = () => {
                     fontWeight: "600",
                     lineHeight: "130%",
                     textDecorationLine: "underline",
+                    marginLeft: '0.2rem'
                   }}
                 >
                   Cadastra-se

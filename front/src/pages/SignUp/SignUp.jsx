@@ -17,6 +17,7 @@ import Check from '../../assets/StepLogin-Check.svg';
 import StatusUndone from '../../assets/LineStatusUndone.svg';
 import StatusDone from '../../assets/LineStatusDone.svg';
 import CheckFinal from '../../assets/CheckFinal.svg';
+import CheckError from '../../assets/CheckError.svg';
 
 import './SignUpStyles.css';
 
@@ -33,19 +34,23 @@ const steps = [
     {
         label: 'Escolha uma senha',
         description: 'Escolha uma senha segura',
+        id: 'stepSenha'
     },
     {
         label: 'Cadastro realizado com sucesso',
         description: 'E-mail e senha cadastrados com sucesso.',
+        id: 'stepCadastroDone'
     },
 ];
 
 const CustomStepIcon = ({ active, completed }) => {
     let icon;
     if (completed) {
-        icon = <img src={Check} alt="Completed Step" style={{ position: 'relative' }} />;
+        icon = <img src={Check} alt="Completed Step" style={{ position: 'relave', }} />;
+    } else if (completed && steps.id === 'stepCadastroDone') {
+        icon = <img src={Check} alt="Completed Step" style={{ position: 'relave', }} />;
     } else if (active) {
-        icon = <img src={Done} alt="Active Step" style={{ position: 'relative' }} />;
+        icon = <img src={Done} alt="Active Step" style={{ position: 'relative', cursor: 'pointer' }} />;
     } else {
         icon = <img src={Undone} alt="Inactive Step" style={{ position: 'relative' }} />;
     }
@@ -60,6 +65,7 @@ const SignUp = () => {
     const [repeatPassword, setRepeatPassword] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [requestStatus, setRequestStatus] = useState(null);
+    const [requestError, setRequestError] = useState('');
 
     const handleNext = () => {
         if (activeStep === 0) {
@@ -68,12 +74,28 @@ const SignUp = () => {
                 useToast('Por favor, preencha o campo de e-mail.', 'error');
                 return;
             }
+
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!regex.test(email)) {
+
+                useToast('Por favor, preencha um e-mail válido.', 'error');
+                return;
+
+            }
         } else if (activeStep === 1) {
 
             if (password !== repeatPassword) {
                 useToast('As senhas não coincidem.', 'error');
                 return;
             }
+
+            if (password.length < 8) {
+
+
+                useToast('Senha precisa ter no minímo 8 caracteres.', 'error');
+                return;
+            }
+
         }
 
         if (activeStep === steps.length - 2) {
@@ -84,8 +106,19 @@ const SignUp = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
+    const handleBackDone = () => {
+
+
+
+        setActiveStep(0);
+
+        //(prevActiveStep) => prevActiveStep - 1
+
+    }
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+
+
     };
 
     const handleReset = () => {
@@ -115,6 +148,7 @@ const SignUp = () => {
         } catch (error) {
             const errorMessage = error.response.data;
             useToast(JSON.stringify(errorMessage), "error");
+            setRequestError(errorMessage);
 
             console.error('Erro na requisição:', error);
             setRequestStatus('error');
@@ -138,8 +172,11 @@ const SignUp = () => {
                             <StepLabel
                                 StepIconComponent={CustomStepIcon}
                                 onClick={() => {
-                                    if (step.id === 'stepCadastro') {
-                                        handleBack();
+                                    if (step.id === 'stepSenha') {
+                                        handleBackDone();
+
+                                    } else {
+
                                     }
                                 }}
                                 completed={activeStep > index}
@@ -159,7 +196,9 @@ const SignUp = () => {
                                     {step.label}
                                 </Typography>
                             </StepLabel>
-                            <StepContent sx={{ borderLeft: '4px solid #0E8750', minHeight: '90px' }}>
+                            <StepContent sx={{
+                                borderLeft: step.id === 'stepCadastro' ? '4px solid #0E8750' : step.id === 'stepSenha' ? '4px solid #0E8750' : 'none', minHeight: '90px'
+                            }}>
                                 <Typography
                                     sx={{
                                         height: '5rem',
@@ -387,7 +426,7 @@ const SignUp = () => {
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                 }}>
-                                    <img src={CheckFinal} alt="CheckFinal" style={{
+                                    <img src={CheckError} alt="CheckFinal" style={{
                                         marginTop: '180px',
                                     }} />
                                     <Typography style={{
@@ -399,11 +438,11 @@ const SignUp = () => {
                                         lineHeight: '130%',
                                         color: '#343447',
                                         margin: '10px'
-                                    }}>Erro no cadastro</Typography>
+                                    }}>Erro no cadastro {JSON.stringify(requestError)}</Typography>
                                 </Paper>
                             )}{requestStatus === 'error' && (
                                 <Button
-                                    onClick={handleReset}
+                                    onClick={handleBackDone}
                                     sx={{
                                         mt: 2,
                                         width: '190px',
@@ -483,6 +522,7 @@ const SignUp = () => {
                                             fontWeight: '600',
                                             lineHeight: '130%',
                                             textDecorationLine: 'underline',
+                                            marginLeft: '0.2rem'
 
                                         }}>Login</Link></span>
                                     )}
@@ -490,7 +530,6 @@ const SignUp = () => {
                             )}
                             {activeStep === steps.length - 1 && (
                                 <Button
-                                    onClick={handleReset}
 
                                     sx={{
                                         mt: 2,
@@ -515,7 +554,7 @@ const SignUp = () => {
                                         },
                                     }}
                                 >
-                                    <Link to={"/"} style={{ textDecoration: 'none', color: '#F8F8F9' }}>Ir para Login</Link>
+                                    <Link to={"/"} style={{ textDecoration: 'none', color: '#F8F8F9', }}>Ir para Login</Link>
                                 </Button>
                             )}
                         </div>
