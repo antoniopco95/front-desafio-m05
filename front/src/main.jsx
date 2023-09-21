@@ -9,7 +9,6 @@ import ProtectedRoute from "./routes/protectedRoute.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/userContext";
-import ProtectedRoute from "./routes/protectedRoute.jsx";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
