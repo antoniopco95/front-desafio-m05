@@ -291,6 +291,7 @@ const LoginUser = () => {
                     fontWeight: "600",
                     lineHeight: "130%",
                     textDecorationLine: "underline",
+                    marginLeft: '0.2rem'
                   }}
                 >
                   Cadastra-se
