@@ -1,13 +1,15 @@
 import "./styles.css";
 import VerticalHeader from "../../components/VerticalHeader";
 import React, { useState, useEffect } from "react";
-import AccountLogin from "../../components/AccountLogin";
+import { getItem } from '../../utils/storage'
+import AccountMenu from "../../components/AccountMenu";
 import HomeComponent from "../../components/HomeComponent";
 import ClientsComponent from "../../components/ClientsComponent";
 import EditModal from "../../components/EditModal";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+
   const [home, setHome] = useState(true);
   const [clients, setClients] = useState(false);
   const [charges, setCharges] = useState(false);
@@ -19,11 +21,13 @@ function Dashboard() {
   const [openAdd, setOpenAdd] = useState(false);
   const handleOpenAdd = () => setOpenAdd(true);
   const handleCloseAdd = () => setOpenAdd(false);
+
   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
   const navigate = useNavigate();
 
+  const token = getItem("token");
+
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
       setIsAuthenticated(false);
     }
@@ -54,11 +58,12 @@ function Dashboard() {
     setCharges(true);
   };
 
-  useEffect(() => {}, [home, clients]);
+  useEffect(() => { }, [home, clients]);
 
   const handleExit = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("nome");
+    localStorage.removeItem("name");
+    localStorage.removeItem("id");
     return navigate("/");
   };
 
@@ -73,7 +78,7 @@ function Dashboard() {
         toggleCharges={toggleCharges}
       />
       <div className="login-header">
-        <AccountLogin handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
+        <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
       {home && <HomeComponent />}
       {clients && (
@@ -83,7 +88,7 @@ function Dashboard() {
           handleCloseAdd={handleCloseAdd}
         />
       )}
-      <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} />
+      <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
     </div>
   );
 }

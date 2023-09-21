@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './styles.css'
 import EyeOff from '../../assets/EyeOff.svg';
+import registerUserFecth from '../../axios/config'
 import { IMaskInput } from "react-imask";
 
 const style = {
@@ -30,70 +31,83 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
     const [showErrorPassword, setShowErrorPassword] = useState(false);
     const [showErrorConfirm, setShowErrorConfirm] = useState(false);
 
+    const [errorMessageEmail, setErrorMessageEmail] = useState('');
+    const [errorMessagePassword, setErrorMessagePassword] = useState('');
+    const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const handleSubmit = (e) => {
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!inputName || !inputEmail || !inputPassword || !inputConfirm) {
-
-        } else {
-            handleCloseEdit();
+        if (inputName === '') {
+            setShowErrorName(true)
+            return;
         }
-    }
 
-    const handleChangeName = (e) => {
-        e.preventDefault()
-
-        const value = e.target.value;
-        setInputName(value);
-
-        if (value.trim() === '') {
-            setShowErrorName(true);
-        } else {
-            setShowErrorName(false);
+        if (inputEmail === '') {
+            setErrorMessageEmail('Este campo deve ser preenchido')
+            setShowErrorEmail(true)
+            return;
         }
-    };
 
-    const handleChangeEmail = (e) => {
-        e.preventDefault()
-
-        const value = e.target.value;
-        setInputEmail(value);
-
-        if (value.trim() === '') {
-            setShowErrorEmail(true);
-        } else {
-            setShowErrorEmail(false);
-        }
-    };
-
-    const handleChangePassword = (e) => {
-        e.preventDefault()
-
-        const value = e.target.value;
-        setInputPassword(value);
-
-        if (value.trim() === '') {
+        if (inputPassword === '') {
+            setErrorMessagePassword('Este campo deve ser preenchido');
             setShowErrorPassword(true);
-        } else {
-            setShowErrorPassword(false);
+            return;
+        } else if (inputPassword.length <= 7) {
+            setErrorMessagePassword('A senha deve ter mais que 7 caracteres');
+            setShowErrorPassword(true);
+            return;
         }
-    };
 
-    const handleChangeConfirm = (e) => {
-        e.preventDefault()
-
-        const value = e.target.value;
-        setInputConfirm(value);
-
-        if (value.trim() === '') {
+        if (inputConfirm === '') {
+            setErrorMessageConfirm('Este campo deve ser preenchido');
             setShowErrorConfirm(true);
-        } else {
-            setShowErrorConfirm(false);
+            return;
         }
+
+        if (inputPassword !== inputConfirm) {
+            setErrorMessageConfirm('Suas senhas não coincidem');
+            setShowErrorConfirm(true);
+            return;
+        }
+
+        try {
+            const response = await registerUserFecth.put(`/editar/${id}`, {
+                nome: inputName,
+                email: inputEmail,
+                senha: inputConfirm,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const nome = response.data.userEdit.nome;
+            localStorage.setItem("name", nome);
+            localStorage.getItem("name");
+
+            handleCloseEdit();
+
+            setShowErrorName(false);
+            setShowErrorEmail(false);
+            setShowErrorPassword(false);
+            setShowErrorConfirm(false);
+
+        } catch (error) {
+            setShowErrorEmail(true)
+            setErrorMessageEmail(error.response.data.error)
+        };
     };
+
+    useEffect(() => {
+        handleSubmit();
+    }, [id, token]);
 
     return (
         <div>
@@ -107,7 +121,7 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nome*</label>
                             <input
-                                onChange={handleChangeName}
+                                onChange={(e) => setInputName(e.target.value)}
                                 value={inputName}
                                 className={`editmodal-input ${showErrorName ? 'border-red' : ''}`} placeholder='Digite seu nome' type="text" id='nome' />
                             {showErrorName && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
@@ -115,11 +129,11 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>E-mail*</label>
                             <input
-                                onChange={handleChangeEmail}
+                                onChange={(e) => setInputEmail(e.target.value)}
                                 value={inputEmail}
                                 className={`editmodal-input ${showErrorEmail ? 'border-red' : ''}`}
                                 placeholder='Digite seu e-mail' type="email" id='email' />
-                            {showErrorEmail && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            {showErrorEmail && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>{errorMessageEmail}</p>}
                         </div>
                         <div className='editmodal-telandcpf'>
                             <div className='editmodal-textfield middle'>
@@ -133,26 +147,26 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Nova Senha*</label>
-                            <div>
+                            <div className={`editmodal-inputandbtn  ${showErrorPassword ? 'border-red' : ''}`}>
                                 <input
                                     value={inputPassword}
                                     onChange={(e) => setInputPassword(e.target.value)}
-                                    className={`editmodal-input ${showErrorPassword ? 'border-red' : ''}`}
+                                    className='editmodal-passinput'
                                     placeholder='••••••••' type={showPassword ? 'text' : 'password'} id='senha'
                                 />
-                                <button onClick={(e) => setShowPassword(!showPassword)} className='editmodal-hidebtn1'><img src={EyeOff} alt="eyeofficon" /></button>
+                                <img onClick={(e) => setShowPassword(!showPassword)} className='editmodal-hidebtn1' src={EyeOff} alt="eyeofficon" />
                             </div>
-                            {showErrorPassword && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            {showErrorPassword && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>{errorMessagePassword}</p>}
                         </div>
                         <div className='editmodal-textfield'>
                             <label className='editmodal-span'>Confirmar Senha*</label>
-                            <div>
-                                <input className={`editmodal-input ${showErrorConfirm ? 'border-red' : ''}`}
-                                    onChange={(e) => setInputConfirm(e.target.value) && handleChangeConfirm}
+                            <div className={`editmodal-inputandbtn  ${showErrorConfirm ? 'border-red' : ''}`}>
+                                <input className='editmodal-passinput'
+                                    onChange={(e) => setInputConfirm(e.target.value)}
                                     value={inputConfirm} placeholder='••••••••' type={showConfirm ? 'text' : 'password'} id='confirmarsenha' />
-                                <button onClick={(e) => setShowConfirm(!showConfirm)} className='editmodal-hidebtn2'><img src={EyeOff} alt="eyeofficon" /></button>
+                                <img onClick={(e) => setShowConfirm(!showConfirm)} className='editmodal-hidebtn2' src={EyeOff} alt="eyeofficon" />
                             </div>
-                            {showErrorConfirm && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>Este campo deve ser preenchido</p>}
+                            {showErrorConfirm && <p style={{ color: 'red', fontFamily: 'Nunito', fontSize: '14px', marginTop: '6px' }}>{errorMessageConfirm}</p>}
                         </div>
                         <button className='editmodal-button' type='submit' id='aplicar'>Aplicar</button>
                     </form>
