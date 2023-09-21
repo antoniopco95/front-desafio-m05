@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Logout from "@mui/icons-material/Logout";
+import useUser from "../../hooks/useUser";
 
 export default function AccountMenu({ handleOpenEdit, handleExit }) {
 
