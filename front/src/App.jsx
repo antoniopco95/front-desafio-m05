@@ -19,7 +19,7 @@ function App() {
 
     <div>
       <ToastContainer />
-      <Link to="/login" >aaaaaaaaa</Link> 
+      <Link to="/" ></Link>
       <Outlet />
     </div>
 

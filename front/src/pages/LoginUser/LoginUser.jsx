@@ -5,16 +5,16 @@ import Button from "@mui/material/Button";
 import useToast from "../../hooks/useToast";
 import { Link, useNavigate } from "react-router-dom";
 import loginImage from "../../assets/pageLogin.png";
-
 import "./LoginStyles.css";
-
 import PasswordInput from "../../components/PasswordInput";
 import registerUserFecth from "../../axios/config";
 
 const LoginUser = () => {
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -47,10 +47,10 @@ const LoginUser = () => {
       if (res.status === 200) {
         useToast("Usuário logado com sucesso");
         console.log(res.data);
-        const token = res.data.token;
-        const nome = res.data.usuario.nome;
-        localStorage.setItem("token", token);
-        localStorage.setItem("nome", nome);
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("id", res.data.usuario.id);
+        localStorage.setItem("name", res.data.usuario.nome);
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -234,7 +234,7 @@ const LoginUser = () => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center", // Isso centraliza os elementos horizontalmente na div pai
+                alignItems: "center",
               }}
             >
               <Button
@@ -291,6 +291,7 @@ const LoginUser = () => {
                     fontWeight: "600",
                     lineHeight: "130%",
                     textDecorationLine: "underline",
+                    marginLeft: '0.2rem'
                   }}
                 >
                   Cadastra-se
