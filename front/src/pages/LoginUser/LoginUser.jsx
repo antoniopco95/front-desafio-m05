@@ -234,7 +234,7 @@ const LoginUser = () => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center", // Isso centraliza os elementos horizontalmente na div pai
+                alignItems: "center",
               }}
             >
               <Button

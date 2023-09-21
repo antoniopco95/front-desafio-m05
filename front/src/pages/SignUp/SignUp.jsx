@@ -530,7 +530,6 @@ const SignUp = () => {
                             )}
                             {activeStep === steps.length - 1 && (
                                 <Button
-                                    onClick={handleReset}
 
                                     sx={{
                                         mt: 2,
