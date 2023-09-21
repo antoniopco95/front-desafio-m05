@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,26 +10,11 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import Logout from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
-import useUser from "../../hooks/useUser";
-
-function stringAvatar(name) {
-  return {
-    sx: {
-      color: "#0E8750",
-      bgcolor: "#DEDEE9",
-      fontFamily: "Nunito",
-      fontSize: "22px",
-      fontWeight: "600",
-    },
-    children: `${name.split(" ")[0][0].toUpperCase()}${name
-      .split(" ")[0][1]
-      .toUpperCase()}`,
-  };
-}
 
 export default function AccountMenu({ handleOpenEdit, handleExit }) {
-  const { name} = useUser();
+
+  const name = localStorage.getItem("name");
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -43,7 +28,15 @@ export default function AccountMenu({ handleOpenEdit, handleExit }) {
   return (
     <React.Fragment>
       <Stack direction="row" spacing={2}>
-        <Avatar {...stringAvatar(name)} />
+        <Avatar sx={{
+          color: "#0E8750",
+          bgcolor: "#DEDEE9",
+          fontFamily: "Nunito",
+          fontSize: "22px",
+          fontWeight: "600",
+        }} children={`${name.split(" ")[0][0].toUpperCase()}${name
+          .split(" ")[0][1]
+          .toUpperCase()}`} />
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Typography
@@ -55,7 +48,7 @@ export default function AccountMenu({ handleOpenEdit, handleExit }) {
             margin: "0px 8px 0px 16px",
           }}
         >
-          {name.toUpperCase()}
+          {name}
         </Typography>
         <IconButton onClick={handleClick} sx={{ padding: "0px" }}>
           <KeyboardArrowDownIcon sx={{ color: "#0E8750" }} />
