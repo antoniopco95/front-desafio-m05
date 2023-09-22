@@ -66,7 +66,6 @@ const SignUp = () => {
     const [error, setError] = useState(false)
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [requestStatus, setRequestStatus] = useState(null);
-    const [requestError, setRequestError] = useState('');
 
     const handleNext = () => {
         if (activeStep === 0) {
@@ -112,11 +111,8 @@ const SignUp = () => {
 
 
         setActiveStep(0);
-        setError(false)
-       
-
+        setError(false);
     }
-   
 
     const handleCreateUser = async () => {
         try {
@@ -136,11 +132,7 @@ const SignUp = () => {
         } catch (error) {
             const errorMessage = error.response.data;
             useToast(JSON.stringify(errorMessage), "error");
-            setRequestError(errorMessage);
-            setError(true)
-
-            console.error('Erro na requisição:', error);
-            setRequestStatus('error');
+            setError(true);
         }
     };
 
