@@ -31,6 +31,9 @@
 .clientstable-addbutton {
     display: flex;
     font-family: Nunito;
+    align-self: center;
+    width: 267px;
+    height: 33px;
     padding: 4px 56px;
     justify-content: center;
     align-items: center;
