@@ -1,0 +1,13 @@
+.chargescomponent-box {
+    display: flex;
+    justify-content: space-between;
+    font-family: Nunito;
+    margin: 24px 80px 24px calc(108px + 80px);
+}
+
+.chargescomponent-title {
+    position: absolute;
+    top: 84px;
+    font-size: 16px;
+    color: #0E8750;
+}
