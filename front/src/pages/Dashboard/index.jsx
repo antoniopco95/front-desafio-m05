@@ -56,7 +56,7 @@ function Dashboard() {
     setCharges(true);
   };
 
-  useEffect(() => {}, [home, clients]);
+  useEffect(() => { }, [home, clients]);
 
   const handleExit = () => {
     localStorage.removeItem("token");
