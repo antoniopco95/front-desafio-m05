@@ -5,7 +5,7 @@ import FilterIcon from '../../assets/FilterIcon.svg';
 import SearchIcon from '../../assets/SearchIcon.svg';
 import AddCharge from '../../assets/AddCharge.svg';
 
-function ClientsTable({ handleOpenAdd }) {
+function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
 
     return (
         <div className='clientstable-box'>
@@ -39,7 +39,7 @@ function ClientsTable({ handleOpenAdd }) {
                         <td className='table-td'>sarasilva@cubos.io</td>
                         <td className='table-td'>71 9 9462 8654</td>
                         <td className={`table-td status red`}>Inadimplente</td>
-                        <td className='table-td'><img className='addcharge-icon' src={AddCharge} alt="addchargeicon" /></td>
+                        <td className='table-td'><img className='addcharge-icon' src={AddCharge} alt="addchargeicon" onClick={handleOpenCreateCharges} /></td>
                     </tr>
                     <tr className='table-tr'>
                         <td className='table-td'>Cameron Williamson</td>
