@@ -46,8 +46,6 @@ const LoginUser = () => {
 
       if (res.status === 200) {
         useToast("Usuário logado com sucesso");
-        console.log(res.data);
-
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.usuario.id);
         localStorage.setItem("name", res.data.usuario.nome);
@@ -58,11 +56,8 @@ const LoginUser = () => {
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response.data.mensagem;
+        const errorMessage = error.response.data.error;
         useToast(errorMessage, "error");
-        console.log("Erro na requisição:", errorMessage);
-      } else {
-        console.error("Erro desconhecido:", error.message);
       }
     }
   };
