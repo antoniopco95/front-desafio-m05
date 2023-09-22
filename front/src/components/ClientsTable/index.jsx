@@ -41,38 +41,6 @@ function ClientsTable({ handleOpenAdd }) {
 
     }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-
-    //         const token = getItem('token');
-
-    //         if (token) {
-
-    //             try {
-    //                 const response = await registerUserFecth.get('/cobrancas/vencidas', {
-    //                     headers: {
-    //                         Authorization: `Bearer ${token}`,
-    //                     },
-    //                 });
-
-    //                 const data = response.data;
-    //                 console.log(data);
-    //                 setClientsData(data);
-    //             } catch (error) {
-    //                 console.log('Erro ao fazer a solicitação ou processar a resposta');
-    //                 console.error(error)
-    //             }
-
-    //         }
-
-    //     };
-
-    //     fetchData();
-
-    // }, []);
-
-
-
 
     return (
         <div className='clientstable-box'>
