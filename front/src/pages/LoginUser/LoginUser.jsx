@@ -58,7 +58,7 @@ const LoginUser = () => {
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response.data.mensagem;
+        const errorMessage = error.response.data;
         useToast(errorMessage, "error");
         console.log("Erro na requisição:", errorMessage);
       } else {
