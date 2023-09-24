@@ -125,3 +125,42 @@
 .border-red {
     border: 1px solid red;
 }
+
+.shadow-modal {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+.confirm-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 512px;
+    border-radius: 30px;
+    background-color: white;
+}
+
+.check-modal {
+    width: 104px;
+    height: 104px;
+}
+
+.text-modal {
+    margin-top: 24px;
+    font-family: Nunito;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 130%;
+    color: #343447;
+}
