@@ -117,6 +117,7 @@ function ClientsTable({ handleOpenAdd }) {
             </table>
         </div>
     )
+
 };
 
 export default ClientsTable;
