@@ -4,8 +4,13 @@ import ClientsTable from '../ClientsTable';
 import AddClientModal from '../AddClientModal';
 import CreateCharges from '../CreateCharges';
 import SnackBarSuccess from '../SnackBarSuccess';
+import ClientDetails from "../ClientDetails";
+import useUser from "../../hooks/useUser";
 
 function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
+  const { openClientDetail, divIsVisible, setOpenClientDetail, setDivIsVisible } =
+    useUser();
+
 
     const [customMessageApprove, setCustomMessageApprove] = useState('');
     const [openSnackApprove, setOpenSnackApprove] = useState(false);
@@ -21,14 +26,24 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
     return (
         <>
             <div className='clientscomponent-box'>
-                <div className='clientscomponent-title'>Clientes</div>
+                      <div
+        onClick={() => {
+          setOpenClientDetail(false);
+          setDivIsVisible(true);
+        }}
+        className="clientscomponent-title"
+      >
+        Clientes
+      </div>
                 <ClientsTable handleOpenAdd={handleOpenAdd} handleOpenCreateCharges={handleOpenCreateCharges} />
                 <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
                 <CreateCharges openCreateCharges={openCreateCharges} handleCloseCreateCharges={handleCloseCreateCharges} handleClickSnack={handleClickSnack} setCustomMessageApprove={setCustomMessageApprove} />
                 <SnackBarSuccess customMessageApprove={customMessageApprove} openSnackApprove={openSnackApprove} setOpenSnackApprove={setOpenSnackApprove} />
             </div>
+ {openClientDetail && <ClientDetails />}
         </>
     )
 };
+
 
 export default ClientsComponent;

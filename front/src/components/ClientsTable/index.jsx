@@ -10,6 +10,8 @@ import { useClients } from '../../context/clientsContext';
 
 function ClientsTable({ handleOpenAdd }) {
     const { clientsData, updateClientsData } = useClients();
+   const { openClientDetail, setOpenClientDetail, setDivIsVisible, divIsVisible } =
+    useUser();
 
     useEffect(() => {
 
@@ -102,13 +104,15 @@ function ClientsTable({ handleOpenAdd }) {
 
 
                         <tr key={client.cliente_id} className='table-tr'>
-                            <td className='table-td'>{client.nome}</td>
+                            <td className='table-td'  onClick={() => {
+                setOpenClientDetail(true);
+                setDivIsVisible(false);>{client.nome}</td>
                             <td className='table-td'>
                                 {formatCPF(client.cpf)}
                             </td>
                             <td className='table-td'>{client.email}</td>
                             <td className='table-td'>{formatPhoneNumber(client.telefone)}</td>
-                            <td className={`table-td status red`}>Inadimplente</td>
+                            <td className={`table-td status red`}>client.status</td>
                             <td className='table-td'><img className='addcharge-icon' src={AddCharge} alt="addchargeicon" /></td>
                         </tr>
 

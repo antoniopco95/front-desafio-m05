@@ -1,15 +1,18 @@
 import "./styles.css";
 import VerticalHeader from "../../components/VerticalHeader";
 import React, { useState, useEffect } from "react";
-import { getItem } from '../../utils/storage'
+import { getItem } from "../../utils/storage";
 import AccountMenu from "../../components/AccountMenu";
 import HomeComponent from "../../components/HomeComponent";
 import ClientsComponent from "../../components/ClientsComponent";
 import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
 import { useNavigate } from "react-router-dom";
+import ClientDetails from "../../components/ClientDetails";
+import useUser from "../../hooks/useUser";
 
 function Dashboard() {
+  const { openClientDetail, setOpenClientDetail } = useUser();
 
   const [home, setHome] = useState(true);
   const [clients, setClients] = useState(false);
@@ -59,7 +62,9 @@ function Dashboard() {
     setCharges(true);
   };
 
+
   useEffect(() => { }, [home, clients, charges]);
+
 
   const handleExit = () => {
     localStorage.removeItem("token");
@@ -81,6 +86,7 @@ function Dashboard() {
       <div className="login-header">
         <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
+      
       {home && <HomeComponent />}
       {clients && (
         <ClientsComponent
@@ -89,8 +95,10 @@ function Dashboard() {
           handleCloseAdd={handleCloseAdd}
         />
       )}
+
       {charges && <ChargesComponent />}
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
+
     </div>
   );
 }
