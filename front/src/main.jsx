@@ -10,6 +10,7 @@ import ProtectedRoute from "./routes/protectedRoute.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/userContext";
+import { ClientsProvider } from "./context/clientsContext";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -17,16 +18,18 @@ const root = createRoot(rootElement);
 root.render(
   <StrictMode>
     <UserProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginUser />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route
-            path="/dashboard"
-            element={<ProtectedRoute element={<Dashboard />} />}
-          />
-        </Routes>
-      </Router>
+      <ClientsProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginUser />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} />}
+            />
+          </Routes>
+        </Router>
+      </ClientsProvider>
       <ToastContainer />
     </UserProvider>
   </StrictMode>
