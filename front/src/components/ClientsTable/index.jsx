@@ -4,11 +4,11 @@ import ClientsIcon from '../../assets/ClientsIcon.svg';
 import FilterIcon from '../../assets/FilterIcon.svg';
 import SearchIcon from '../../assets/SearchIcon.svg';
 import AddCharge from '../../assets/AddCharge.svg';
-import { getItem } from '../../utils/storage';
+import { getItem, setItem } from '../../utils/storage';
 import registerUserFecth from '../../axios/config';
 import { useClients } from '../../context/clientsContext';
 
-function ClientsTable({ handleOpenAdd }) {
+function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
     const { clientsData, updateClientsData } = useClients();
 
     useEffect(() => {
@@ -109,7 +109,11 @@ function ClientsTable({ handleOpenAdd }) {
                             <td className='table-td'>{client.email}</td>
                             <td className='table-td'>{formatPhoneNumber(client.telefone)}</td>
                             <td className={`table-td status red`}>Inadimplente</td>
-                            <td className='table-td'><img className='addcharge-icon' src={AddCharge} alt="addchargeicon" /></td>
+                            <td className='table-td'><img className='addcharge-icon' src={AddCharge} alt="addchargeicon" onClick={() => {
+                                setItem("clientsName", client.nome);
+                                setItem("clientsId", client.cliente_id);
+                                handleOpenCreateCharges();
+                            }} /></td>
                         </tr>
 
                     ))}
