@@ -13,7 +13,6 @@ import Logout from "@mui/icons-material/Logout";
 import useUser from "../../hooks/useUser";
 
 export default function AccountMenu({ handleOpenEdit, handleExit }) {
-
   const name = localStorage.getItem("name");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,15 +28,21 @@ export default function AccountMenu({ handleOpenEdit, handleExit }) {
   return (
     <React.Fragment>
       <Stack direction="row" spacing={2}>
-        <Avatar sx={{
-          color: "#0E8750",
-          bgcolor: "#DEDEE9",
-          fontFamily: "Nunito",
-          fontSize: "22px",
-          fontWeight: "600",
-        }} children={`${name.split(" ")[0][0].toUpperCase()}${name
-          .split(" ")[0][1]
-          .toUpperCase()}`} />
+        <Avatar
+          sx={{
+            color: "#0E8750",
+            bgcolor: "#DEDEE9",
+            fontFamily: "Nunito",
+            fontSize: "22px",
+            fontWeight: "600",
+          }}
+          children={`${name.split(" ")[0][0].toUpperCase()}${
+            name.split(" ")[1]
+              ? name.split(" ")[1][0].toUpperCase()
+              : name.split(" ")[0][1].toUpperCase()
+          }
+          `}
+        />
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Typography
@@ -49,7 +54,7 @@ export default function AccountMenu({ handleOpenEdit, handleExit }) {
             margin: "0px 8px 0px 16px",
           }}
         >
-          {name}
+          {`${name.charAt(0).toUpperCase()}${name.substring(1)}`}
         </Typography>
         <IconButton onClick={handleClick} sx={{ padding: "0px" }}>
           <KeyboardArrowDownIcon sx={{ color: "#0E8750" }} />
