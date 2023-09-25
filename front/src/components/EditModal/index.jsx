@@ -116,7 +116,6 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
     };
 
     useEffect(() => {
-        handleSubmit();
     }, [id, token]);
 
     return (

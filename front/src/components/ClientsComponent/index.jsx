@@ -38,23 +38,29 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
         >
           Clientes
         </div>
-       { <ClientsTable
-          handleOpenAdd={handleOpenAdd}
-          handleOpenCreateCharges={handleOpenCreateCharges}
-        />}
-        <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
-        <CreateCharges
-          openCreateCharges={openCreateCharges}
-          handleCloseCreateCharges={handleCloseCreateCharges}
-          handleClickSnack={handleClickSnack}
-          setCustomMessageApprove={setCustomMessageApprove}
-        />
-        <SnackBarSuccess
-          customMessageApprove={customMessageApprove}
-          openSnackApprove={openSnackApprove}
-          setOpenSnackApprove={setOpenSnackApprove}
-        />
+        {divIsVisible && (
+          <>
+            {" "}
+            <ClientsTable
+              handleOpenAdd={handleOpenAdd}
+              handleOpenCreateCharges={handleOpenCreateCharges}
+            />
+            <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
+            <CreateCharges
+              openCreateCharges={openCreateCharges}
+              handleCloseCreateCharges={handleCloseCreateCharges}
+              handleClickSnack={handleClickSnack}
+              setCustomMessageApprove={setCustomMessageApprove}
+            />
+            <SnackBarSuccess
+              customMessageApprove={customMessageApprove}
+              openSnackApprove={openSnackApprove}
+              setOpenSnackApprove={setOpenSnackApprove}
+            />
+          </>
+        )}
       </div>
+
       {openClientDetail && <ClientDetails />}
     </>
   );
