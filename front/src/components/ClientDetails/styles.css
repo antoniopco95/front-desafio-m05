@@ -4,7 +4,7 @@
   background-color: #f8f8f9;
   overflow: none;
 }
-.user-name-detail {
+.user-name-detail{
   display: flex;
   gap: 16px;
   align-items: center;
@@ -228,6 +228,8 @@
   padding: 12px 23px;
   flex-direction: column;
   gap: 4px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .client-all-charges .client-charges-header {
@@ -313,6 +315,7 @@
   height: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .client-charges-details-line .line-status {
