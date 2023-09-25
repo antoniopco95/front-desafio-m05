@@ -14,16 +14,22 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
     setOpenClientDetail,
     setDivIsVisible,
   } = useUser();
+  
+    const [inputChargeName, setInputChargeName] = useState('');
 
-  const [customMessageApprove, setCustomMessageApprove] = useState("");
-  const [openSnackApprove, setOpenSnackApprove] = useState(false);
+    const [customMessageApprove, setCustomMessageApprove] = useState('');
+    const [openSnackApprove, setOpenSnackApprove] = useState(false);
+
 
   const handleClickSnack = () => {
     setOpenSnackApprove(true);
   };
 
   const [openCreateCharges, setOpenCreateCharges] = useState(false);
-  const handleOpenCreateCharges = () => setOpenCreateCharges(true);
+    const handleOpenCreateCharges = () => {
+        setInputChargeName(localStorage.getItem("clientsName"));
+        setOpenCreateCharges(true);
+    };
   const handleCloseCreateCharges = () => setOpenCreateCharges(false);
 
   return (
@@ -48,6 +54,7 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
           handleCloseCreateCharges={handleCloseCreateCharges}
           handleClickSnack={handleClickSnack}
           setCustomMessageApprove={setCustomMessageApprove}
+          inputChargeName={inputChargeName}
         />
         <SnackBarSuccess
           customMessageApprove={customMessageApprove}
