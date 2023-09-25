@@ -1,6 +1,92 @@
 import "./styles.css";
+import useUser from "../../hooks/useUser";
+import { useEffect, useState } from "react";
+import registerUserFecth from "../../axios/config";
+import { getItem } from "../../utils/storage";
+import { format } from "date-fns";
 
 function ClientDetails() {
+  let Real = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+  const { id } = useUser();
+  const [userById, setUserById] = useState({
+    nome: "-",
+    email: "-",
+    telefone: "-",
+    cpf: "-",
+    endereco: "-",
+    complemento: "-",
+    cidade: "-",
+    uf: "-",
+  });
+  const [charges, setCharges] = useState([]);
+
+  function formatCPF(cpf) {
+    const cleanedCPF = cpf.replace(/\D/g, "");
+
+    const formattedCPF = cleanedCPF.replace(
+      /(\d{3})(\d{3})(\d{3})(\d{2})/,
+      "$1.$2.$3-$4"
+    );
+
+    return formattedCPF;
+  }
+
+  function formatPhoneNumber(phoneNumber) {
+    const cleanedPhoneNumber = phoneNumber.replace(/\D/g, "");
+
+    const formattedPhoneNumber = cleanedPhoneNumber.replace(
+      /(\d{2})(\d{5})(\d{4})/,
+      "($1) $2-$3"
+    );
+
+    return formattedPhoneNumber;
+  }
+
+  useEffect(() => {
+    async function getUserById() {
+      const token = getItem("token");
+      try {
+        const response = await registerUserFecth.get(
+          `/cliente/${id.cliente_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserById(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getUserById();
+  }, [userById.cliente_id]);
+
+  useEffect(() => {
+    async function getChargesByClient() {
+      const token = getItem("token");
+      try {
+        const response = await registerUserFecth.get(
+          `/cliente/cobranca/${id.cliente_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setCharges(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getChargesByClient();
+  }, [userById.cliente_id]);
+
   return (
     <>
       <div className="client-detail-container">
@@ -14,7 +100,6 @@ function ClientDetails() {
             height="32"
             viewBox="0 0 32 32"
             fill="none"
-            
           >
             <path
               d="M7.70852 25.667H17.624C18.3767 25.667 18.969 25.0426 18.819 24.305C18.405 22.2686 17.0526 18.667 12.6663 18.667C8.28003 18.667 6.92768 22.2686 6.5136 24.305C6.36362 25.0426 6.95586 25.667 7.70852 25.667Z"
@@ -45,7 +130,7 @@ function ClientDetails() {
               strokeLinejoin="round"
             />
           </svg>
-          <h1>Sara Lage Silva</h1>
+          <h1>{userById.nome}</h1>
         </div>
         <div className="client-data">
           <div className="sub-title">
@@ -80,41 +165,57 @@ function ClientDetails() {
             <div className="client-details-first">
               <div className="email">
                 <p className="style1">Email</p>
-                <p className="style2">sarasilva@gmail.com</p>
+                <p className="style2">
+                  {userById.email ? userById.email : "-"}
+                </p>
               </div>
               <div className="telefone">
                 <p className="style1">Telefone</p>
-                <p className="style2">71 9 9462 8654</p>
+                <p className="style2">
+                  {userById.telefone
+                    ? formatPhoneNumber(userById.telefone)
+                    : "-"}
+                </p>
               </div>
               <div className="cpf">
                 <p className="style1">CPF</p>
-                <p className="style2">054 365 255 87</p>
+                <p className="style2">
+                  {userById.cpf ? formatCPF(userById.cpf) : "-"}
+                </p>
               </div>
             </div>
             <div className="client-details-second">
               <div className="adress">
                 <p className="style1">Endereço</p>
-                <p className="style2">Rua das Cornélias; nº 512</p>
+                <p className="style2">
+                  {userById.endereco ? userById.endereco : "-"}
+                </p>
               </div>
               <div className="neighborhood">
                 <p className="style1">Bairro</p>
-                <p className="style2">Oliveiras</p>
+                <p className="style2">
+                  {userById.bairro ? userById.bairro : "-"}
+                </p>
               </div>
               <div className="complement">
                 <p className="style1">Complemento</p>
-                <p className="style2">Ap: 502</p>
+                <p className="style2">
+                  {userById.complemento ? userById.complemento : "-"}
+                </p>
               </div>
               <div className="cep">
                 <p className="style1">CEP</p>
-                <p className="style2">031 654 524 04</p>
+                <p className="style2">{userById.cep ? userById.cep : "-"}</p>
               </div>
               <div className="city">
                 <p className="style1">Cidade</p>
-                <p className="style2">Salvador</p>
+                <p className="style2">
+                  {userById.cidade ? userById.cidade : "-"}
+                </p>
               </div>
               <div className="uf">
                 <p className="style1">UF</p>
-                <p className="style2">BA</p>
+                <p className="style2">{userById.uf ? userById.uf : "-"}</p>
               </div>
             </div>
           </div>
@@ -131,8 +232,8 @@ function ClientDetails() {
                 fill="none"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M8.50033 2.69336C8.86852 2.69336 9.16699 2.99184 9.16699 3.36003V7.36003H13.167C13.5352 7.36003 13.8337 7.65851 13.8337 8.0267C13.8337 8.39489 13.5352 8.69336 13.167 8.69336H9.16699V12.6934C9.16699 13.0616 8.86852 13.36 8.50033 13.36C8.13214 13.36 7.83366 13.0616 7.83366 12.6934V8.69336H3.83366C3.46547 8.69336 3.16699 8.39489 3.16699 8.0267C3.16699 7.65851 3.46547 7.36003 3.83366 7.36003H7.83366V3.36003C7.83366 2.99184 8.13214 2.69336 8.50033 2.69336Z"
                   fill="#F8F8F9"
                 />
@@ -150,7 +251,7 @@ function ClientDetails() {
                   viewBox="0 0 25 25"
                   fill="none"
                 >
-                  <g clip-path="url(#clip0_83857_3985)">
+                  <g clipPath="url(#clip0_83857_3985)">
                     <path
                       d="M9.5 11.0264L9.5 23.7764"
                       stroke="#3F3F55"
@@ -201,7 +302,7 @@ function ClientDetails() {
                   viewBox="0 0 25 25"
                   fill="none"
                 >
-                  <g clip-path="url(#clip0_83857_3985)">
+                  <g clipPath="url(#clip0_83857_3985)">
                     <path
                       d="M9.5 11.0264L9.5 23.7764"
                       stroke="#3F3F55"
@@ -255,107 +356,138 @@ function ClientDetails() {
               </div>
             </div>
             <div className="client-charges-header-line"></div>
-            <div className="client-charges-details-line">
-              <div className="line-id font1">
-                <p>248563147</p>
-              </div>
-              <div className="line-date font1">
-                <p>26/01/2021</p>
-              </div>
-              <div className="line-value font1">
-                <p>R$ 500,00</p>
-              </div>
-              <div className="line-status-container">
-                <div className="line-status overcome-container">
-                  <p className="font3 overcome-text">Vencida</p>
-                </div>
-              </div>
-              <div className="line-description font1">
-                <p>lorem ipsum lorem ipsum lorem ipsuipsum lorem ips,,,</p>
-              </div>
-              <div className="line-edit">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="17"
-                  height="17"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                >
-                  <g clip-path="url(#clip0_83857_4016)">
-                    <path
-                      d="M1.25 15.325L5.5 14.325L14.7929 5.03216C15.1834 4.64163 15.1834 4.00847 14.7929 3.61794L12.9571 1.78216C12.5666 1.39163 11.9334 1.39163 11.5429 1.78216L2.25 11.075L1.25 15.325Z"
-                      stroke="#747488"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M15.75 15.3252H10.25"
-                      stroke="#747488"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_83857_4016">
-                      <rect
-                        width="16"
-                        height="16"
-                        fill="white"
-                        transform="translate(0.5 0.0751953)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <p>Editar</p>
-              </div>
-              <div className="line-exclude">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="17"
-                  viewBox="0 0 18 17"
-                  fill="none"
-                >
-                  <g clip-path="url(#clip0_83857_4022)">
-                    <path
-                      d="M3.25 3.8252L4.09115 13.4985C4.18102 14.532 5.04622 15.3252 6.08363 15.3252H10.9164C11.9538 15.3252 12.819 14.532 12.9088 13.4985L13.75 3.8252"
-                      stroke="#AE1100"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M6.25 3.5752V2.8252C6.25 1.72063 7.1454 0.825195 8.25 0.825195H8.75C9.8546 0.825195 10.75 1.72063 10.75 2.8252V3.5752"
-                      stroke="#AE1100"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M1.5 3.8252H15.5"
-                      stroke="#AE1100"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_83857_4022">
-                      <rect
+            {charges.map((charge) => {
+              return (
+                <>
+                  <div
+                    className="client-charges-details-line"
+                    key={charge.cobranca_id}
+                  >
+                    <div className="line-id font1">
+                      <p>{charge.cobranca_id.toString().substring(0, 8)}</p>
+                    </div>
+                    <div className="line-date font1">
+                      <p>
+                        {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                      </p>
+                    </div>
+                    <div className="line-value font1">
+                      <p>{Real.format(charge.valor)}</p>
+                    </div>
+                    <div className="line-status-container">
+                      <div
+                        className={`line-status ${
+                          charge.status === "Vencida"
+                            ? "overcome-container"
+                            : charge.status === "Prevista"
+                            ? "pending-container"
+                            : charge.status === "Paga" && "paid-container"
+                        }`}
+                      >
+                        <p
+                          className={`font3 ${
+                            charge.status === "Vencida"
+                              ? "overcome-text"
+                              : charge.status === "Prevista"
+                              ? "pending-text"
+                              : charge.status === "Paga" && "paid-text"
+                          }`}
+                        >
+                          {charge.status}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="line-description font1">
+                      <p>{charge.descricao ? charge.descricao : "-"}</p>
+                    </div>
+                    <div className="line-edit">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
                         width="17"
-                        height="16"
-                        fill="white"
-                        transform="translate(0.5 0.0751953)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <p>Excluir</p>
-              </div>
-            </div>
-              <div className="client-charges-details-bottomLine"></div>
+                        height="17"
+                        viewBox="0 0 17 17"
+                        fill="none"
+                      >
+                        <g clipPath="url(#clip0_83857_4016)">
+                          <path
+                            d="M1.25 15.325L5.5 14.325L14.7929 5.03216C15.1834 4.64163 15.1834 4.00847 14.7929 3.61794L12.9571 1.78216C12.5666 1.39163 11.9334 1.39163 11.5429 1.78216L2.25 11.075L1.25 15.325Z"
+                            stroke="#747488"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M15.75 15.3252H10.25"
+                            stroke="#747488"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_83857_4016">
+                            <rect
+                              width="16"
+                              height="16"
+                              fill="white"
+                              transform="translate(0.5 0.0751953)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                      <p>Editar</p>
+                    </div>
+                    <div className="line-exclude">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="17"
+                        viewBox="0 0 18 17"
+                        fill="none"
+                      >
+                        <g clipPath="url(#clip0_83857_4022)">
+                          <path
+                            d="M3.25 3.8252L4.09115 13.4985C4.18102 14.532 5.04622 15.3252 6.08363 15.3252H10.9164C11.9538 15.3252 12.819 14.532 12.9088 13.4985L13.75 3.8252"
+                            stroke="#AE1100"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M6.25 3.5752V2.8252C6.25 1.72063 7.1454 0.825195 8.25 0.825195H8.75C9.8546 0.825195 10.75 1.72063 10.75 2.8252V3.5752"
+                            stroke="#AE1100"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M1.5 3.8252H15.5"
+                            stroke="#AE1100"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_83857_4022">
+                            <rect
+                              width="17"
+                              height="16"
+                              fill="white"
+                              transform="translate(0.5 0.0751953)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                      <p>Excluir</p>
+                    </div>
+                  </div>
+                  <>
+                    <div className="client-charges-details-bottomLine"></div>
+                  </>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>
