@@ -4,12 +4,12 @@ import ClientsIcon from "../../assets/ClientsIcon.svg";
 import FilterIcon from "../../assets/FilterIcon.svg";
 import SearchIcon from "../../assets/SearchIcon.svg";
 import AddCharge from "../../assets/AddCharge.svg";
-import { getItem } from "../../utils/storage";
+import { getItem, setItem } from "../../utils/storage";
 import registerUserFecth from "../../axios/config";
 import { useClients } from "../../context/clientsContext";
 import useUser from "../../hooks/useUser";
 
-function ClientsTable({ handleOpenAdd }) {
+function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
   const { clientsData, updateClientsData } = useClients();
   const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
 
@@ -123,6 +123,11 @@ function ClientsTable({ handleOpenAdd }) {
                   className="addcharge-icon"
                   src={AddCharge}
                   alt="addchargeicon"
+                  onClick={() => {
+                                setItem("clientsName", client.nome);
+                                setItem("clientsId", client.cliente_id);
+                                handleOpenCreateCharges();
+                            }}
                 />
               </td>
             </tr>
