@@ -56,7 +56,7 @@ const LoginUser = () => {
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response.data.error;
+        const errorMessage = error.response.data;
         useToast(errorMessage, "error");
       }
     }
