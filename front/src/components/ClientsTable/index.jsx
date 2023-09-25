@@ -73,6 +73,8 @@ function ClientsTable({ handleOpenAdd }) {
     }
 
     return (
+
+
         <div className='clientstable-box'>
             <div className='clientstable-header'>
                 <div className='clientstable-iconandtitle'>

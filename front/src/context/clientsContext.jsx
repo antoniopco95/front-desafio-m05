@@ -4,6 +4,7 @@ const ClientsContext = createContext();
 
 export function ClientsProvider({ children }) {
     const [clientsData, setClientsData] = useState([]);
+    const [chargesDue, setChargesDue] = useState([]);
 
     const addClient = (newClient) => {
         setClientsData((prevData) => [...prevData, newClient]);
@@ -13,8 +14,14 @@ export function ClientsProvider({ children }) {
         setClientsData(newData);
     }, []);
 
+    const updateChargesData = useCallback((newData) => {
+        setChargesDue(newData);
+    }, []);
+
+
+
     return (
-        <ClientsContext.Provider value={{ clientsData, addClient, updateClientsData }}>
+        <ClientsContext.Provider value={{ clientsData, addClient, updateClientsData, updateChargesData, chargesDue, setChargesDue }}>
             {children}
         </ClientsContext.Provider>
     );

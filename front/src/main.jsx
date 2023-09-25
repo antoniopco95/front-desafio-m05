@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/userContext";
 import { ClientsProvider } from "./context/clientsContext";
+import ClientsComponent from "./components/ClientsComponent";
+import ChargesCard from "./components/ChargesCard";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -27,6 +29,7 @@ root.render(
               path="/dashboard"
               element={<ProtectedRoute element={<Dashboard />} />}
             />
+
           </Routes>
         </Router>
       </ClientsProvider>

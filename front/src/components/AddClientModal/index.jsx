@@ -162,13 +162,13 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 nome: inputName,
                 email: inputEmail,
                 cpf: inputCpf,
-                telefone: inputPhone
-                // endereco: address,
-                // complemento: addressComplement,
-                // cep,
-                // bairro: neighborhood,
-                // cidade: city,
-                // uf
+                telefone: inputPhone,
+                endereco: address,
+                complemento: addressComplement,
+                cep,
+                bairro: neighborhood,
+                cidade: city,
+                uf
             };
 
 
