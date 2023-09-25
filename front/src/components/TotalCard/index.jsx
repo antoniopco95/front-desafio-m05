@@ -8,7 +8,7 @@ function TotalCard({ totalCardIcon, totalCardType, totalCardValue, totalCardColo
             <img className='total-icon' src={totalCardIcon} alt="totalcardicon" />
             <div className='total-main'>
                 <span className='total-title'>{`Cobranças ${totalCardType}`}</span>
-                <span className='total-value'>{`R$ ${totalCardValue}`}</span>
+                <span className='total-value'>{`${totalCardValue}`}</span>
             </div>
             <div></div>
         </div>

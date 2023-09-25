@@ -1,0 +1,443 @@
+.client-detail-container {
+  height: 100vh;
+  width: 100vw -108px;
+  background-color: #f8f8f9;
+  overflow: none;
+}
+.user-name-detail{
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 25px 80px 24px calc(108px + 80px);
+}
+
+.user-name-detail img {
+  width: 32px;
+  height: 32px;
+}
+
+.user-name-detail h1 {
+  color: #3f3f55;
+  font-family: Montserrat;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.client-data {
+  display: flex;
+  flex-direction: column;
+  width: 1115px;
+  height: 268.526px;
+  margin: 24px 80px 24px calc(108px + 80px);
+  border-radius: 30px;
+  background: #fff;
+  padding: 24px 21px 24px 20px;
+}
+
+.sub-title {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  width: 1074px;
+  height: 35px;
+  padding: 0px 3px 0px 4px;
+}
+.sub-title h2 {
+  color: #3f3f55;
+  font-family: Montserrat, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+}
+
+.client-edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 251px;
+  height: 35px;
+  border-radius: 10px;
+  border: 1px solid #dedee9;
+  background: #f8f8f9;
+  color: #0e8750;
+  cursor: pointer;
+}
+
+.client-edit h3 {
+  font-family: Nunito, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.client-details-first {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 55.53px;
+}
+
+.client-details-first .email {
+  width: 152px;
+  margin-right: 67px;
+}
+
+.client-details-first .email p:first-child {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-bottom: 8px;
+}
+
+.client-details-first .email p:last-child {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.client-details-first .telefone {
+  margin-right: 32px;
+}
+
+.client-details-first .telefone p:first-child {
+  margin-bottom: 8px;
+}
+
+.client-details-first .cpf {
+  margin-right: 62.77px;
+}
+
+.client-details-first .cpf p:first-child {
+  margin-bottom: 8px;
+}
+
+.style1 {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.style2 {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.client-details-second {
+  display: flex;
+}
+
+.client-details-second .adress {
+  width: 184px;
+  margin-right: 84.79px;
+}
+.client-details-second .neighborhood {
+  margin-right: 139.02px;
+}
+.client-details-second .complement {
+  margin-right: 110.9px;
+}
+.client-details-second .cep {
+  margin-right: 84.78px;
+}
+.client-details-second .city {
+  margin-right: 95.46px;
+}
+
+.client-charges-detail {
+  width: 1115px;
+  height: 348.15px;
+  background-color: #f8f8f9;
+}
+
+.client-detail-title {
+  position: absolute;
+  top: 84px;
+  left: 260px;
+  color: #747488;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.client-charges-detail {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 30px;
+  width: 1115px;
+  height: 348.15px;
+  margin: 24px 80px 24px calc(108px + 80px);
+}
+
+.client-charges-title {
+  display: flex;
+  padding: 24px 15.5px 12px 24.5px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.client-charges-title h1 {
+  color: #3f3f55;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.client-charges-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 264px;
+  height: 46px;
+  padding: 6px 7px 7px 5px;
+  background-color: #da0175;
+  border-radius: 10px;
+  color: #f8f8f9;
+  cursor: pointer;
+}
+
+.client-charges-button p {
+  color: #f8f8f9;
+  font-family: Nunito;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.client-all-charges {
+  display: flex;
+  width: 1117px;
+  padding: 12px 23px;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.client-all-charges .client-charges-header {
+  display: flex;
+  width: 100%;
+}
+.client-all-charges .client-charges-header .idCob {
+  display: flex;
+  align-items: center;
+  width: 160px;
+  height: 50px;
+  gap: 8px;
+}
+
+.client-all-charges .client-charges-header .dueDate {
+  display: flex;
+  align-items: center;
+  width: 178px;
+  height: 50px;
+  gap: 8px;
+}
+
+.client-all-charges .client-charges-header .value {
+  width: 123px;
+  height: 50px;
+}
+
+.client-all-charges .client-charges-header .charge-status {
+  margin-left: 24px;
+  width: 125px;
+  height: 50px;
+}
+
+.client-all-charges .client-charges-header .description {
+  width: 121px;
+  height: 50px;
+}
+
+.client-all-charges .client-charges-header p {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 0.08px;
+}
+
+.client-charges-header-line {
+  width: 1070px;
+  height: 1px;
+  margin-top: 16px;
+  background: #eff0f6;
+}
+
+.client-charges-details-line {
+  display: flex;
+  gap: 24px;
+}
+
+.client-charges-details-line .line-id {
+  display: flex;
+  align-items: center;
+  width: 135px;
+  height: 40px;
+}
+
+.client-charges-details-line .line-date {
+  display: flex;
+  align-items: center;
+  width: 157px;
+  height: 40px;
+}
+
+.client-charges-details-line .line-value {
+  display: flex;
+  align-items: center;
+  width: 85px;
+  height: 40px;
+}
+
+.client-charges-details-line .line-status-container {
+  width: 136px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.client-charges-details-line .line-status {
+  display: flex;
+  padding: 0px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 67px;
+  height: 19px;
+  border-radius: 8px;
+}
+
+.client-charges-details-line .line-description {
+  width: 348px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.client-charges-details-line .line-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 31px;
+  margin-top: 6px;
+}
+
+.client-charges-details-line .line-edit:hover {
+  cursor: pointer;
+}
+
+.client-charges-details-line .line-edit p {
+  color: #747488;
+  font-family: Nunito;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.client-charges-details-line .line-exclude {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 31px;
+  margin-top: 6px;
+}
+
+.client-charges-details-line .line-exclude:hover {
+  cursor: pointer;
+}
+
+.client-charges-details-line .line-exclude p {
+  color: #ae1100;
+  font-family: Nunito;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.font1 {
+  color: va#6E6E85;
+  font-family: Nunito;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: 0.07px;
+}
+
+.font2 {
+  font-family: Nunito;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.font3 {
+  font-family: Nunito;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.client-charges-details-bottomLine {
+  width: 1070px;
+  height: 1px;
+  margin-top: 8px;
+  background: #eff0f6;
+}
+
+.overcome-text {
+  color: #971d1d;
+}
+
+.pending-text {
+  color: #c5a605;
+}
+
+.paid-text {
+  color: #1fa7af;
+}
+
+.overcome-container {
+  width: 67px;
+  height: 19px;
+  border-radius: 8px;
+  background-color: #ffefef;
+}
+
+.pending-container {
+  width: 77px;
+  height: 19px;
+  border-radius: 8px;
+  background-color: #fcf6dc;
+}
+
+.paid-container {
+  width: 48px;
+  height: 19px;
+  border-radius: 8px;
+  background: #eef6f6;
+}

@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function UseUserProvider() {
-  const [name, setName] = useState("");
+  const [openClientDetail, setOpenClientDetail] = useState(false);
+  const [divIsVisible, setDivIsVisible] = useState(true);
   const [id, setId] = useState("");
 
-  return { name, setName, id, setId };
+  useEffect(() => {}, [divIsVisible, openClientDetail]);
+
+  return {
+    openClientDetail,
+    setOpenClientDetail,
+    divIsVisible,
+    setDivIsVisible,
+    id,
+    setId,
+  };
 }
 
 export default UseUserProvider;

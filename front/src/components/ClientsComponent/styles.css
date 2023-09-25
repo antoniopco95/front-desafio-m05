@@ -8,6 +8,9 @@
 .clientscomponent-title {
     position: absolute;
     top: 84px;
+    left: 188px;
     font-size: 16px;
+    font-family: Nunito;
     color: #0E8750;
+    cursor: pointer;
 }
