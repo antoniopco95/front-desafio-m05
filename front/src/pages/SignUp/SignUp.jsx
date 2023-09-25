@@ -63,9 +63,9 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [error, setError] = useState(false)
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [requestStatus, setRequestStatus] = useState(null);
-    const [requestError, setRequestError] = useState('');
 
     const handleNext = () => {
         if (activeStep === 0) {
@@ -111,24 +111,8 @@ const SignUp = () => {
 
 
         setActiveStep(0);
-
-        //(prevActiveStep) => prevActiveStep - 1
-
+        setError(false);
     }
-    const handleBack = () => {
-
-
-
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-        setName('');
-        setEmail('');
-        setPassword('');
-        setRepeatPassword('');
-        setFormSubmitted(false);
-    };
 
     const handleCreateUser = async () => {
         try {
@@ -148,10 +132,7 @@ const SignUp = () => {
         } catch (error) {
             const errorMessage = error.response.data;
             useToast(JSON.stringify(errorMessage), "error");
-            setRequestError(errorMessage);
-
-            console.error('Erro na requisição:', error);
-            setRequestStatus('error');
+            setError(true);
         }
     };
 
@@ -416,7 +397,7 @@ const SignUp = () => {
                                         margin: '10px'
                                     }}>Cadastro realizado com sucesso</Typography>
                                 </Paper>
-                            )}{requestStatus === 'error' && (
+                            )}{requestStatus === 'error' && error && (
                                 <Paper square elevation={0} sx={{
                                     background: '#F0F0F5',
                                     width: '600px',
@@ -438,7 +419,7 @@ const SignUp = () => {
                                         lineHeight: '130%',
                                         color: '#343447',
                                         margin: '10px'
-                                    }}>Erro no cadastro {JSON.stringify(requestError)}</Typography>
+                                    }}>Erro no cadastro</Typography>
                                 </Paper>
                             )}{requestStatus === 'error' && (
                                 <Button
