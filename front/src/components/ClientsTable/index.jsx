@@ -11,7 +11,7 @@ import useUser from "../../hooks/useUser";
 
 function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
   const { clientsData, updateClientsData } = useClients();
-  const { setOpenClientDetail, setDivIsVisible } = useUser();
+  const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,10 +99,11 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
           {clientsData.map((client) => (
             <tr key={client.cliente_id} className="table-tr">
               <td
-                className="table-td"
+                className="table-td client-name"
                 onClick={() => {
                   setOpenClientDetail(true);
                   setDivIsVisible(false);
+                  setId(client);
                 }}
               >
                 {client.nome}
@@ -110,7 +111,13 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
               <td className="table-td">{formatCPF(client.cpf)}</td>
               <td className="table-td">{client.email}</td>
               <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
-              <td className={`table-td status red`}>{client.status}</td>
+              <td
+                className={`table-td status ${
+                  client.status === "Inadimplente" ? "redStyle" : "blueStyle"
+                }`}
+              >
+                {client.status}
+              </td>
               <td className="table-td">
                 <img
                   className="addcharge-icon"
