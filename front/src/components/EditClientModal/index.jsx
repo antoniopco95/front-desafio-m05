@@ -25,21 +25,23 @@ const style = {
 
 export default function EditClientModal({
   userData,
-  handleCloseAdd,
   function1,
+  update,
 }) {
   const { openEditClientModal, setOpenEditClientModal } = useUser();
 
-  const [inputName2, setInputName2] = useState("");
-  const [inputEmail2, setInputEmail2] = useState("");
-  const [inputCpf2, setInputCpf2] = useState("");
-  const [inputPhone2, setInputPhone2] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [addressComplement2, setaddressComplement2] = useState("");
-  const [cep2, setCep2] = useState("");
-  const [neighborhood2, setNeighborhood2] = useState("");
-  const [city2, setCity2] = useState("");
-  const [uf2, setUf2] = useState("");
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    cpf: "",
+    telefone: "",
+    endereco: "",
+    complemento: "",
+    cep: "",
+    bairro: "",
+    cidade: "",
+    uf: "",
+  });
 
   const [showErrorName2, setShowErrorName2] = useState(false);
   const [showErrorEmail2, setShowErrorEmail2] = useState(false);
@@ -55,16 +57,7 @@ export default function EditClientModal({
 
   useEffect(() => {
     if (openEditClientModal) {
-      setInputName2(userData.nome);
-      setInputEmail2(userData.email);
-      setInputCpf2(userData.cpf);
-      setInputPhone2(userData.telefone);
-      setAddress2(userData.endereco);
-      setaddressComplement2(userData.complemento);
-      setCep2(userData.cep);
-      setNeighborhood2(userData.bairro);
-      setCity2(userData.cidade);
-      setUf2(userData.uf);
+      setForm(userData);
     }
   }, [openEditClientModal, userData]);
 
@@ -79,14 +72,14 @@ export default function EditClientModal({
   const handleSubmit2 = async (e) => {
     e.preventDefault();
 
-    if (inputName2 === "") {
+    if (form.nome === "") {
       setErrorMessageName2("Este campo deve ser preenchido");
       setShowErrorName2(true);
       return;
     }
 
     const emailExists = clientsData.some(
-      (client) => client.email === inputEmail2
+      (client) => client.email === form.email
     );
 
     if (emailExists) {
@@ -95,21 +88,21 @@ export default function EditClientModal({
       return;
     }
 
-    if (inputEmail2 === "") {
+    if (form.email === "") {
       setErrorMessageEmail2("Este campo deve ser preenchido");
       setShowErrorEmail2(true);
 
       return;
     }
 
-    if (inputCpf2 === "") {
+    if (form.cpf === "") {
       setErrorMessageCpf2("Este campo deve ser preenchido");
       setShowErrorCpf2(true);
 
       return;
     }
 
-    const unformattedInputCpf = unformatCPF(inputCpf2);
+    const unformattedInputCpf = unformatCPF(form.cpf);
 
     const cpfExists = clientsData.some(
       (client) => client.cpf === unformattedInputCpf
@@ -121,7 +114,7 @@ export default function EditClientModal({
       return;
     }
 
-    if (inputPhone2 === "") {
+    if (form.telefone === "") {
       setErrorMessagePhone2("Este campo deve ser preenchido");
       setShowErrorPhone2(true);
 
@@ -138,16 +131,7 @@ export default function EditClientModal({
 
     try {
       const newClient = {
-        nome: inputName2,
-        email: inputEmail2,
-        cpf: inputCpf2,
-        telefone: inputPhone2,
-        endereco: address2,
-        complemento: addressComplement2,
-        cep: cep2,
-        bairro: neighborhood2,
-        cidade: city2,
-        uf: uf2,
+        ...form,
       };
 
       const res = await registerUserFecth.put(
@@ -158,25 +142,26 @@ export default function EditClientModal({
 
       if (res.status === 200 || res.status === 201) {
         useToast("Cliente atualizado com sucesso");
-
-        handleCloseAdd();
-
-        setInputName2("");
-        setInputEmail2("");
-        setInputCpf2("");
-        setInputPhone2("");
-        setAddress2("");
-        setaddressComplement2("");
-        setCep2("");
-        setNeighborhood2("");
-        setCity2("");
-        setUf2("");
+        handleCloseEditModal();
+        update({ ...form });
+        setForm({
+          nome: "",
+          email: "",
+          cpf: "",
+          telefone: "",
+          endereco: "",
+          complemento: "",
+          cep: "",
+          bairro: "",
+          cidade: "",
+          uf: "",
+        });
 
         function1();
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response;
+        const errorMessage = error.response.data.error;
         useToast(JSON.stringify(errorMessage), "error");
       } else {
         console.error("Erro desconhecido:", error.message);
@@ -187,18 +172,20 @@ export default function EditClientModal({
   const cleanInput = (e) => {
     e.preventDefault();
 
-    setInputName2("");
-    setInputEmail2("");
-    setInputCpf2("");
-    setInputPhone2("");
-    setAddress2("");
-    setaddressComplement2("");
-    setCep2("");
-    setNeighborhood2("");
-    setCity2("");
-    setUf2("");
+    setForm({
+      nome: "",
+      email: "",
+      cpf: "",
+      telefone: "",
+      endereco: "",
+      complemento: "",
+      cep: "",
+      bairro: "",
+      cidade: "",
+      uf: "",
+    });
 
-    handleCloseAdd();
+    handleCloseEditModal();
   };
 
   function handleCloseEditModal() {
@@ -221,8 +208,8 @@ export default function EditClientModal({
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Nome*</label>
               <input
-                onChange={(e) => setInputName2(e.target.value)}
-                value={inputName2}
+                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                value={form.nome}
                 className={`addclientmodal-input ${
                   showErrorName2 ? "border-red" : ""
                 }`}
@@ -246,8 +233,8 @@ export default function EditClientModal({
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">E-mail*</label>
               <input
-                onChange={(e) => setInputEmail2(e.target.value)}
-                value={inputEmail2}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                value={form.email}
                 className={`addclientmodal-input ${
                   showErrorEmail2 ? "border-red" : ""
                 }`}
@@ -273,11 +260,9 @@ export default function EditClientModal({
                 <label className="addclientmodal-span">CPF*</label>
                 <IMaskInput
                   onChange={(e) => {
-                    const newCpf = e.target.value;
-                    console.log(newCpf);
-                    setInputCpf2(unformatCPF(newCpf));
+                    setForm({ ...form, cpf: unformatCPF(e.target.value) });
                   }}
-                  value={inputCpf2}
+                  value={form.cpf}
                   className={`addclientmodal-input middle-input-both ${
                     showErrorCpf2 ? "border-red" : ""
                   }`}
@@ -303,9 +288,12 @@ export default function EditClientModal({
                 <label className="addclientmodal-span">Telefone*</label>
                 <IMaskInput
                   onChange={(e) =>
-                    setInputPhone2(unformatPhone(e.target.value))
+                    setForm({
+                      ...form,
+                      telefone: unformatPhone(e.target.value),
+                    })
                   }
-                  value={inputPhone2}
+                  value={form.telefone}
                   className={`addclientmodal-input middle-input-both ${
                     showErrorPhone2 ? "border-red" : ""
                   }`}
@@ -332,8 +320,8 @@ export default function EditClientModal({
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Endereço</label>
               <input
-                onChange={(e) => setAddress2(e.target.value)}
-                value={address2}
+                onChange={(e) => setForm({ ...form, endereco: e.target.value })}
+                value={form.endereco}
                 className="addclientmodal-input"
                 placeholder="Digite o endereço"
                 type="text"
@@ -343,8 +331,10 @@ export default function EditClientModal({
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Complemento</label>
               <input
-                onChange={(e) => setaddressComplement2(e.target.value)}
-                value={addressComplement2}
+                onChange={(e) =>
+                  setForm({ ...form, complemento: e.target.value })
+                }
+                value={form.complemento}
                 className="addclientmodal-input"
                 placeholder="Digite o complemento"
                 type="text"
@@ -356,8 +346,8 @@ export default function EditClientModal({
               <div className="addclientmodal-textfield middle">
                 <label className="addclientmodal-span">CEP:</label>
                 <IMaskInput
-                  onChange={(e) => setCep2(e.target.value)}
-                  value={cep2}
+                  onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                  value={form.cep}
                   className="addclientmodal-input middle-input-both"
                   placeholder="Digite o CEP"
                   type="text"
@@ -368,8 +358,8 @@ export default function EditClientModal({
               <div className="addclientmodal-textfield">
                 <label className="addclientmodal-span">Bairro</label>
                 <input
-                  onChange={(e) => setNeighborhood2(e.target.value)}
-                  value={neighborhood2}
+                  onChange={(e) => setForm({ ...form, bairro: e.target.value })}
+                  value={form.bairro}
                   className="addclientmodal-input middle-input-both"
                   placeholder="Digite o bairro"
                   type="text"
@@ -381,8 +371,8 @@ export default function EditClientModal({
               <div className="addclientmodal-textfield middle">
                 <label className="addclientmodal-span">Cidade</label>
                 <input
-                  onChange={(e) => setCity2(e.target.value)}
-                  value={city2}
+                  onChange={(e) => setForm({ ...form, cidade: e.target.value })}
+                  value={form.cidade}
                   className="addclientmodal-input middle-city"
                   placeholder="Digite a cidade"
                   type="text"
@@ -392,8 +382,8 @@ export default function EditClientModal({
               <div className="addclientmodal-textfield">
                 <label className="addclientmodal-span">UF</label>
                 <input
-                  onChange={(e) => setUf2(e.target.value)}
-                  value={uf2}
+                  onChange={(e) => setForm({ ...form, uf: e.target.value })}
+                  value={form.uf}
                   className="addclientmodal-input middle-uf"
                   placeholder="Digite a UF"
                   type="text"
@@ -407,16 +397,14 @@ export default function EditClientModal({
                 className="addclientmodal-cancelbtn"
                 onClick={() => {
                   cleanInput();
-                  handleCloseEditModal();
                 }}
                 id="aplicar"
               >
                 Cancelar
               </button>
               <button
-                onClick={() => {
-                  handleSubmit2();
-                  handleCloseEditModal();
+                onClick={(e) => {
+                  handleSubmit2(e);
                 }}
                 className="addclientmodal-button"
                 type="button"

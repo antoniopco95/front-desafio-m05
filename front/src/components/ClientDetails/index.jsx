@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import EditClientModal from "../EditClientModal";
 
 function ClientDetails() {
+  const [update, setUpdate] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -70,7 +71,7 @@ function ClientDetails() {
     }
 
     getUserById();
-  }, [userById.cliente_id]);
+  }, [update]);
 
   useEffect(() => {
     async function getChargesByClient() {
@@ -170,6 +171,7 @@ function ClientDetails() {
               {openEditClientModal && (
                 <EditClientModal
                   userData={userById}
+                  update={setUserById}
                   function1={() => getChargesByClient()}
                 />
               )}
