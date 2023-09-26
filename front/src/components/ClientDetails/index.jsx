@@ -4,13 +4,20 @@ import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem } from "../../utils/storage";
 import { format } from "date-fns";
+import EditClientModal from "../EditClientModal";
 
 function ClientDetails() {
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-  const { id } = useUser();
+  const {
+    id,
+    openEditClientModal,
+    setOpenEditClientModal,
+    charges,
+    setCharges,
+  } = useUser();
   const [userById, setUserById] = useState({
     nome: "-",
     email: "-",
@@ -21,7 +28,6 @@ function ClientDetails() {
     cidade: "-",
     uf: "-",
   });
-  const [charges, setCharges] = useState([]);
 
   function formatCPF(cpf) {
     const cleanedCPF = cpf.replace(/\D/g, "");
@@ -158,7 +164,15 @@ function ClientDetails() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <h3>Editar Cliente</h3>
+              <h3 onClick={() => setOpenEditClientModal(true)}>
+                Editar Cliente
+              </h3>
+              {openEditClientModal && (
+                <EditClientModal
+                  userData={userById}
+                  function1={() => getChargesByClient()}
+                />
+              )}
             </div>
           </div>
           <div className="client-details-all">
