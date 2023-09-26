@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem } from "../../utils/storage";
 import { format } from "date-fns";
+
 import EditClientModal from "../EditClientModal";
 
 function ClientDetails() {
@@ -29,7 +30,6 @@ function ClientDetails() {
     cidade: "-",
     uf: "-",
   });
-
   function formatCPF(cpf) {
     const cleanedCPF = cpf.replace(/\D/g, "");
 
@@ -92,7 +92,7 @@ function ClientDetails() {
       }
     }
     getChargesByClient();
-  }, [userById.cliente_id]);
+  }, [charges, userById.cliente_id]);
 
   return (
     <>
@@ -239,7 +239,11 @@ function ClientDetails() {
         <div className="client-charges-detail">
           <div className="client-charges-title">
             <h1>Cobranças do Cliente</h1>
-            <div className="client-charges-button">
+            <div className="client-charges-button" onClick={() => {
+              setItem("clientsName", userById.nome);
+              setItem("clientsId", userById.cliente_id);
+              handleOpenCreateCharges();
+            }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
@@ -392,22 +396,20 @@ function ClientDetails() {
                     </div>
                     <div className="line-status-container">
                       <div
-                        className={`line-status ${
-                          charge.status === "Vencida"
-                            ? "overcome-container"
-                            : charge.status === "Prevista"
+                        className={`line-status ${charge.status === "Vencida"
+                          ? "overcome-container"
+                          : charge.status === "Prevista"
                             ? "pending-container"
                             : charge.status === "Paga" && "paid-container"
-                        }`}
+                          }`}
                       >
                         <p
-                          className={`font3 ${
-                            charge.status === "Vencida"
-                              ? "overcome-text"
-                              : charge.status === "Prevista"
+                          className={`font3 ${charge.status === "Vencida"
+                            ? "overcome-text"
+                            : charge.status === "Prevista"
                               ? "pending-text"
                               : charge.status === "Paga" && "paid-text"
-                          }`}
+                            }`}
                         >
                           {charge.status}
                         </p>
