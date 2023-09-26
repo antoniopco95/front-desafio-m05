@@ -1,22 +1,25 @@
+.homecomponent-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: Nunito;
+    min-width: 1000px;
+    max-width: 1138px;
+    margin: 24px 108px 0px calc(108px + 80px);
+}
+
 .home-title {
     position: absolute;
     top: 54px;
-    margin-left: 190px;
     font-family: Nunito;
     font-size: 26px;
     font-weight: bold;
     color: #343447;
 }
 
-.homecard-box,
 .totalcard-box,
+.homecard-box,
 .clientscard-box {
     display: flex;
     justify-content: space-between;
-    font-family: Nunito;
-    padding: 24px 64px 0px calc(108px + 64px);
-}
-
-.clientscard-box {
-    padding-top: 32px;
 }

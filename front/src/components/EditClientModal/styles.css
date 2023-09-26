@@ -1,0 +1,141 @@
+.add-box {
+    padding: 22.4px;
+}
+
+.addclientmodal-box {
+    display: flex;
+    flex-direction: column;
+    padding: 5.6px 16.8px;
+}
+
+.addclientmodal-fulltitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+
+.clients-icon {
+    width: 22.4px;
+    height: 22.4px;
+    margin-right: 11.2px;
+}
+
+.addclientmodal-title {
+    margin: 5.6px 0px 8.4px 0px;
+    color: #343447;
+    font-family: Nunito;
+    font-size: 16.8px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+}
+
+.addclientmodal-textfield {
+    display: flex;
+    flex-direction: column;
+    margin-top: 14px;
+}
+
+.addclientmodal-span {
+    color: #344054;
+    font-family: Nunito;
+    font-size: 9.8px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 9.8px;
+}
+
+.addclientmodal-input {
+    padding: 7px 9.8px;
+    align-items: center;
+    width: 340.9px;
+    gap: 5.6px;
+    align-self: stretch;
+
+    margin-top: 4.2px;
+    border-radius: 5.6px;
+    border: 1px solid #D0D5DD;
+    background: #FFF;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.addclientmodal-input:focus {
+    outline: none;
+}
+
+.addclientmodal-input::placeholder {
+    font-size: 11.2px;
+    color: #667085;
+}
+
+.addclientmodal-telandcpf {
+    display: flex;
+}
+
+.middle {
+    margin-right: 16.8px;
+}
+
+.middle-input-both {
+    width: 158px;
+}
+
+.middle-city {
+    width: 220px;
+}
+
+.middle-uf {
+    width: 95px;
+}
+
+.addclientmodal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 22.4px;
+}
+
+.addclientmodal-cancelbtn {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 112px;
+    margin-right: 16.8px;
+    padding: 2.8px 28px;
+    gap: 2.8px;
+
+    color: #0E8750;
+    font-family: Nunito;
+    font-size: 12.6px;
+    font-weight: 400;
+
+    border-radius: 7px;
+    border: 1px solid#DEDEE9;
+    background-color: #F8F8F9;
+    cursor: pointer;
+}
+
+.addclientmodal-button {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 112px;
+    padding: 2.8px 28px;
+    gap: 2.8px;
+
+    color: #F8F8F9;
+    font-family: Nunito;
+    font-size: 12.6px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    border-radius: 7px;
+    border: none;
+    background: #DA0175;
+    cursor: pointer;
+}
+
+.border-red {
+    border: 1px solid red;
+}

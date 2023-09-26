@@ -1,0 +1,128 @@
+.chargestable-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.chargestable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chargestable-iconandtitle {
+    display: flex;
+    align-items: center;
+    margin-right: 311px;
+}
+
+.chargestable-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+}
+
+.chargestable-title {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 130%;
+    color: #3F3F55;
+}
+
+.chargestable-filterandinput {
+    display: flex;
+    align-items: center;
+}
+
+.chargestable-filterbutton {
+    background: white;
+    padding: 5px;
+    margin-right: 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.chargestable-search {
+    display: flex;
+    align-items: center;
+    padding: 7px 8px;
+    border-radius: 10px;
+    background: #FFF;
+    border: none;
+    box-shadow: 0px 2px 4px 2px rgba(218, 1, 117, 0.05);
+}
+
+.chargestable-searchinput {
+    font-family: Nunito;
+    font-size: 18px;
+    height: 25px;
+    width: 278px;
+    border: none;
+}
+
+.chargestable-searchinput:focus {
+    outline: none;
+}
+
+.chargestable-table {
+    margin: 24px 0px;
+    border-radius: 30px;
+    background: #FFF;
+    border-collapse: collapse;
+}
+
+.table-titles {
+    font-family: Nunito;
+    font-size: 16px;
+    color: #3F3F55;
+    font-weight: bold;
+    line-height: 50px;
+    letter-spacing: 0.08px;
+    text-align: left;
+}
+
+.table-body {
+    font-family: Nunito;
+    font-size: 14px;
+    font-weight: 400;
+    color: #747488;
+}
+
+.table-th,
+.table-td {
+    padding: 12px 23px;
+}
+
+.table-tr {
+    border-top: 1px solid #EFF0F6;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    padding: 0px 4px;
+    border-radius: 8px;
+    margin-top: 18px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.buttons {
+    cursor: pointer;
+}
+
+.red {
+    color: #971D1D;
+    background: #FFEFEF;
+}
+
+.yellow {
+    color: #C5A605;
+    background: #FCF6DC;
+}
+
+.blue {
+    color: #1FA7AF;
+    background: #EEF6F6;
+}

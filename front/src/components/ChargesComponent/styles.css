@@ -1,16 +1,13 @@
-.clientscomponent-box {
+.chargescomponent-box {
     display: flex;
     justify-content: space-between;
     font-family: Nunito;
     margin: 24px 80px 24px calc(108px + 80px);
 }
 
-.clientscomponent-title {
+.chargescomponent-title {
     position: absolute;
     top: 84px;
-    left: 188px;
     font-size: 16px;
-    font-family: Nunito;
     color: #0E8750;
-    cursor: pointer;
 }
