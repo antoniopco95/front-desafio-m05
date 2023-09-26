@@ -111,3 +111,18 @@
 .buttons {
     cursor: pointer;
 }
+
+.red {
+    color: #971D1D;
+    background: #FFEFEF;
+}
+
+.yellow {
+    color: #C5A605;
+    background: #FCF6DC;
+}
+
+.blue {
+    color: #1FA7AF;
+    background: #EEF6F6;
+}
