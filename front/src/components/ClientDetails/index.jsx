@@ -4,15 +4,22 @@ import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem } from "../../utils/storage";
 import { format } from "date-fns";
-import { setItem } from "../../utils/storage";
 
-function ClientDetails({ handleOpenCreateCharges }) {
+import EditClientModal from "../EditClientModal";
 
+function ClientDetails() {
+  const [update, setUpdate] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-  const { id } = useUser();
+  const {
+    id,
+    openEditClientModal,
+    setOpenEditClientModal,
+    charges,
+    setCharges,
+  } = useUser();
   const [userById, setUserById] = useState({
     nome: "-",
     email: "-",
@@ -23,9 +30,6 @@ function ClientDetails({ handleOpenCreateCharges }) {
     cidade: "-",
     uf: "-",
   });
-
-  const [charges, setCharges] = useState([]);
-
   function formatCPF(cpf) {
     const cleanedCPF = cpf.replace(/\D/g, "");
 
@@ -67,7 +71,7 @@ function ClientDetails({ handleOpenCreateCharges }) {
     }
 
     getUserById();
-  }, [userById.cliente_id]);
+  }, [update]);
 
   useEffect(() => {
     async function getChargesByClient() {
@@ -161,7 +165,16 @@ function ClientDetails({ handleOpenCreateCharges }) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <h3>Editar Cliente</h3>
+              <h3 onClick={() => setOpenEditClientModal(true)}>
+                Editar Cliente
+              </h3>
+              {openEditClientModal && (
+                <EditClientModal
+                  userData={userById}
+                  update={setUserById}
+                  function1={() => getChargesByClient()}
+                />
+              )}
             </div>
           </div>
           <div className="client-details-all">

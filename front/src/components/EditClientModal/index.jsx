@@ -8,6 +8,7 @@ import { getItem } from "../../utils/storage";
 import registerUserFecth from "../../axios/config";
 import useToast from "../../hooks/useToast";
 import { useClients } from "../../context/clientsContext";
+import useUser from "../../hooks/useUser";
 
 const style = {
   display: "flex",
@@ -22,56 +23,43 @@ const style = {
   p: 4,
 };
 
-export default function AddClientModal({ openAdd, handleCloseAdd }) {
-  const { addClient } = useClients();
+export default function EditClientModal({
+  userData,
+  function1,
+  update,
+}) {
+  const { openEditClientModal, setOpenEditClientModal } = useUser();
 
-  const [inputName, setInputName] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputCpf, setInputCpf] = useState("");
-  const [inputPhone, setInputPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [addressComplement, setaddressComplement] = useState("");
-  const [cep, setCep] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [city, setCity] = useState("");
-  const [uf, setUf] = useState("");
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    cpf: "",
+    telefone: "",
+    endereco: "",
+    complemento: "",
+    cep: "",
+    bairro: "",
+    cidade: "",
+    uf: "",
+  });
 
-  const [showErrorName, setShowErrorName] = useState(false);
-  const [showErrorEmail, setShowErrorEmail] = useState(false);
-  const [showErrorCpf, setShowErrorCpf] = useState(false);
-  const [showErrorPhone, setShowErrorPhone] = useState(false);
+  const [showErrorName2, setShowErrorName2] = useState(false);
+  const [showErrorEmail2, setShowErrorEmail2] = useState(false);
+  const [showErrorCpf2, setShowErrorCpf2] = useState(false);
+  const [showErrorPhone2, setShowErrorPhone2] = useState(false);
 
-  const [errorMessageName, setErrorMessageName] = useState("");
-  const [errorMessageEmail, setErrorMessageEmail] = useState("");
-  const [errorMessageCpf, setErrorMessageCpf] = useState("");
-  const [errorMessagePhone, setErrorMessagePhone] = useState("");
+  const [errorMessageName2, setErrorMessageName2] = useState("");
+  const [errorMessageEmail2, setErrorMessageEmail2] = useState("");
+  const [errorMessageCpf2, setErrorMessageCpf2] = useState("");
+  const [errorMessagePhone2, setErrorMessagePhone2] = useState("");
 
   const [clientsData, setClientsData] = useState([]);
 
-  const fetchDbData = async () => {
-    const token = getItem("token");
-
-    if (token) {
-      try {
-        const response = await registerUserFecth.get("/clientes", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = response.data;
-        setClientsData(data);
-      } catch (error) {
-        const errorMessage = error.response;
-        useToast(JSON.stringify(errorMessage), "error");
-        console.error(error);
-      }
-    }
-  };
-
   useEffect(() => {
-    fetchDbData();
-  }, []);
+    if (openEditClientModal) {
+      setForm(userData);
+    }
+  }, [openEditClientModal, userData]);
 
   function unformatCPF(cpf) {
     return cpf.replace(/\D/g, "");
@@ -81,54 +69,54 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
     return inputPhone.replace(/\D/g, "");
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit2 = async (e) => {
     e.preventDefault();
 
-    if (inputName === "") {
-      setErrorMessageName("Este campo deve ser preenchido");
-      setShowErrorName(true);
+    if (form.nome === "") {
+      setErrorMessageName2("Este campo deve ser preenchido");
+      setShowErrorName2(true);
       return;
     }
 
     const emailExists = clientsData.some(
-      (client) => client.email === inputEmail
+      (client) => client.email === form.email
     );
 
     if (emailExists) {
-      setErrorMessageEmail("E-mail já cadastrado");
-      setShowErrorEmail(true);
+      setErrorMessageEmail2("E-mail já cadastrado");
+      setShowErrorEmail2(true);
       return;
     }
 
-    if (inputEmail === "") {
-      setErrorMessageEmail("Este campo deve ser preenchido");
-      setShowErrorEmail(true);
-
-      return;
-    }
-
-    if (inputCpf === "") {
-      setErrorMessageCpf("Este campo deve ser preenchido");
-      setShowErrorCpf(true);
+    if (form.email === "") {
+      setErrorMessageEmail2("Este campo deve ser preenchido");
+      setShowErrorEmail2(true);
 
       return;
     }
 
-    const unformattedInputCpf = unformatCPF(inputCpf);
+    if (form.cpf === "") {
+      setErrorMessageCpf2("Este campo deve ser preenchido");
+      setShowErrorCpf2(true);
+
+      return;
+    }
+
+    const unformattedInputCpf = unformatCPF(form.cpf);
 
     const cpfExists = clientsData.some(
       (client) => client.cpf === unformattedInputCpf
     );
 
     if (cpfExists) {
-      setErrorMessageCpf("Cpf já cadastrado");
-      setShowErrorCpf(true);
+      setErrorMessageCpf2("Cpf já cadastrado");
+      setShowErrorCpf2(true);
       return;
     }
 
-    if (inputPhone === "") {
-      setErrorMessagePhone("Este campo deve ser preenchido");
-      setShowErrorPhone(true);
+    if (form.telefone === "") {
+      setErrorMessagePhone2("Este campo deve ser preenchido");
+      setShowErrorPhone2(true);
 
       return;
     }
@@ -143,39 +131,37 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
 
     try {
       const newClient = {
-        nome: inputName,
-        email: inputEmail,
-        cpf: inputCpf,
-        telefone: inputPhone,
-        // endereco: address,
-        // complemento: addressComplement,
-        // cep,
-        // bairro: neighborhood,
-        // cidade: city,
-        // uf
+        ...form,
       };
 
-      const res = await registerUserFecth.post(
-        "/create-cliente",
+      const res = await registerUserFecth.put(
+        `/cliente/${userData.cliente_id}`,
         newClient,
         config
       );
 
       if (res.status === 200 || res.status === 201) {
-        useToast("Cliente cadastrado com sucesso");
+        useToast("Cliente atualizado com sucesso");
+        handleCloseEditModal();
+        update({ ...form });
+        setForm({
+          nome: "",
+          email: "",
+          cpf: "",
+          telefone: "",
+          endereco: "",
+          complemento: "",
+          cep: "",
+          bairro: "",
+          cidade: "",
+          uf: "",
+        });
 
-        handleCloseAdd();
-
-        setInputName("");
-        setInputEmail("");
-        setInputCpf("");
-        setInputPhone("");
-
-        addClient(newClient);
+        function1();
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response;
+        const errorMessage = error.response.data.error;
         useToast(JSON.stringify(errorMessage), "error");
       } else {
         console.error("Erro desconhecido:", error.message);
@@ -186,17 +172,29 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
   const cleanInput = (e) => {
     e.preventDefault();
 
-    setInputName("");
-    setInputEmail("");
-    setInputCpf("");
-    setInputPhone("");
+    setForm({
+      nome: "",
+      email: "",
+      cpf: "",
+      telefone: "",
+      endereco: "",
+      complemento: "",
+      cep: "",
+      bairro: "",
+      cidade: "",
+      uf: "",
+    });
 
-    handleCloseAdd();
+    handleCloseEditModal();
   };
+
+  function handleCloseEditModal() {
+    setOpenEditClientModal(false);
+  }
 
   return (
     <div>
-      <Modal open={openAdd} onClose={handleCloseAdd}>
+      <Modal open={openEditClientModal} onClose={handleCloseEditModal}>
         <Box className="add-box" sx={style}>
           <form className="addclientmodal-box">
             <div className="addclientmodal-fulltitle">
@@ -205,23 +203,21 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 className="clients-icon"
                 alt="clientsicon"
               />
-              <label className="addclientmodal-title">
-                Cadastro do Cliente
-              </label>
+              <label className="addclientmodal-title">Editar Cliente</label>
             </div>
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Nome*</label>
               <input
-                onChange={(e) => setInputName(e.target.value)}
-                value={inputName}
+                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                value={form.nome}
                 className={`addclientmodal-input ${
-                  showErrorName ? "border-red" : ""
+                  showErrorName2 ? "border-red" : ""
                 }`}
                 placeholder="Digite seu nome"
                 type="text"
                 id="nome"
               />
-              {showErrorName && (
+              {showErrorName2 && (
                 <p
                   style={{
                     color: "red",
@@ -230,23 +226,23 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                     marginTop: "4.2px",
                   }}
                 >
-                  {errorMessageName}
+                  {errorMessageName2}
                 </p>
               )}
             </div>
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">E-mail*</label>
               <input
-                onChange={(e) => setInputEmail(e.target.value)}
-                value={inputEmail}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                value={form.email}
                 className={`addclientmodal-input ${
-                  showErrorEmail ? "border-red" : ""
+                  showErrorEmail2 ? "border-red" : ""
                 }`}
                 placeholder="Digite seu e-mail"
                 type="email"
                 id="email"
               />
-              {showErrorEmail && (
+              {showErrorEmail2 && (
                 <p
                   style={{
                     color: "red",
@@ -255,7 +251,7 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                     marginTop: "4.2px",
                   }}
                 >
-                  {errorMessageEmail}
+                  {errorMessageEmail2}
                 </p>
               )}
             </div>
@@ -264,20 +260,18 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 <label className="addclientmodal-span">CPF*</label>
                 <IMaskInput
                   onChange={(e) => {
-                    const newCpf = e.target.value;
-                    console.log(newCpf);
-                    setInputCpf(unformatCPF(newCpf));
+                    setForm({ ...form, cpf: unformatCPF(e.target.value) });
                   }}
-                  value={inputCpf}
+                  value={form.cpf}
                   className={`addclientmodal-input middle-input-both ${
-                    showErrorCpf ? "border-red" : ""
+                    showErrorCpf2 ? "border-red" : ""
                   }`}
                   placeholder="Digite seu CPF"
                   type="text"
                   id="cpf"
                   mask="000.000.000-00"
                 />
-                {showErrorCpf && (
+                {showErrorCpf2 && (
                   <p
                     style={{
                       color: "red",
@@ -286,24 +280,29 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                       marginTop: "4.2px",
                     }}
                   >
-                    {errorMessageCpf}
+                    {errorMessageCpf2}
                   </p>
                 )}
               </div>
               <div className="addclientmodal-textfield">
                 <label className="addclientmodal-span">Telefone*</label>
                 <IMaskInput
-                  onChange={(e) => setInputPhone(unformatPhone(e.target.value))}
-                  value={inputPhone}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      telefone: unformatPhone(e.target.value),
+                    })
+                  }
+                  value={form.telefone}
                   className={`addclientmodal-input middle-input-both ${
-                    showErrorPhone ? "border-red" : ""
+                    showErrorPhone2 ? "border-red" : ""
                   }`}
                   placeholder="Digite seu Telefone"
                   type="text"
                   id="telefone"
                   mask="(00) 00000-0000"
                 />
-                {showErrorPhone && (
+                {showErrorPhone2 && (
                   <p
                     style={{
                       color: "red",
@@ -312,7 +311,7 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                       marginTop: "4.2px",
                     }}
                   >
-                    {errorMessagePhone}
+                    {errorMessagePhone2}
                   </p>
                 )}
               </div>
@@ -321,8 +320,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Endereço</label>
               <input
-                onChange={(e) => setAddress(e.target.value)}
-                value={address}
+                onChange={(e) => setForm({ ...form, endereco: e.target.value })}
+                value={form.endereco}
                 className="addclientmodal-input"
                 placeholder="Digite o endereço"
                 type="text"
@@ -332,8 +331,10 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
             <div className="addclientmodal-textfield">
               <label className="addclientmodal-span">Complemento</label>
               <input
-                onChange={(e) => setaddressComplement(e.target.value)}
-                value={addressComplement}
+                onChange={(e) =>
+                  setForm({ ...form, complemento: e.target.value })
+                }
+                value={form.complemento}
                 className="addclientmodal-input"
                 placeholder="Digite o complemento"
                 type="text"
@@ -345,8 +346,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <div className="addclientmodal-textfield middle">
                 <label className="addclientmodal-span">CEP:</label>
                 <IMaskInput
-                  onChange={(e) => setCep(e.target.value)}
-                  value={cep}
+                  onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                  value={form.cep}
                   className="addclientmodal-input middle-input-both"
                   placeholder="Digite o CEP"
                   type="text"
@@ -357,8 +358,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <div className="addclientmodal-textfield">
                 <label className="addclientmodal-span">Bairro</label>
                 <input
-                  onChange={(e) => setNeighborhood(e.target.value)}
-                  value={neighborhood}
+                  onChange={(e) => setForm({ ...form, bairro: e.target.value })}
+                  value={form.bairro}
                   className="addclientmodal-input middle-input-both"
                   placeholder="Digite o bairro"
                   type="text"
@@ -370,8 +371,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <div className="addclientmodal-textfield middle">
                 <label className="addclientmodal-span">Cidade</label>
                 <input
-                  onChange={(e) => setCity(e.target.value)}
-                  value={city}
+                  onChange={(e) => setForm({ ...form, cidade: e.target.value })}
+                  value={form.cidade}
                   className="addclientmodal-input middle-city"
                   placeholder="Digite a cidade"
                   type="text"
@@ -381,8 +382,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <div className="addclientmodal-textfield">
                 <label className="addclientmodal-span">UF</label>
                 <input
-                  onChange={(e) => setUf(e.target.value)}
-                  value={uf}
+                  onChange={(e) => setForm({ ...form, uf: e.target.value })}
+                  value={form.uf}
                   className="addclientmodal-input middle-uf"
                   placeholder="Digite a UF"
                   type="text"
@@ -394,15 +395,19 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
             <div className="addclientmodal-buttons">
               <button
                 className="addclientmodal-cancelbtn"
-                onClick={cleanInput}
+                onClick={() => {
+                  cleanInput();
+                }}
                 id="aplicar"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSubmit}
+                onClick={(e) => {
+                  handleSubmit2(e);
+                }}
                 className="addclientmodal-button"
-                type="submit"
+                type="button"
                 id="aplicar"
               >
                 Aplicar
