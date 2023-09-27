@@ -14,6 +14,7 @@ import EditClientModal from "../EditClientModal";
 
 function ClientDetails() {
   const [update, setUpdate] = useState(false);
+  const [chargesLoaded, setChargesLoaded] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -91,59 +92,29 @@ function ClientDetails() {
           }
         );
 
-        setCharges(response.data);
+        if (response.status === 200) {
+
+          setCharges(response.data);
+          setChargesLoaded(true);
+
+        } else {
+          const { status, data } = response;
+          if (status === 404 && data && data.error === "Erro ao buscar cobranças do cliente") {
+            setCharges([]);
+            setChargesLoaded(true);
+          } else {
+            console.error(`Erro desconhecido: ${data.error}`);
+          }
+        }
       } catch (error) {
         console.log(error);
       }
     }
     getChargesByClient();
-  }, [charges, userById.cliente_id]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const token = getItem('token');
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    };
-
-    try {
-
-      const newCharge = {
-        cliente_id,
-        valor,
-        paga,
-        data_vencimento,
-        descricao
-      };
-
-      const res = await registerUserFecth.post("create-charge", newCharge, config);
-
-      if (res.status === 200 || res.status === 201) {
-
-        useToast("Cobrança cadastrada com sucesso");
-
-      }
-
-    } catch (error) {
-      if (error.response) {
-        const errorMessage = error.response;
-        useToast(JSON.stringify(errorMessage), "error");
-
-      } else {
-        console.error("Erro desconhecido:", error.message);
-      }
-    }
-  }
-
-
-
-
+  }, [userById.cliente_id]);
 
   return (
+
     <>
       <div className="client-detail-container">
         <div className="client-detail-title">
@@ -307,7 +278,7 @@ function ClientDetails() {
                   fill="#F8F8F9"
                 />
               </svg>
-              <p onClick={handleOpenAdd}>Nova cobrança</p>
+              <p>Nova cobrança</p>
             </div>
           </div>
           <div className="client-all-charges">
@@ -425,141 +396,159 @@ function ClientDetails() {
               </div>
             </div>
             <div className="client-charges-header-line"></div>
-            {charges.map((charge) => {
-              return (
-                <>
-                  <div
-                    className="client-charges-details-line"
-                    key={charge.cobranca_id}
-                  >
-                    <div className="line-id font1">
-                      <p>{charge.cobranca_id.toString().substring(0, 8)}</p>
-                    </div>
-                    <div className="line-date font1">
-                      <p>
-                        {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
-                      </p>
-                    </div>
-                    <div className="line-value font1">
-                      <p>{Real.format(charge.valor)}</p>
-                    </div>
-                    <div className="line-status-container">
+            {chargesLoaded ? (
+
+              charges.length > 0 ? (
+
+                charges.map((charge) => {
+                  return (
+                    <>
                       <div
-                        className={`line-status ${charge.status === "Vencida"
-                          ? "overcome-container"
-                          : charge.status === "Prevista"
-                            ? "pending-container"
-                            : charge.status === "Paga" && "paid-container"
-                          }`}
+                        className="client-charges-details-line"
+                        key={charge.cobranca_id}
                       >
-                        <p
-                          className={`font3 ${charge.status === "Vencida"
-                            ? "overcome-text"
-                            : charge.status === "Prevista"
-                              ? "pending-text"
-                              : charge.status === "Paga" && "paid-text"
-                            }`}
-                        >
-                          {charge.status}
-                        </p>
+                        <div className="line-id font1">
+                          <p>{charge.cobranca_id.toString().substring(0, 8)}</p>
+                        </div>
+                        <div className="line-date font1">
+                          <p>
+                            {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                          </p>
+                        </div>
+                        <div className="line-value font1">
+                          <p>{Real.format(charge.valor)}</p>
+                        </div>
+                        <div className="line-status-container">
+                          <div
+                            className={`line-status ${charge.status === "Vencida"
+                              ? "overcome-container"
+                              : charge.status === "Prevista"
+                                ? "pending-container"
+                                : charge.status === "Paga" && "paid-container"
+                              }`}
+                          >
+                            <p
+                              className={`font3 ${charge.status === "Vencida"
+                                ? "overcome-text"
+                                : charge.status === "Prevista"
+                                  ? "pending-text"
+                                  : charge.status === "Paga" && "paid-text"
+                                }`}
+                            >
+                              {charge.status}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="line-description font1">
+                          <p>{charge.descricao ? charge.descricao : "-"}</p>
+                        </div>
+                        <div className="line-edit">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="17"
+                            height="17"
+                            viewBox="0 0 17 17"
+                            fill="none"
+                          >
+                            <g clipPath="url(#clip0_83857_4016)">
+                              <path
+                                d="M1.25 15.325L5.5 14.325L14.7929 5.03216C15.1834 4.64163 15.1834 4.00847 14.7929 3.61794L12.9571 1.78216C12.5666 1.39163 11.9334 1.39163 11.5429 1.78216L2.25 11.075L1.25 15.325Z"
+                                stroke="#747488"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M15.75 15.3252H10.25"
+                                stroke="#747488"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_83857_4016">
+                                <rect
+                                  width="16"
+                                  height="16"
+                                  fill="white"
+                                  transform="translate(0.5 0.0751953)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <p>Editar</p>
+                        </div>
+                        <div className="line-exclude">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="17"
+                            viewBox="0 0 18 17"
+                            fill="none"
+                          >
+                            <g clipPath="url(#clip0_83857_4022)">
+                              <path
+                                d="M3.25 3.8252L4.09115 13.4985C4.18102 14.532 5.04622 15.3252 6.08363 15.3252H10.9164C11.9538 15.3252 12.819 14.532 12.9088 13.4985L13.75 3.8252"
+                                stroke="#AE1100"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M6.25 3.5752V2.8252C6.25 1.72063 7.1454 0.825195 8.25 0.825195H8.75C9.8546 0.825195 10.75 1.72063 10.75 2.8252V3.5752"
+                                stroke="#AE1100"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M1.5 3.8252H15.5"
+                                stroke="#AE1100"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_83857_4022">
+                                <rect
+                                  width="17"
+                                  height="16"
+                                  fill="white"
+                                  transform="translate(0.5 0.0751953)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <p>Excluir</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="line-description font1">
-                      <p>{charge.descricao ? charge.descricao : "-"}</p>
-                    </div>
-                    <div className="line-edit">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="17"
-                        viewBox="0 0 17 17"
-                        fill="none"
-                      >
-                        <g clipPath="url(#clip0_83857_4016)">
-                          <path
-                            d="M1.25 15.325L5.5 14.325L14.7929 5.03216C15.1834 4.64163 15.1834 4.00847 14.7929 3.61794L12.9571 1.78216C12.5666 1.39163 11.9334 1.39163 11.5429 1.78216L2.25 11.075L1.25 15.325Z"
-                            stroke="#747488"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M15.75 15.3252H10.25"
-                            stroke="#747488"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_83857_4016">
-                            <rect
-                              width="16"
-                              height="16"
-                              fill="white"
-                              transform="translate(0.5 0.0751953)"
-                            />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                      <p>Editar</p>
-                    </div>
-                    <div className="line-exclude">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="17"
-                        viewBox="0 0 18 17"
-                        fill="none"
-                      >
-                        <g clipPath="url(#clip0_83857_4022)">
-                          <path
-                            d="M3.25 3.8252L4.09115 13.4985C4.18102 14.532 5.04622 15.3252 6.08363 15.3252H10.9164C11.9538 15.3252 12.819 14.532 12.9088 13.4985L13.75 3.8252"
-                            stroke="#AE1100"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M6.25 3.5752V2.8252C6.25 1.72063 7.1454 0.825195 8.25 0.825195H8.75C9.8546 0.825195 10.75 1.72063 10.75 2.8252V3.5752"
-                            stroke="#AE1100"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M1.5 3.8252H15.5"
-                            stroke="#AE1100"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_83857_4022">
-                            <rect
-                              width="17"
-                              height="16"
-                              fill="white"
-                              transform="translate(0.5 0.0751953)"
-                            />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                      <p>Excluir</p>
-                    </div>
-                  </div>
-                  <>
-                    <div className="client-charges-details-bottomLine"></div>
-                  </>
-                </>
-              );
-            })}
+                      <>
+                        <div className="client-charges-details-bottomLine"></div>
+                      </>
+                    </>
+                  );
+                })
+
+              ) : (
+
+                <p>...</p>
+
+              )
+
+            ) : (
+
+              <div className="line-description font1">
+                <p>Nehuma cobrança cadastrada para o cliente.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </>
   );
 }
+
 
 export default ClientDetails;
