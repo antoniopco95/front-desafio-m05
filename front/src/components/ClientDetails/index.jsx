@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem } from "../../utils/storage";
 import { format } from "date-fns";
-
+import { setItem } from "../../utils/storage";
 import EditClientModal from "../EditClientModal";
 
-function ClientDetails() {
+function ClientDetails({ handleOpenCreateCharges }) {
   const [update, setUpdate] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",

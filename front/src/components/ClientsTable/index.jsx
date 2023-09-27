@@ -112,9 +112,8 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
               <td className="table-td">{client.email}</td>
               <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
               <td
-                className={`table-td status ${
-                  client.status === "Inadimplente" ? "redStyle" : "blueStyle"
-                }`}
+                className={`table-td status ${client.status === "Inadimplente" ? "redStyle" : "blueStyle"
+                  }`}
               >
                 {client.status}
               </td>
@@ -124,10 +123,10 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
                   src={AddCharge}
                   alt="addchargeicon"
                   onClick={() => {
-                                setItem("clientsName", client.nome);
-                                setItem("clientsId", client.cliente_id);
-                                handleOpenCreateCharges();
-                            }}
+                    setItem("clientsName", client.nome);
+                    setItem("clientsId", client.cliente_id);
+                    handleOpenCreateCharges();
+                  }}
                 />
               </td>
             </tr>

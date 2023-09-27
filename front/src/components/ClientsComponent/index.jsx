@@ -53,7 +53,6 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
               handleOpenCreateCharges={handleOpenCreateCharges}
             />
             <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
-
             <CreateCharges
               openCreateCharges={openCreateCharges}
               handleCloseCreateCharges={handleCloseCreateCharges}
