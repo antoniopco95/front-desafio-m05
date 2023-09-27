@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import "./styles.css";
 import useUser from "../../hooks/useUser";
 import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
-import { getItem } from "../../utils/storage";
+import { getItem, setItem } from "../../utils/storage";
 import { format } from "date-fns";
+import useToast from "../../hooks/useToast";
 
-function ClientDetails() {
+function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -86,6 +88,50 @@ function ClientDetails() {
     }
     getChargesByClient();
   }, [userById.cliente_id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = getItem('token');
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    try {
+
+      const newCharge = {
+        cliente_id,
+        valor,
+        paga,
+        data_vencimento,
+        descricao
+      };
+
+      const res = await registerUserFecth.post("create-charge", newCharge, config);
+
+      if (res.status === 200 || res.status === 201) {
+
+        useToast("Cobrança cadastrada com sucesso");
+
+      }
+
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response;
+        useToast(JSON.stringify(errorMessage), "error");
+
+      } else {
+        console.error("Erro desconhecido:", error.message);
+      }
+    }
+  }
+
+
+
+
 
   return (
     <>
@@ -238,7 +284,7 @@ function ClientDetails() {
                   fill="#F8F8F9"
                 />
               </svg>
-              <p>Nova cobrança</p>
+              <p onClick={handleOpenAdd}>Nova cobrança</p>
             </div>
           </div>
           <div className="client-all-charges">
@@ -376,22 +422,20 @@ function ClientDetails() {
                     </div>
                     <div className="line-status-container">
                       <div
-                        className={`line-status ${
-                          charge.status === "Vencida"
-                            ? "overcome-container"
-                            : charge.status === "Prevista"
+                        className={`line-status ${charge.status === "Vencida"
+                          ? "overcome-container"
+                          : charge.status === "Prevista"
                             ? "pending-container"
                             : charge.status === "Paga" && "paid-container"
-                        }`}
+                          }`}
                       >
                         <p
-                          className={`font3 ${
-                            charge.status === "Vencida"
-                              ? "overcome-text"
-                              : charge.status === "Prevista"
+                          className={`font3 ${charge.status === "Vencida"
+                            ? "overcome-text"
+                            : charge.status === "Prevista"
                               ? "pending-text"
                               : charge.status === "Paga" && "paid-text"
-                          }`}
+                            }`}
                         >
                           {charge.status}
                         </p>
