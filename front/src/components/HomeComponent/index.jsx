@@ -8,16 +8,16 @@ import PersonRemove from '../../assets/PersonRemove.svg'
 import ChargePaid from '../../assets/ChargePaid.svg'
 import ChargeDelayed from '../../assets/ChargeDelayed.svg'
 import ChargePending from '../../assets/ChargePending.svg'
-import {getItem} from '../../utils/storage'
+import { getItem } from '../../utils/storage'
 import registerUserFecth from './../../axios/config';
 function HomeComponent() {
-const [chargesDue, setChargesDue] = useState([])
-const [chargesExpired, setChargesExpired]=useState([])
-const [chargesPaid, setChargesPaid]= useState([])
-const [totalPaga,setPagas]= useState('')
-const [totalPrevista,setPrevista]= useState('')
-const [totalVencida,setVencida]= useState('')
-   useEffect(() => {
+    const [chargesDue, setChargesDue] = useState([])
+    const [chargesExpired, setChargesExpired] = useState([])
+    const [chargesPaid, setChargesPaid] = useState([])
+    const [totalPaga, setPagas] = useState('')
+    const [totalPrevista, setPrevista] = useState('')
+    const [totalVencida, setVencida] = useState('')
+    useEffect(() => {
 
         const fetchData = async () => {
             const token = getItem('token');
@@ -26,15 +26,13 @@ const [totalVencida,setVencida]= useState('')
                 try {
                     const response = await registerUserFecth.get('/cobrancas/vencidas', {
                         headers: {
-                            Authorization:` Bearer ${token}`,
+                            Authorization: ` Bearer ${token}`,
                         },
-                  });
+                    });
                     const data = response.data;
-                    console.log(data);
                     setVencida(data.Total_Vencido)
                     setChargesDue(data.cobrancas_vencidas);
                 } catch (error) {
-                    console.error(error)
                     console.log(error);
                 }
             }
@@ -42,7 +40,7 @@ const [totalVencida,setVencida]= useState('')
         fetchData();
 
     }, []);
-     useEffect(() => {
+    useEffect(() => {
 
         const fetchData = async () => {
             const token = getItem('token');
@@ -51,16 +49,14 @@ const [totalVencida,setVencida]= useState('')
                 try {
                     const response = await registerUserFecth.get('/cobrancas/previstas', {
                         headers: {
-                            Authorization:` Bearer ${token}`,
+                            Authorization: ` Bearer ${token}`,
                         },
-                  });
+                    });
                     const data = response.data;
-                    console.log(data);
                     setPrevista(data.total_previsto)
                     setChargesExpired(data.cobrancas_previstas);
                 } catch (error) {
-                    console.error(error)
-                    console.log(error);
+                    console.log(error)
                 }
             }
         };
@@ -68,7 +64,7 @@ const [totalVencida,setVencida]= useState('')
 
     }, []);
 
-     useEffect(() => {
+    useEffect(() => {
 
         const fetchData = async () => {
             const token = getItem('token');
@@ -77,23 +73,20 @@ const [totalVencida,setVencida]= useState('')
                 try {
                     const response = await registerUserFecth.get('/cobrancas/pagas', {
                         headers: {
-                            Authorization:` Bearer ${token}`,
+                            Authorization: ` Bearer ${token}`,
                         },
-                  });
+                    });
                     const data = response.data;
-                    console.log(data);
-
                     setChargesPaid(data.cobrancas_pagas);
                     setPagas(data.total_pago)
                 } catch (error) {
-                    console.error(error)
                     console.log(error);
                 }
             }
         };
         fetchData();
     }, []);
-    
+
 
     return (
         <>
@@ -105,9 +98,9 @@ const [totalVencida,setVencida]= useState('')
                     <TotalCard totalCardIcon={ChargePending} totalCardType='Previstas' totalCardValue={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrevista)} totalCardColor='yellow' />
                 </div>
                 <div className='homecard-box'>
-                    <ChargesCard user = {chargesDue} chargesName='Vencidas' chargesNumber={chargesDue.length} chargesColor='red' />
-                    <ChargesCard  user = {chargesExpired}chargesName='Previstas' chargesNumber={chargesExpired.length} chargesColor='yellow' />
-                    <ChargesCard user = {chargesPaid} chargesName='Pagas' chargesNumber={chargesPaid.length} chargesColor='blue' />
+                    <ChargesCard user={chargesDue} chargesName='Vencidas' chargesNumber={chargesDue.length} chargesColor='red' />
+                    <ChargesCard user={chargesExpired} chargesName='Previstas' chargesNumber={chargesExpired.length} chargesColor='yellow' />
+                    <ChargesCard user={chargesPaid} chargesName='Pagas' chargesNumber={chargesPaid.length} chargesColor='blue' />
                 </div>
                 <div className='clientscard-box'>
                     <ClientsCard clientsName='Inadimplentes' clientsNumber='08' clientsColor='red' iconChoose={PersonRemove} />

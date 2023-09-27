@@ -21,8 +21,14 @@ const style = {
 };
 
 export default function EditModal({ openEdit, handleCloseEdit }) {
-  const [inputName, setInputName] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
+
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    cpf: "",
+    telefone: ""
+  });
+
   const [inputPassword, setInputPassword] = useState("");
   const [inputConfirm, setInputConfirm] = useState("");
 
@@ -43,15 +49,52 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
   const id = localStorage.getItem("id");
   const token = localStorage.getItem("token");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  async function getUser() {
 
-    if (inputName === "") {
+    try {
+      const response = await registerUserFecth.get('/usuarios', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const userData = response.data;
+      setForm(userData);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [id, token]);
+
+  function unformatCPF(cpf) {
+    if (cpf === null) {
+      return cpf = "";
+    } else {
+      return cpf.replace(/\D/g, "");
+    };
+  };
+
+  function unformatPhone(phone) {
+    if (phone === null) {
+      return phone = "";
+    } else {
+      return phone.replace(/\D/g, "");
+    };
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (form.nome === "") {
       setShowErrorName(true);
       return;
     }
 
-    if (inputEmail === "") {
+    if (form.email === "") {
       setErrorMessageEmail("Este campo deve ser preenchido");
       setShowErrorEmail(true);
       return;
@@ -79,12 +122,17 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
       return;
     }
 
+    const unformattedInputCpf = unformatCPF(form.cpf);
+    const unformattedInputPhone = unformatPhone(form.telefone);
+
     try {
       const response = await registerUserFecth.put(
         `/editar/${id}`,
         {
-          nome: inputName.toString(),
-          email: inputEmail.toString(),
+          nome: form.nome.toString(),
+          email: form.email.toString(),
+          cpf: unformattedInputCpf,
+          telefone: unformattedInputPhone,
           senha: inputConfirm.toString(),
         },
         {
@@ -94,7 +142,6 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
         }
       );
 
-      console.log(response.data);
       const nome = response.data.userEdit.nome;
       localStorage.setItem("name", nome);
       localStorage.getItem("name");
@@ -116,7 +163,7 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
     }
   };
 
-  useEffect(() => {}, [id, token]);
+  useEffect(() => { handleSubmit() }, [id, token]);
 
   return (
     <div>
@@ -127,11 +174,10 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
             <div className="editmodal-textfield">
               <label className="editmodal-span">Nome*</label>
               <input
-                onChange={(e) => setInputName(e.target.value)}
-                value={inputName}
-                className={`editmodal-input ${
-                  showErrorName ? "border-red" : ""
-                }`}
+                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                value={form.nome}
+                className={`editmodal-input ${showErrorName ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu nome"
                 type="text"
                 id="nome"
@@ -152,11 +198,10 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
             <div className="editmodal-textfield">
               <label className="editmodal-span">E-mail*</label>
               <input
-                onChange={(e) => setInputEmail(e.target.value)}
-                value={inputEmail}
-                className={`editmodal-input ${
-                  showErrorEmail ? "border-red" : ""
-                }`}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                value={form.email}
+                className={`editmodal-input ${showErrorEmail ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu e-mail"
                 type="email"
                 id="email"
@@ -178,6 +223,8 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
               <div className="editmodal-textfield middle">
                 <label className="editmodal-span">CPF</label>
                 <IMaskInput
+                  onChange={(e) => setForm({ ...form, cpf: e.target.value })}
+                  value={form.cpf}
                   className="editmodal-input middle-input"
                   placeholder="Digite seu CPF"
                   type="text"
@@ -188,6 +235,8 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
               <div className="editmodal-textfield">
                 <label className="editmodal-span">Telefone</label>
                 <IMaskInput
+                  onChange={(e) => setForm({ ...form, telefone: e.target.value })}
+                  value={form.telefone}
                   className="editmodal-input middle-input"
                   placeholder="Digite seu Telefone"
                   type="text"
@@ -199,9 +248,8 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
             <div className="editmodal-textfield">
               <label className="editmodal-span">Nova Senha*</label>
               <div
-                className={`editmodal-inputandbtn  ${
-                  showErrorPassword ? "border-red" : ""
-                }`}
+                className={`editmodal-inputandbtn  ${showErrorPassword ? "border-red" : ""
+                  }`}
               >
                 <input
                   value={inputPassword}
@@ -234,9 +282,8 @@ export default function EditModal({ openEdit, handleCloseEdit }) {
             <div className="editmodal-textfield">
               <label className="editmodal-span">Confirmar Senha*</label>
               <div
-                className={`editmodal-inputandbtn  ${
-                  showErrorConfirm ? "border-red" : ""
-                }`}
+                className={`editmodal-inputandbtn  ${showErrorConfirm ? "border-red" : ""
+                  }`}
               >
                 <input
                   className="editmodal-passinput"
