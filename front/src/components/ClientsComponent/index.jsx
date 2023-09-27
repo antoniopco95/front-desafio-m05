@@ -15,11 +15,12 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
     setDivIsVisible,
   } = useUser();
 
-  const [inputChargeName, setInputChargeName] = useState('');
 
-  const [customMessageApprove, setCustomMessageApprove] = useState('');
+  const [inputChargeName, setInputChargeName] = useState("");
+
+
+  const [customMessageApprove, setCustomMessageApprove] = useState("");
   const [openSnackApprove, setOpenSnackApprove] = useState(false);
-
 
   const handleClickSnack = () => {
     setOpenSnackApprove(true);
@@ -52,6 +53,7 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
               handleOpenCreateCharges={handleOpenCreateCharges}
             />
             <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
+
             <CreateCharges
               openCreateCharges={openCreateCharges}
               handleCloseCreateCharges={handleCloseCreateCharges}
@@ -64,13 +66,23 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
               openSnackApprove={openSnackApprove}
               setOpenSnackApprove={setOpenSnackApprove}
             />
+
           </>
         )}
       </div>
-
-      {openClientDetail && <ClientDetails
-        handleOpenAdd={handleOpenAdd}
-        handleOpenCreateCharges={handleOpenCreateCharges} />}
+      <CreateCharges
+        openCreateCharges={openCreateCharges}
+        handleCloseCreateCharges={handleCloseCreateCharges}
+        handleClickSnack={handleClickSnack}
+        setCustomMessageApprove={setCustomMessageApprove}
+        inputChargeName={inputChargeName}
+      />
+      <SnackBarSuccess
+        customMessageApprove={customMessageApprove}
+        openSnackApprove={openSnackApprove}
+        setOpenSnackApprove={setOpenSnackApprove}
+      />
+      {openClientDetail && <ClientDetails handleOpenCreateCharges={handleOpenCreateCharges} />}
     </>
   );
 }

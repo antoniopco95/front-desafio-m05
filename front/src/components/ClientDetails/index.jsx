@@ -7,12 +7,21 @@ import { getItem, setItem } from "../../utils/storage";
 import { format } from "date-fns";
 import useToast from "../../hooks/useToast";
 
-function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
+import EditClientModal from "../EditClientModal";
+
+function ClientDetails() {
+  const [update, setUpdate] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-  const { id } = useUser();
+  const {
+    id,
+    openEditClientModal,
+    setOpenEditClientModal,
+    charges,
+    setCharges,
+  } = useUser();
   const [userById, setUserById] = useState({
     nome: "-",
     email: "-",
@@ -23,8 +32,6 @@ function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
     cidade: "-",
     uf: "-",
   });
-  const [charges, setCharges] = useState([]);
-
   function formatCPF(cpf) {
     const cleanedCPF = cpf.replace(/\D/g, "");
 
@@ -66,7 +73,7 @@ function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
     }
 
     getUserById();
-  }, [userById.cliente_id]);
+  }, [update]);
 
   useEffect(() => {
     async function getChargesByClient() {
@@ -87,7 +94,7 @@ function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
       }
     }
     getChargesByClient();
-  }, [userById.cliente_id]);
+  }, [charges, userById.cliente_id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -204,7 +211,16 @@ function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <h3>Editar Cliente</h3>
+              <h3 onClick={() => setOpenEditClientModal(true)}>
+                Editar Cliente
+              </h3>
+              {openEditClientModal && (
+                <EditClientModal
+                  userData={userById}
+                  update={setUserById}
+                  function1={() => getChargesByClient()}
+                />
+              )}
             </div>
           </div>
           <div className="client-details-all">
@@ -269,7 +285,11 @@ function ClientDetails({ handleOpenCreateCharges, handleOpenAdd }) {
         <div className="client-charges-detail">
           <div className="client-charges-title">
             <h1>Cobranças do Cliente</h1>
-            <div className="client-charges-button">
+            <div className="client-charges-button" onClick={() => {
+              setItem("clientsName", userById.nome);
+              setItem("clientsId", userById.cliente_id);
+              handleOpenCreateCharges();
+            }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
