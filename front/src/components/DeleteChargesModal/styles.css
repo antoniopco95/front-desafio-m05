@@ -1,0 +1,42 @@
+.delcharges-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Nunito;
+
+}
+
+.delcharges-icon {
+    width: 160px;
+    height: 160px;
+}
+
+.delcharges-p {
+    color: #CC7800;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 130%;
+}
+
+.delcharges-cancel,
+.delcharges-confirm {
+    border-radius: 4px;
+    width: 100px;
+    height: 22.588px;
+    margin-top: 26px;
+    font-size: 18px;
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+}
+
+.delcharges-cancel {
+    background-color: #F2D6D0;
+    color: #AE1100;
+    margin-right: 16px;
+}
+
+.delcharges-confirm {
+    background-color: #ACD9C5;
+    color: #034A2A;
+}

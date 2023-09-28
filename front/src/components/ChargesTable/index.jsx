@@ -1,17 +1,15 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
 import './styles.css'
 import ChargesIcon from '../../assets/ChargesIcon.svg';
 import FilterIcon from '../../assets/FilterIcon.svg';
 import SearchIcon from '../../assets/SearchIcon.svg';
 import EditTable from '../../assets/EditTable.svg';
 import DeleteTable from '../../assets/DeleteTable.svg';
-import { useEffect, useState } from 'react';
-import { getItem } from '../../utils/storage';
+import React, { useEffect, useState } from 'react';
+import { getItem, setItem } from '../../utils/storage';
 import registerUserFecth from '../../axios/config';
 import { format } from 'date-fns';
 
-function ChargesTable() {
+function ChargesTable({ handleDelChargesOpen }) {
 
     const [charges, setCharges] = useState([]);
 
@@ -85,7 +83,10 @@ function ChargesTable() {
                                 {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                             <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                             <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                            <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                            <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleDelChargesOpen();
+                            }} /></td>
                         </tr>
                     ))}
 
