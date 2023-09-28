@@ -9,10 +9,6 @@ import registerUserFecth from "../../axios/config";
 import { getItem, setItem } from "../../utils/storage";
 import { format } from "date-fns";
 
-import useToast from "../../hooks/useToast";
-
-
-import { setItem } from "../../utils/storage";
 
 import EditClientModal from "../EditClientModal";
 
