@@ -1,20 +1,23 @@
 .charges-card {
+    background-color: white;
     color: #3F3F55;
     justify-content: center;
     box-shadow: 0px 4px 4px rgba(172, 217, 197, 0.25);
     border-radius: 20px;
-    margin: 0px 16px 0px 16px;
+    margin: 16px 28px 0px 0px;
 }
 
 .charges-title {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     font-size: 18px;
     font-weight: bold;
+    margin-left: 16px;
     padding: 18.5px 0px 16.5px 0px;
 }
 
 .charges-table {
+    width: 360px;
     border-collapse: collapse;
 }
 

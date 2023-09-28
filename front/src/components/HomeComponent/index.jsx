@@ -30,11 +30,9 @@ function HomeComponent() {
                         },
                     });
                     const data = response.data;
-                    console.log(data);
                     setVencida(data.Total_Vencido)
                     setChargesDue(data.cobrancas_vencidas);
                 } catch (error) {
-                    console.error(error)
                     console.log(error);
                 }
             }
@@ -55,12 +53,10 @@ function HomeComponent() {
                         },
                     });
                     const data = response.data;
-                    console.log(data);
                     setPrevista(data.total_previsto)
                     setChargesExpired(data.cobrancas_previstas);
                 } catch (error) {
-                    console.error(error)
-                    console.log(error);
+                    console.log(error)
                 }
             }
         };
@@ -81,12 +77,9 @@ function HomeComponent() {
                         },
                     });
                     const data = response.data;
-                    console.log(data);
-
                     setChargesPaid(data.cobrancas_pagas);
                     setPagas(data.total_pago)
                 } catch (error) {
-                    console.error(error)
                     console.log(error);
                 }
             }
