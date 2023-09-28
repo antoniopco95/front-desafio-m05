@@ -10,7 +10,12 @@ import registerUserFecth from '../../axios/config';
 import { IMaskInput } from "react-imask";
 import { format } from 'date-fns';
 
-export default function CreateCharges({ openCreateCharges, handleCloseCreateCharges, handleClickSnack, setCustomMessageApprove, inputChargeName }) {
+export default function CreateCharges({
+    openCreateCharges,
+    handleCloseCreateCharges,
+    handleClickSnack,
+    setCustomMessageApprove,
+    inputChargeName, openAdd, handleCloseAdd }) {
 
     const [inputChargeDesc, setInputChargeDesc] = useState('');
     const [inputChargeExpire, setInputChargeExpire] = useState('');
