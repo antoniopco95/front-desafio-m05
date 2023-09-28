@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import "./styles.css";
 import ClientsTable from "../ClientsTable";
@@ -53,7 +55,6 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
               handleOpenCreateCharges={handleOpenCreateCharges}
             />
             <AddClientModal openAdd={openAdd} handleCloseAdd={handleCloseAdd} />
-
             <CreateCharges
               openCreateCharges={openCreateCharges}
               handleCloseCreateCharges={handleCloseCreateCharges}
