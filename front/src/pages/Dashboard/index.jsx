@@ -8,11 +8,15 @@ import ClientsComponent from "../../components/ClientsComponent";
 import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
 import { useNavigate } from "react-router-dom";
-import ClientDetails from "../../components/ClientDetails";
-import useUser from "../../hooks/useUser";
 
 function Dashboard() {
-  const { openClientDetail, setOpenClientDetail } = useUser();
+
+  const [customMessageApprove, setCustomMessageApprove] = useState("");
+  const [openSnackApprove, setOpenSnackApprove] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackApprove(true);
+  };
 
   const [home, setHome] = useState(true);
   const [clients, setClients] = useState(false);
@@ -86,17 +90,28 @@ function Dashboard() {
       <div className="login-header">
         <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
-      
+
       {home && <HomeComponent />}
       {clients && (
         <ClientsComponent
           openAdd={openAdd}
           handleOpenAdd={handleOpenAdd}
           handleCloseAdd={handleCloseAdd}
+          customMessageApprove={customMessageApprove}
+          setCustomMessageApprove={setCustomMessageApprove}
+          openSnackApprove={openSnackApprove}
+          setOpenSnackApprove={setOpenSnackApprove}
+          handleClickSnack={handleClickSnack}
         />
       )}
 
-      {charges && <ChargesComponent />}
+      {charges && <ChargesComponent
+        customMessageApprove={customMessageApprove}
+        setCustomMessageApprove={setCustomMessageApprove}
+        openSnackApprove={openSnackApprove}
+        setOpenSnackApprove={setOpenSnackApprove}
+        handleClickSnack={handleClickSnack}
+      />}
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
 
     </div>
