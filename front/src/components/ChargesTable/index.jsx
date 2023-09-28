@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import './styles.css'
 import ChargesIcon from '../../assets/ChargesIcon.svg';
@@ -34,7 +35,7 @@ function ChargesTable() {
         } catch (error) {
             console.log(error)
         }
-    };
+    }
 
     useEffect(() => {
         getAllCharges();
@@ -88,30 +89,10 @@ function ChargesTable() {
                         </tr>
                     ))}
 
-                    {/* <tr className='table-tr'>
-                        <td className='table-td'>Carlos Prado</td>
-                        <td className='table-td'>368563147</td>
-                        <td className='table-td'>R$ 700,00</td>
-                        <td className='table-td'>27/11/2021</td>
-                        <td className={`table-td status yellow`}>Pendente</td>
-                        <td className='table-td'>lorem ipsum lorem ipsum lorem ...</td>
-                        <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                        <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
-                    </tr>
-                    <tr className='table-tr'>
-                        <td className='table-td'>Carlos Prado</td>
-                        <td className='table-td'>578563147</td>
-                        <td className='table-td'>R$ 300,00</td>
-                        <td className='table-td'>22/01/2021</td>
-                        <td className={`table-td status blue`}>Paga</td>
-                        <td className='table-td'>lorem ipsum lorem ipsum lorem ...</td>
-                        <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                        <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
-                    </tr> */}
                 </tbody>
             </table>
         </div>
     )
-};
+}
 
 export default ChargesTable;
