@@ -9,8 +9,9 @@ import CheckIcon from "../../assets/CheckIcon.svg";
 import registerUserFecth from "../../axios/config";
 import { IMaskInput } from "react-imask";
 import { format } from "date-fns";
+import useUser from "../../hooks/useUser";
 
-export default function CreateCharges({
+export default function EditChargeModal({
   openCreateCharges,
   handleCloseCreateCharges,
   handleClickSnack,
@@ -18,6 +19,8 @@ export default function CreateCharges({
   inputChargeName,
   openAdd,
   handleCloseAdd,
+  charge,
+  userName,
 }) {
   const [inputChargeDesc, setInputChargeDesc] = useState("");
   const [inputChargeExpire, setInputChargeExpire] = useState("");
@@ -27,6 +30,33 @@ export default function CreateCharges({
   const [errorChargeDesc, setErrorChargeDesc] = useState(false);
   const [errorChargeExpire, setErrorChargeExpire] = useState(false);
   const [errorChargeValue, setErrorChargeValue] = useState(false);
+
+  const { openEditChargeModal, setOpenEditChargeModal } = useUser();
+
+  const [editForm, setEditForm] = useState({
+    nome: "",
+    descricao: "",
+    data_vencimento: "",
+    valor: "",
+    paga: "",
+  });
+
+  useEffect(() => {
+    if (openEditChargeModal) {
+      setEditForm({
+        nome: userName,
+        descricao: charge.descricao,
+        data_vencimento: charge.data_vencimento,
+        valor: charge.valor,
+        paga: charge.paga,
+      });
+      console.log(charge);
+    }
+  }, [openEditChargeModal, charge, userName]);
+
+  const handleCloseEditChargeModal = () => {
+    setOpenEditChargeModal(false);
+  };
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
@@ -128,7 +158,7 @@ export default function CreateCharges({
 
   return (
     <>
-      <Modal open={openCreateCharges} onClose={handleCloseCreateCharges}>
+      <Modal open={openEditChargeModal} onClose={handleCloseEditChargeModal}>
         <Box
           sx={{
             display: "flex",
@@ -152,13 +182,13 @@ export default function CreateCharges({
                   src={ChargesIcon}
                   alt="chargesicon"
                 />
-                <p className="createcharges-title">Cadastro de Cobrança</p>
+                <p className="createcharges-title">Edição de Cobrança</p>
               </div>
               <div className="createcharges-inputandp">
                 <p className="createcharges-p">Nome*</p>
                 <input
                   readOnly={true}
-                  value={inputChargeName}
+                  value={editForm.name}
                   className="createcharges-input"
                   type="text"
                   placeholder="Digite o nome"
@@ -168,7 +198,7 @@ export default function CreateCharges({
                 <p className="createcharges-p">Descrição*</p>
                 <textarea
                   onChange={(e) => setInputChargeDesc(e.target.value)}
-                  value={inputChargeDesc}
+                  value={editForm.description}
                   className={`createcharges-input createcharges-desc ${
                     errorChargeDesc ? "border-red" : ""
                   }`}
@@ -195,7 +225,7 @@ export default function CreateCharges({
                     <p className="createcharges-p">Vencimento:*</p>
                     <IMaskInput
                       onChange={(e) => setInputChargeExpire(e.target.value)}
-                      value={inputChargeExpire}
+                      value={editForm.pay_date}
                       className={`createcharges-input createcharges-middleinput ${
                         errorChargeExpire ? "border-red" : ""
                       }`}
@@ -220,7 +250,7 @@ export default function CreateCharges({
                     <p className="createcharges-p">Valor:*</p>
                     <input
                       onChange={(e) => setInputChargeValue(e.target.value)}
-                      value={inputChargeValue}
+                      value={editForm.value}
                       className={`createcharges-input createcharges-middleinput ${
                         errorChargeValue ? "border-red" : ""
                       }`}
@@ -247,7 +277,7 @@ export default function CreateCharges({
                     <Radio
                       checked={selectedValue === "a"}
                       onChange={handleChange}
-                      value="a"
+                      value={editForm.status === "true" ? "a" : ""}
                       name="radio-buttons"
                       inputProps={{ "aria-label": "A" }}
                       checkedIcon={<BpCheckedIcon />}
@@ -259,7 +289,7 @@ export default function CreateCharges({
                     <Radio
                       checked={selectedValue === "b"}
                       onChange={handleChange}
-                      value="b"
+                      value={editForm.status === "false" ? "b" : ""}
                       name="radio-buttons"
                       inputProps={{ "aria-label": "B" }}
                       checkedIcon={<BpCheckedIcon />}
