@@ -19,6 +19,7 @@
   width: 32px;
   height: 32px;
   margin-right: 16px;
+  cursor: pointer;
 }
 
 .clientstable-title {
@@ -105,7 +106,7 @@
   padding: 12px 23px;
 }
 
-.client-name{
+.client-name {
   cursor: pointer;
 }
 
