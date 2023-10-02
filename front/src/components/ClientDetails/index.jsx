@@ -1,22 +1,12 @@
-/* eslint-disable no-undef */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 import "./styles.css";
 import useUser from "../../hooks/useUser";
 import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem, setItem } from "../../utils/storage";
 import { format } from "date-fns";
-
-import useToast from "../../hooks/useToast";
-
-
-import { setItem } from "../../utils/storage";
-
 import EditClientModal from "../EditClientModal";
 
-function ClientDetails({ handleOpenCreateCharges }) {
+function ClientDetails({ handleOpenCreateCharges, handleDelChargesOpen, handleOpenChargesDetails }) {
   const [update, setUpdate] = useState(false);
   const [chargesLoaded, setChargesLoaded] = useState(false);
   let Real = new Intl.NumberFormat("pt-BR", {
@@ -411,18 +401,30 @@ function ClientDetails({ handleOpenCreateCharges }) {
                         className="client-charges-details-line"
                         key={charge.cobranca_id}
                       >
-                        <div className="line-id font1">
+                        <div className="line-id font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{charge.cobranca_id.toString().substring(0, 8)}</p>
                         </div>
-                        <div className="line-date font1">
+                        <div className="line-date font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>
                             {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                           </p>
                         </div>
-                        <div className="line-value font1">
+                        <div className="line-value font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{Real.format(charge.valor)}</p>
                         </div>
-                        <div className="line-status-container">
+                        <div className="line-status-container" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <div
                             className={`line-status ${charge.status === "Vencida"
                               ? "overcome-container"
@@ -443,7 +445,10 @@ function ClientDetails({ handleOpenCreateCharges }) {
                             </p>
                           </div>
                         </div>
-                        <div className="line-description font1">
+                        <div className="line-description font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{charge.descricao ? charge.descricao : "-"}</p>
                         </div>
                         <div className="line-edit">
@@ -483,7 +488,10 @@ function ClientDetails({ handleOpenCreateCharges }) {
                           </svg>
                           <p>Editar</p>
                         </div>
-                        <div className="line-exclude">
+                        <div className="line-exclude" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleDelChargesOpen();
+                        }}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="18"

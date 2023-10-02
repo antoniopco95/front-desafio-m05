@@ -7,9 +7,19 @@ import HomeComponent from "../../components/HomeComponent";
 import ClientsComponent from "../../components/ClientsComponent";
 import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
+import DeleteChargesModal from "../../components/DeleteChargesModal";
 import { useNavigate } from "react-router-dom";
+import ChargesDetails from "../../components/ChargesDetails";
 
 function Dashboard() {
+
+  const [delChargesOpen, setDelChargesOpen] = useState(false);
+  const handleDelChargesOpen = () => setDelChargesOpen(true);
+  const handleDelChargesClose = () => setDelChargesOpen(false);
+
+  const [chargesDetailsOpen, setChargesDetailsOpen] = useState(false);
+  const handleOpenChargesDetails = () => setChargesDetailsOpen(true);
+  const handleCloseChargesDetails = () => setChargesDetailsOpen(false);
 
   const [customMessageApprove, setCustomMessageApprove] = useState("");
   const [openSnackApprove, setOpenSnackApprove] = useState(false);
@@ -102,6 +112,8 @@ function Dashboard() {
           openSnackApprove={openSnackApprove}
           setOpenSnackApprove={setOpenSnackApprove}
           handleClickSnack={handleClickSnack}
+          handleDelChargesOpen={handleDelChargesOpen}
+          handleOpenChargesDetails={handleOpenChargesDetails}
         />
       )}
 
@@ -111,7 +123,16 @@ function Dashboard() {
         openSnackApprove={openSnackApprove}
         setOpenSnackApprove={setOpenSnackApprove}
         handleClickSnack={handleClickSnack}
-      />}
+        delChargesOpen={delChargesOpen}
+        handleDelChargesOpen={handleDelChargesOpen}
+        handleDelChargesClose={handleDelChargesClose}
+        chargesDetailsOpen={chargesDetailsOpen}
+        handleOpenChargesDetails={handleOpenChargesDetails}
+        handleCloseChargesDetails={handleCloseChargesDetails}
+      />
+      }
+      <ChargesDetails chargesDetailsOpen={chargesDetailsOpen} handleCloseChargesDetails={handleCloseChargesDetails} />
+      <DeleteChargesModal delChargesOpen={delChargesOpen} handleDelChargesClose={handleDelChargesClose} handleClickSnack={handleClickSnack} setCustomMessageApprove={setCustomMessageApprove} />
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
 
     </div>
