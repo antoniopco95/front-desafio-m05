@@ -9,7 +9,7 @@ import { getItem, setItem } from '../../utils/storage';
 import registerUserFecth from '../../axios/config';
 import { format } from 'date-fns';
 
-function ChargesTable({ handleDelChargesOpen }) {
+function ChargesTable({ handleDelChargesOpen, handleOpenChargesDetails }) {
 
     const [charges, setCharges] = useState([]);
 
@@ -70,18 +70,36 @@ function ChargesTable({ handleDelChargesOpen }) {
                 <tbody className='table-body'>
                     {charges.map((charge, index) => (
                         <tr key={index} className='table-tr'>
-                            <td className='table-td'>{charge.nome}</td>
-                            <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
-                            <td className='table-td'>{Real.format(charge.valor)}</td>
-                            <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
+                            <td className='table-td' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleOpenChargesDetails();
+                            }}>{charge.nome}</td>
+                            <td className='table-td' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleOpenChargesDetails();
+                            }}>{charge.cobranca_id.substring(0, 8)}</td>
+                            <td className='table-td' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleOpenChargesDetails();
+                            }}>{Real.format(charge.valor)}</td>
+                            <td className='table-td' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleOpenChargesDetails();
+                            }}>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
                             <td className={`table-td status ${charge.status === "vencida"
                                 ? "red"
                                 : charge.status === "prevista"
                                     ? "yellow"
                                     : charge.status === "paga" && "blue"
-                                }`}>
+                                }`} onClick={() => {
+                                    setItem("chargesId", charge.cobranca_id);
+                                    handleOpenChargesDetails();
+                                }}>
                                 {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
-                            <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
+                            <td className='table-td' onClick={() => {
+                                setItem("chargesId", charge.cobranca_id);
+                                handleOpenChargesDetails();
+                            }}>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                             <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                             <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' onClick={() => {
                                 setItem("chargesId", charge.cobranca_id);

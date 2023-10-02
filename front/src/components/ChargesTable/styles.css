@@ -95,6 +95,7 @@
 
 .table-tr {
     border-top: 1px solid #EFF0F6;
+    cursor: pointer;
 }
 
 .status {
