@@ -14,6 +14,7 @@ import EditChargeModal from "../EditChargeModal";
 function ClientDetails({ handleOpenCreateCharges }) {
   const [update, setUpdate] = useState(false);
   const [chargesLoaded, setChargesLoaded] = useState(false);
+  const [charge, setCharge] = useState("");
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -454,6 +455,7 @@ function ClientDetails({ handleOpenCreateCharges }) {
                           className="line-edit"
                           onClick={() => {
                             setOpenEditChargeModal(true);
+                            setCharge({ ...charge });
                           }}
                         >
                           <svg
@@ -492,12 +494,6 @@ function ClientDetails({ handleOpenCreateCharges }) {
                           </svg>
                           <p>Editar</p>
                         </div>
-                        {openEditChargeModal && (
-                          <EditChargeModal
-                            charge={charge}
-                            userName={userById.nome}
-                          />
-                        )}
                         <div className="line-exclude">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -560,6 +556,9 @@ function ClientDetails({ handleOpenCreateCharges }) {
           </div>
         </div>
       </div>
+      {openEditChargeModal && (
+        <EditChargeModal charge={charge} userName={userById.nome} />
+      )}
     </>
   );
 }

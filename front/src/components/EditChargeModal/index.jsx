@@ -46,11 +46,11 @@ export default function EditChargeModal({
       setEditForm({
         nome: userName,
         descricao: charge.descricao,
-        data_vencimento: charge.data_vencimento,
+        data_vencimento: format(new Date(charge.data_vencimento), "dd/MM/yyy"),
         valor: charge.valor,
         paga: charge.paga,
       });
-      console.log(charge);
+      charge.paga ? setSelectedValue("a") : setSelectedValue("b");
     }
   }, [openEditChargeModal, charge, userName]);
 
@@ -67,11 +67,10 @@ export default function EditChargeModal({
     const id = localStorage.getItem("clientsId");
     const token = localStorage.getItem("token");
 
-    let isPaid = "";
     if (selectedValue === "a") {
-      isPaid = true;
+      setEditForm({ ...editForm, paga: true });
     } else if (selectedValue === "b") {
-      isPaid = false;
+      setEditForm({ ...editForm, paga: false });
     }
 
     if (inputChargeDesc === "") {
@@ -188,7 +187,7 @@ export default function EditChargeModal({
                 <p className="createcharges-p">Nome*</p>
                 <input
                   readOnly={true}
-                  value={editForm.name}
+                  value={editForm.nome}
                   className="createcharges-input"
                   type="text"
                   placeholder="Digite o nome"
@@ -197,8 +196,10 @@ export default function EditChargeModal({
               <div className="createcharges-inputandp">
                 <p className="createcharges-p">Descrição*</p>
                 <textarea
-                  onChange={(e) => setInputChargeDesc(e.target.value)}
-                  value={editForm.description}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, descricao: e.target.value })
+                  }
+                  value={editForm.descricao}
                   className={`createcharges-input createcharges-desc ${
                     errorChargeDesc ? "border-red" : ""
                   }`}
@@ -224,8 +225,13 @@ export default function EditChargeModal({
                   <div className="createcharges-inputandp">
                     <p className="createcharges-p">Vencimento:*</p>
                     <IMaskInput
-                      onChange={(e) => setInputChargeExpire(e.target.value)}
-                      value={editForm.pay_date}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          data_vencimento: e.target.value,
+                        })
+                      }
+                      value={editForm.data_vencimento}
                       className={`createcharges-input createcharges-middleinput ${
                         errorChargeExpire ? "border-red" : ""
                       }`}
@@ -249,8 +255,10 @@ export default function EditChargeModal({
                   <div className="createcharges-inputandp">
                     <p className="createcharges-p">Valor:*</p>
                     <input
-                      onChange={(e) => setInputChargeValue(e.target.value)}
-                      value={editForm.value}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, valor: e.target.value })
+                      }
+                      value={editForm.valor}
                       className={`createcharges-input createcharges-middleinput ${
                         errorChargeValue ? "border-red" : ""
                       }`}
@@ -277,7 +285,7 @@ export default function EditChargeModal({
                     <Radio
                       checked={selectedValue === "a"}
                       onChange={handleChange}
-                      value={editForm.status === "true" ? "a" : ""}
+                      value={"a"}
                       name="radio-buttons"
                       inputProps={{ "aria-label": "A" }}
                       checkedIcon={<BpCheckedIcon />}
@@ -289,7 +297,7 @@ export default function EditChargeModal({
                     <Radio
                       checked={selectedValue === "b"}
                       onChange={handleChange}
-                      value={editForm.status === "false" ? "b" : ""}
+                      value={"b"}
                       name="radio-buttons"
                       inputProps={{ "aria-label": "B" }}
                       checkedIcon={<BpCheckedIcon />}
