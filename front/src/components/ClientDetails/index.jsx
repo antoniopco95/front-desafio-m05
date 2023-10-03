@@ -11,7 +11,11 @@ import { format } from "date-fns";
 import EditClientModal from "../EditClientModal";
 import EditChargeModal from "../EditChargeModal";
 
-function ClientDetails({ handleOpenCreateCharges }) {
+function ClientDetails({
+  handleOpenCreateCharges,
+  setCustomMessageApprove,
+  handleClickSnack,
+}) {
   const [update, setUpdate] = useState(false);
   const [chargesLoaded, setChargesLoaded] = useState(false);
   const [charge, setCharge] = useState("");
@@ -115,7 +119,11 @@ function ClientDetails({ handleOpenCreateCharges }) {
       }
     }
     getChargesByClient();
-  }, [userById.cliente_id]);
+  }, [update]);
+
+  const handleUpdate = () => {
+    setUpdate(!update);
+  };
 
   return (
     <>
@@ -557,7 +565,13 @@ function ClientDetails({ handleOpenCreateCharges }) {
         </div>
       </div>
       {openEditChargeModal && (
-        <EditChargeModal charge={charge} userName={userById.nome} />
+        <EditChargeModal
+          charge={charge}
+          userName={userById.nome}
+          handleUpdate={handleUpdate}
+          handleClickSnack={handleClickSnack}
+          setCustomMessageApprove={setCustomMessageApprove}
+        />
       )}
     </>
   );

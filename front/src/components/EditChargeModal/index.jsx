@@ -24,6 +24,7 @@ export default function EditChargeModal({
   handleCloseAdd,
   charge,
   userName,
+  handleUpdate,
 }) {
   const [inputChargeDesc, setInputChargeDesc] = useState("");
   const [inputChargeExpire, setInputChargeExpire] = useState("");
@@ -91,13 +92,22 @@ export default function EditChargeModal({
       return;
     }
 
+    let formattedDate = format(
+      new Date(
+        editForm.data_vencimento.substr(6, 4),
+        editForm.data_vencimento.substr(3, 2),
+        editForm.data_vencimento.substr(0, 2)
+      ),
+      "yyyy/MM/dd"
+    );
+
     try {
       const response = await registerUserFecth.put(
         `/cobrancas/${charge.cobranca_id}`,
         {
-          descricao: editForm.descricao,
-          data_vencimento: editForm.data_vencimento,
-          valor: editForm.valor,
+          descricao: editForm.descricao.toString(),
+          data_vencimento: formattedDate.toString(),
+          valor: editForm.valor.toString(),
           paga: editForm.paga.toString(),
         },
         {
@@ -109,9 +119,7 @@ export default function EditChargeModal({
 
       console.log(response.data);
 
-      setInputChargeDesc("");
-      setInputChargeExpire("");
-      setInputChargeValue("");
+      setEditForm({});
       setSelectedValue("a");
 
       setErrorChargeDesc(false);
@@ -121,27 +129,11 @@ export default function EditChargeModal({
       localStorage.removeItem("clientsId");
       localStorage.removeItem("clientsName");
 
-      handleCloseCreateCharges();
+      handleCloseEditChargeModal();
       handleClickSnack();
-      getClientCharges();
+      handleUpdate();
 
       setCustomMessageApprove("Cobrança editada com sucesso");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getClientCharges = async () => {
-    try {
-      const response = await registerUserFecth.get(
-        `/cliente/cobrancas/${charge.cliente_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -323,7 +315,7 @@ export default function EditChargeModal({
             <div className="createcharges-buttons">
               <button
                 className="createcharges-button createcharges-cancel"
-                onClick={handleCloseCreateCharges}
+                onClick={handleCloseEditChargeModal}
               >
                 Cancelar
               </button>
