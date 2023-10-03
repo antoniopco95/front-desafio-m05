@@ -17,9 +17,7 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
     setDivIsVisible,
   } = useUser();
 
-
   const [inputChargeName, setInputChargeName] = useState("");
-
 
   const [customMessageApprove, setCustomMessageApprove] = useState("");
   const [openSnackApprove, setOpenSnackApprove] = useState(false);
@@ -67,7 +65,6 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
               openSnackApprove={openSnackApprove}
               setOpenSnackApprove={setOpenSnackApprove}
             />
-
           </>
         )}
       </div>
@@ -83,7 +80,13 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
         openSnackApprove={openSnackApprove}
         setOpenSnackApprove={setOpenSnackApprove}
       />
-      {openClientDetail && <ClientDetails handleOpenCreateCharges={handleOpenCreateCharges} />}
+      {openClientDetail && (
+        <ClientDetails
+          handleOpenCreateCharges={handleOpenCreateCharges}
+          handleClickSnack={handleClickSnack}
+          setCustomMessageApprove={setCustomMessageApprove}
+        />
+      )}
     </>
   );
 }

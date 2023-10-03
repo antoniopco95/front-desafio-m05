@@ -28,7 +28,6 @@ root.render(
               path="/dashboard"
               element={<ProtectedRoute element={<Dashboard />} />}
             />
-
           </Routes>
         </Router>
       </ClientsProvider>
