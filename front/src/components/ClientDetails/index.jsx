@@ -199,7 +199,7 @@ function ClientDetails({
                 <EditClientModal
                   userData={userById}
                   update={setUserById}
-                  function1={() => getChargesByClient()}
+                  handleUpdate={handleUpdate}
                 />
               )}
             </div>
