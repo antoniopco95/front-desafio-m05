@@ -11,24 +11,8 @@ import { IMaskInput } from "react-imask";
 import { format } from "date-fns";
 import useUser from "../../hooks/useUser";
 
-/* get /cliente/cobranca/:id (cobranças do cliente)
-put/cobrancas/:id (editar cobrança) */
-
-export default function EditChargeModal({
-  openCreateCharges,
-  handleCloseCreateCharges,
-  handleClickSnack,
-  setCustomMessageApprove,
-  inputChargeName,
-  openAdd,
-  handleCloseAdd,
-  charge,
-  userName,
-  handleUpdate,
-}) {
-  const [inputChargeDesc, setInputChargeDesc] = useState("");
-  const [inputChargeExpire, setInputChargeExpire] = useState("");
-  const [inputChargeValue, setInputChargeValue] = useState("");
+export default function EditChargeModal({ charge, userName, handleUpdate }) {
+  const { onClickSnack, setCustomMessageApprove } = useUser();
   const [selectedValue, setSelectedValue] = useState("a");
 
   const [errorChargeDesc, setErrorChargeDesc] = useState(false);
@@ -130,8 +114,8 @@ export default function EditChargeModal({
       localStorage.removeItem("clientsName");
 
       handleCloseEditChargeModal();
-      handleClickSnack();
       handleUpdate();
+      onClickSnack();
 
       setCustomMessageApprove("Cobrança editada com sucesso");
     } catch (error) {

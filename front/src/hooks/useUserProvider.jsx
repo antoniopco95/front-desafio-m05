@@ -7,6 +7,12 @@ function UseUserProvider() {
   const [divIsVisible, setDivIsVisible] = useState(true);
   const [id, setId] = useState("");
   const [charges, setCharges] = useState([]);
+  const [customMessageApprove, setCustomMessageApprove] = useState("");
+
+  const [openSnackApprove, setOpenSnackApprove] = useState(false);
+  const onClickSnack = () => {
+    setOpenSnackApprove(true);
+  };
 
   useEffect(() => {}, [divIsVisible, openClientDetail]);
 
@@ -23,6 +29,11 @@ function UseUserProvider() {
     setCharges,
     openEditChargeModal,
     setOpenEditChargeModal,
+    customMessageApprove,
+    setCustomMessageApprove,
+    openSnackApprove,
+    setOpenSnackApprove,
+    onClickSnack,
   };
 }
 
