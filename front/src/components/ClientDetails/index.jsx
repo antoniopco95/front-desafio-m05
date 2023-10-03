@@ -1,7 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 import "./styles.css";
 import useUser from "../../hooks/useUser";
 import { useEffect, useState } from "react";
