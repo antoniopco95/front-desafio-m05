@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import "./styles.css";
 import ClientsIcon from "../../assets/ClientsIcon.svg";
@@ -10,8 +12,19 @@ import { useClients } from "../../context/clientsContext";
 import useUser from "../../hooks/useUser";
 
 function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
-  const { clientsData, updateClientsData } = useClients();
+  const { clientsData, updateClientsData, allStatus, setAllStatus, resetAllStatus, updateClientStatus, clientStatus, setClientStatus } = useClients();
   const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
+
+  const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")
+
+  const emDia = clientsData.filter(client => client.status === "Em dia")
+
+  const handleClientStatus = (reset) => {
+    resetAllStatus(reset);
+    updateClientStatus("clear");
+
+
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +79,7 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
             className="clientstable-icon"
             src={ClientsIcon}
             alt="clientsicon"
+            onClick={() => handleClientStatus("clear")}
           />
           <span className="clientstable-title">Clientes</span>
         </div>
@@ -96,7 +110,119 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
           </tr>
         </thead>
         <tbody className="table-body">
-          {clientsData.map((client) => (
+          {allStatus === "clear" && clientStatus === "clear" ? (
+
+
+            clientsData.map((client) => (
+              <tr key={client.cliente_id} className="table-tr">
+                <td
+                  className="table-td client-name"
+                  onClick={() => {
+                    setOpenClientDetail(true);
+                    setDivIsVisible(false);
+                    setId(client);
+                  }}
+                >
+                  {client.nome}
+                </td>
+                <td className="table-td">{formatCPF(client.cpf)}</td>
+                <td className="table-td">{client.email}</td>
+                <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
+                <td
+                  className={`table-td status ${client.status === "Inadimplente" ? "redStyle" : "blueStyle"
+                    }`}
+                >
+                  {client.status}
+                </td>
+                <td className="table-td">
+                  <img
+                    className="addcharge-icon"
+                    src={AddCharge}
+                    alt="addchargeicon"
+                    onClick={() => {
+                      setItem("clientsName", client.nome);
+                      setItem("clientsId", client.cliente_id);
+                      handleOpenCreateCharges();
+                    }}
+                  />
+                </td>
+              </tr>
+            ))
+
+          ) : clientStatus === "Inadimplente" ? (
+
+            inadimplentes.map((client) => (
+
+              <tr key={client.cliente_id} className="table-tr">
+                <td
+                  className="table-td client-name"
+                  onClick={() => {
+                    setOpenClientDetail(true);
+                    setDivIsVisible(false);
+                    setId(client);
+                  }}
+                >
+                  {client.nome}
+                </td>
+                <td className="table-td">{formatCPF(client.cpf)}</td>
+                <td className="table-td">{client.email}</td>
+                <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
+                <td className={"table-td status redStyle"}>
+                  Inadimplente
+                </td>
+                <td className="table-td">
+                  <img
+                    className="addcharge-icon"
+                    src={AddCharge}
+                    alt="addchargeicon"
+                    onClick={() => {
+                      setItem("clientsName", client.nome);
+                      setItem("clientsId", client.cliente_id);
+                      handleOpenCreateCharges();
+                    }}
+                  />
+                </td>
+              </tr>
+            ))
+
+          ) : clientStatus === "Em dia" ? (
+
+            emDia.map((client) => (
+
+              <tr key={client.cliente_id} className="table-tr">
+                <td
+                  className="table-td client-name"
+                  onClick={() => {
+                    setOpenClientDetail(true);
+                    setDivIsVisible(false);
+                    setId(client);
+                  }}
+                >
+                  {client.nome}
+                </td>
+                <td className="table-td">{formatCPF(client.cpf)}</td>
+                <td className="table-td">{client.email}</td>
+                <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
+                <td className={"table-td status blueStyle"}>
+                  Em dia
+                </td>
+                <td className="table-td">
+                  <img
+                    className="addcharge-icon"
+                    src={AddCharge}
+                    alt="addchargeicon"
+                    onClick={() => {
+                      setItem("clientsName", client.nome);
+                      setItem("clientsId", client.cliente_id);
+                      handleOpenCreateCharges();
+                    }}
+                  />
+                </td>
+              </tr>
+            ))
+
+
+          ) : clientsData.map((client) => (
             <tr key={client.cliente_id} className="table-tr">
               <td
                 className="table-td client-name"
@@ -130,7 +256,9 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
                 />
               </td>
             </tr>
-          ))}
+          ))
+
+          }
         </tbody>
       </table>
     </div>
