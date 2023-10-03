@@ -11,6 +11,9 @@ import { IMaskInput } from "react-imask";
 import { format } from "date-fns";
 import useUser from "../../hooks/useUser";
 
+/* get /cliente/cobranca/:id (cobranças do cliente)
+put/cobrancas/:id (editar cobrança) */
+
 export default function EditChargeModal({
   openCreateCharges,
   handleCloseCreateCharges,
@@ -41,6 +44,8 @@ export default function EditChargeModal({
     paga: "",
   });
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     if (openEditChargeModal) {
       setEditForm({
@@ -64,8 +69,6 @@ export default function EditChargeModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = localStorage.getItem("clientsId");
-    const token = localStorage.getItem("token");
 
     if (selectedValue === "a") {
       setEditForm({ ...editForm, paga: true });
@@ -73,39 +76,29 @@ export default function EditChargeModal({
       setEditForm({ ...editForm, paga: false });
     }
 
-    if (inputChargeDesc === "") {
+    if (editForm.descricao === "") {
       setErrorChargeDesc(true);
       return;
     }
 
-    if (inputChargeExpire === "") {
+    if (editForm.data_vencimento === "") {
       setErrorChargeExpire(true);
       return;
     }
 
-    if (inputChargeValue === "") {
+    if (editForm.valor === "") {
       setErrorChargeValue(true);
       return;
     }
 
-    let formattedDate = format(
-      new Date(
-        inputChargeExpire.substr(6, 4),
-        inputChargeExpire.substr(3, 2),
-        inputChargeExpire.substr(0, 2)
-      ),
-      "yyyy/MM/dd"
-    );
-
     try {
-      const response = await registerUserFecth.post(
-        "/create-charge",
+      const response = await registerUserFecth.put(
+        `/cobrancas/${charge.cobranca_id}`,
         {
-          cliente_id: id.toString(),
-          descricao: inputChargeDesc.toString(),
-          data_vencimento: formattedDate.toString(),
-          valor: inputChargeValue.toString(),
-          paga: isPaid.toString(),
+          descricao: editForm.descricao,
+          data_vencimento: editForm.data_vencimento,
+          valor: editForm.valor,
+          paga: editForm.paga.toString(),
         },
         {
           headers: {
@@ -130,8 +123,25 @@ export default function EditChargeModal({
 
       handleCloseCreateCharges();
       handleClickSnack();
+      getClientCharges();
 
-      setCustomMessageApprove("Cobrança cadastrada com sucesso");
+      setCustomMessageApprove("Cobrança editada com sucesso");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getClientCharges = async () => {
+    try {
+      const response = await registerUserFecth.get(
+        `/cliente/cobrancas/${charge.cliente_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
