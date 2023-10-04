@@ -38,7 +38,6 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
     resetAllStatus(reset);
     updateClientStatus("clear");
 
-
   }
 
   useEffect(() => {
@@ -173,7 +172,6 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
 
           ) : allStatus === "clear" && clientStatus === "clear" ? (
 
-
             clientsData.map((client) => (
               <tr key={client.cliente_id} className="table-tr">
                 <td
@@ -281,7 +279,6 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
                 </td>
               </tr>
             ))
-
 
           ) : (clientsData.map((client) => (
             <tr key={client.cliente_id} className="table-tr">

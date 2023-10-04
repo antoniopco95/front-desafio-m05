@@ -22,7 +22,6 @@ function ChargesTable() {
         resetAllCharge(reset)
         updateChargeType("clear")
 
-
     }
 
     const [chargesData, setChargesData] = useState([]);
@@ -43,12 +42,6 @@ function ChargesTable() {
         return nameClient.includes(query) || idClient.includes(query);
     })
 
-
-
-
-
-
-
     let Real = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -65,8 +58,6 @@ function ChargesTable() {
             });
 
             setChargesData(response.data);
-
-
 
         } catch (error) {
             console.log(error)
@@ -211,7 +202,6 @@ function ChargesTable() {
                                 <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
-
 
                     ) :
 
