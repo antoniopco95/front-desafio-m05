@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ChargesCard from '../../components/ChargesCard'
+import ChargesCard from '../../components/ChargesCard';
 import ClientsCard from '../ClientsCard';
 import TotalCard from '../TotalCard';
 import './styles.css'
@@ -10,13 +10,23 @@ import ChargeDelayed from '../../assets/ChargeDelayed.svg'
 import ChargePending from '../../assets/ChargePending.svg'
 import { getItem } from '../../utils/storage'
 import registerUserFecth from './../../axios/config';
+import { useClients } from '../../context/clientsContext';
 function HomeComponent() {
+
+    const { home, setHome, clients, setClients, charges, setCharges, clientsData, updateChargeType, updateClientStatus } = useClients();
+
+    const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")
+
+    const emDia = clientsData.filter(client => client.status === "Em dia")
+
     const [chargesDue, setChargesDue] = useState([])
     const [chargesExpired, setChargesExpired] = useState([])
     const [chargesPaid, setChargesPaid] = useState([])
     const [totalPaga, setPagas] = useState('')
     const [totalPrevista, setPrevista] = useState('')
     const [totalVencida, setVencida] = useState('')
+
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -87,6 +97,24 @@ function HomeComponent() {
         fetchData();
     }, []);
 
+    const handleChargesCardClick = (type) => {
+        updateChargeType(type);
+
+        setHome(false);
+        setClients(false);
+        setCharges(true);
+    };
+
+    const handleClientsCardClick = (status) => {
+        updateClientStatus(status);
+
+        setHome(false);
+        setClients(true);
+        setCharges(false);
+    };
+
+
+
 
     return (
         <>
@@ -98,17 +126,26 @@ function HomeComponent() {
                     <TotalCard totalCardIcon={ChargePending} totalCardType='Previstas' totalCardValue={new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrevista)} totalCardColor='yellow' />
                 </div>
                 <div className='homecard-box'>
-                    <ChargesCard user={chargesDue} chargesName='Vencidas' chargesNumber={chargesDue.length} chargesColor='red' />
-                    <ChargesCard user={chargesExpired} chargesName='Previstas' chargesNumber={chargesExpired.length} chargesColor='yellow' />
-                    <ChargesCard user={chargesPaid} chargesName='Pagas' chargesNumber={chargesPaid.length} chargesColor='blue' />
+
+                    <ChargesCard user={chargesPaid} chargesName='Pagas' chargesNumber={chargesPaid.length} chargesColor='blue' onSeeAllClick={() => handleChargesCardClick('pagas')} />
+                    <ChargesCard user={chargesDue} chargesName='Vencidas' chargesNumber={chargesDue.length} chargesColor='red' onSeeAllClick={() => handleChargesCardClick('vencidas')} />
+                    <ChargesCard user={chargesExpired} chargesName='Previstas' chargesNumber={chargesExpired.length} chargesColor='yellow' onSeeAllClick={() => handleChargesCardClick('previstas')} />
+
                 </div>
+
                 <div className='clientscard-box'>
-                    <ClientsCard clientsName='Inadimplentes' clientsNumber='08' clientsColor='red' iconChoose={PersonRemove} />
-                    <ClientsCard clientsName='em dia' clientsNumber='08' clientsColor='blue' iconChoose={PersonAdd} />
+                    <ClientsCard filterStatus="Inadimplente" clientsName='Inadimplentes' clientsNumber={inadimplentes.length} clientsColor='red' iconChoose={PersonRemove}
+                        onSeeAllStatus={() => handleClientsCardClick('Inadimplente')} />
+
+                    <ClientsCard filterStatus="Em dia" clientsName='em dia' clientsNumber={emDia.length} clientsColor='blue' iconChoose={PersonAdd}
+                        onSeeAllStatus={() => handleClientsCardClick('Em dia')} />
                 </div>
+
             </div>
+
+
         </>
     )
-};
+}
 
 export default HomeComponent;

@@ -9,9 +9,12 @@ import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
 import DeleteChargesModal from "../../components/DeleteChargesModal";
 import { useNavigate } from "react-router-dom";
-import ChargesDetails from "../../components/ChargesDetails";
+import ClientDetails from "../../components/ClientDetails";
+import { useClients } from "../../context/clientsContext";
+import useUser from "../../hooks/useUser";
 
 function Dashboard() {
+  const { home, setHome, clients, setClients, charges, setCharges } = useUser();
 
   const [delChargesOpen, setDelChargesOpen] = useState(false);
   const handleDelChargesOpen = () => setDelChargesOpen(true);
@@ -88,6 +91,7 @@ function Dashboard() {
   };
 
   return (
+
     <div className="box-size">
       <VerticalHeader
         home={home}
@@ -101,7 +105,13 @@ function Dashboard() {
         <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
 
+
+
       {home && <HomeComponent />}
+
+
+
+
       {clients && (
         <ClientsComponent
           openAdd={openAdd}
@@ -136,6 +146,7 @@ function Dashboard() {
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
 
     </div>
+
   );
 }
 

@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './styles.css'
 
-function ChargesCard({ chargesName, chargesNumber, chargesColor, user }) {
+function ChargesCard({ chargesName, chargesNumber, chargesColor, user, onSeeAllClick, }) {
+
+
     let Real = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
     });
+
+    const handleSeeAllClick = () => {
+        onSeeAllClick();
+    }
 
     return (
         <div className='charges-card'>
@@ -33,10 +39,13 @@ function ChargesCard({ chargesName, chargesNumber, chargesColor, user }) {
                     })}
                 </tbody>
             </table>
-            <span className='see-all'><a className='link' href="">Ver todos</a></span>
+            <span className='see-all'>
+
+                <Link className='link' onClick={handleSeeAllClick}>Ver todos</Link>
+            </span>
         </div>
 
     )
-};
+}
 
 export default ChargesCard;

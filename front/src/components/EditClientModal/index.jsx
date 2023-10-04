@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-export default function EditClientModal({ userData, function1, update, }) {
+export default function EditClientModal({ userData, handleUpdate, update, }) {
 
   const { openEditClientModal, setOpenEditClientModal } = useUser();
 
@@ -153,7 +153,7 @@ export default function EditClientModal({ userData, function1, update, }) {
           uf: "",
         });
 
-        function1();
+        handleUpdate();
       }
     } catch (error) {
       if (error.response) {

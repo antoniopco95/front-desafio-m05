@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import HomeIcon from '../../assets/HomeIcon.svg';
 import ClientsIcon from '../../assets/ClientsIcon.svg';
 import ChargesIcon from '../../assets/ChargesIcon.svg';
@@ -31,6 +31,6 @@ function VerticalHeader({ home, clients, charges, toggleHome, toggleClients, tog
             </button>
         </div >
     )
-};
+}
 
-export default VerticalHeader
+export default VerticalHeader;

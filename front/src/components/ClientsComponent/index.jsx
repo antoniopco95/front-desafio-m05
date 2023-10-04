@@ -14,6 +14,11 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, customMessag
     divIsVisible,
     setOpenClientDetail,
     setDivIsVisible,
+    customMessageApprove,
+    setCustomMessageApprove,
+    openSnackApprove,
+    setOpenSnackApprove,
+    onClickSnack,
   } = useUser();
 
   const [inputChargeName, setInputChargeName] = useState("");
@@ -48,7 +53,7 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, customMessag
             <CreateCharges
               openCreateCharges={openCreateCharges}
               handleCloseCreateCharges={handleCloseCreateCharges}
-              handleClickSnack={handleClickSnack}
+              handleClickSnack={onClickSnack}
               setCustomMessageApprove={setCustomMessageApprove}
               inputChargeName={inputChargeName}
             />
@@ -57,14 +62,13 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, customMessag
               openSnackApprove={openSnackApprove}
               setOpenSnackApprove={setOpenSnackApprove}
             />
-
           </>
         )}
       </div>
       <CreateCharges
         openCreateCharges={openCreateCharges}
         handleCloseCreateCharges={handleCloseCreateCharges}
-        handleClickSnack={handleClickSnack}
+        handleClickSnack={onClickSnack}
         setCustomMessageApprove={setCustomMessageApprove}
         inputChargeName={inputChargeName}
       />
@@ -73,7 +77,14 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, customMessag
         openSnackApprove={openSnackApprove}
         setOpenSnackApprove={setOpenSnackApprove}
       />
-      {openClientDetail && <ClientDetails handleDelChargesOpen={handleDelChargesOpen} handleOpenChargesDetails={handleOpenChargesDetails} handleOpenCreateCharges={handleOpenCreateCharges} />}
+      {openClientDetail && (
+        <ClientDetails handleDelChargesOpen={handleDelChargesOpen}
+          handleOpenChargesDetails={handleOpenChargesDetails}
+          handleOpenCreateCharges={handleOpenCreateCharges}
+          handleClickSnack={onClickSnack}
+          setCustomMessageApprove={setCustomMessageApprove}
+        />
+      )}
     </>
   );
 }
