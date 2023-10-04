@@ -1,24 +1,20 @@
-/* eslint-disable no-undef */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 import "./styles.css";
 import useUser from "../../hooks/useUser";
 import { useEffect, useState } from "react";
 import registerUserFecth from "../../axios/config";
 import { getItem, setItem } from "../../utils/storage";
 import { format } from "date-fns";
-
-import useToast from "../../hooks/useToast";
-
-
-import { setItem } from "../../utils/storage";
-
 import EditClientModal from "../EditClientModal";
+import EditChargeModal from "../EditChargeModal";
 
-function ClientDetails({ handleOpenCreateCharges }) {
+function ClientDetails({
+  handleOpenCreateCharges,
+  setCustomMessageApprove,
+  handleClickSnack,
+}) {
   const [update, setUpdate] = useState(false);
   const [chargesLoaded, setChargesLoaded] = useState(false);
+  const [charge, setCharge] = useState("");
   let Real = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -29,6 +25,8 @@ function ClientDetails({ handleOpenCreateCharges }) {
     setOpenEditClientModal,
     charges,
     setCharges,
+    openEditChargeModal,
+    setOpenEditChargeModal,
   } = useUser();
   const [userById, setUserById] = useState({
     nome: "-",
@@ -97,13 +95,15 @@ function ClientDetails({ handleOpenCreateCharges }) {
         );
 
         if (response.status === 200) {
-
           setCharges(response.data);
           setChargesLoaded(true);
-
         } else {
           const { status, data } = response;
-          if (status === 404 && data && data.error === "Erro ao buscar cobranças do cliente") {
+          if (
+            status === 404 &&
+            data &&
+            data.error === "Erro ao buscar cobranças do cliente"
+          ) {
             setCharges([]);
             setChargesLoaded(true);
           } else {
@@ -115,10 +115,13 @@ function ClientDetails({ handleOpenCreateCharges }) {
       }
     }
     getChargesByClient();
-  }, [userById.cliente_id]);
+  }, [update]);
+
+  const handleUpdate = () => {
+    setUpdate(!update);
+  };
 
   return (
-
     <>
       <div className="client-detail-container">
         <div className="client-detail-title">
@@ -196,7 +199,7 @@ function ClientDetails({ handleOpenCreateCharges }) {
                 <EditClientModal
                   userData={userById}
                   update={setUserById}
-                  function1={() => getChargesByClient()}
+                  handleUpdate={handleUpdate}
                 />
               )}
             </div>
@@ -263,11 +266,14 @@ function ClientDetails({ handleOpenCreateCharges }) {
         <div className="client-charges-detail">
           <div className="client-charges-title">
             <h1>Cobranças do Cliente</h1>
-            <div className="client-charges-button" onClick={() => {
-              setItem("clientsName", userById.nome);
-              setItem("clientsId", userById.cliente_id);
-              handleOpenCreateCharges();
-            }}>
+            <div
+              className="client-charges-button"
+              onClick={() => {
+                setItem("clientsName", userById.nome);
+                setItem("clientsId", userById.cliente_id);
+                handleOpenCreateCharges();
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
@@ -401,9 +407,7 @@ function ClientDetails({ handleOpenCreateCharges }) {
             </div>
             <div className="client-charges-header-line"></div>
             {chargesLoaded ? (
-
               charges.length > 0 ? (
-
                 charges.map((charge) => {
                   return (
                     <>
@@ -416,7 +420,10 @@ function ClientDetails({ handleOpenCreateCharges }) {
                         </div>
                         <div className="line-date font1">
                           <p>
-                            {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                            {format(
+                              new Date(charge.data_vencimento),
+                              "dd/MM/yyyy"
+                            )}
                           </p>
                         </div>
                         <div className="line-value font1">
@@ -424,20 +431,22 @@ function ClientDetails({ handleOpenCreateCharges }) {
                         </div>
                         <div className="line-status-container">
                           <div
-                            className={`line-status ${charge.status === "Vencida"
-                              ? "overcome-container"
-                              : charge.status === "Prevista"
+                            className={`line-status ${
+                              charge.status === "Vencida"
+                                ? "overcome-container"
+                                : charge.status === "Prevista"
                                 ? "pending-container"
                                 : charge.status === "Paga" && "paid-container"
-                              }`}
+                            }`}
                           >
                             <p
-                              className={`font3 ${charge.status === "Vencida"
-                                ? "overcome-text"
-                                : charge.status === "Prevista"
+                              className={`font3 ${
+                                charge.status === "Vencida"
+                                  ? "overcome-text"
+                                  : charge.status === "Prevista"
                                   ? "pending-text"
                                   : charge.status === "Paga" && "paid-text"
-                                }`}
+                              }`}
                             >
                               {charge.status}
                             </p>
@@ -446,7 +455,13 @@ function ClientDetails({ handleOpenCreateCharges }) {
                         <div className="line-description font1">
                           <p>{charge.descricao ? charge.descricao : "-"}</p>
                         </div>
-                        <div className="line-edit">
+                        <div
+                          className="line-edit"
+                          onClick={() => {
+                            setOpenEditChargeModal(true);
+                            setCharge({ ...charge });
+                          }}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="17"
@@ -534,15 +549,10 @@ function ClientDetails({ handleOpenCreateCharges }) {
                     </>
                   );
                 })
-
               ) : (
-
                 <p>...</p>
-
               )
-
             ) : (
-
               <div className="line-description font1">
                 <p>Nehuma cobrança cadastrada para o cliente.</p>
               </div>
@@ -550,9 +560,17 @@ function ClientDetails({ handleOpenCreateCharges }) {
           </div>
         </div>
       </div>
+      {openEditChargeModal && (
+        <EditChargeModal
+          charge={charge}
+          userName={userById.nome}
+          handleUpdate={handleUpdate}
+          handleClickSnack={handleClickSnack}
+          setCustomMessageApprove={setCustomMessageApprove}
+        />
+      )}
     </>
   );
 }
-
 
 export default ClientDetails;

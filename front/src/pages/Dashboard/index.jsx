@@ -8,15 +8,11 @@ import ClientsComponent from "../../components/ClientsComponent";
 import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
 import { useNavigate } from "react-router-dom";
-import ClientDetails from "../../components/ClientDetails";
-import useUser from "../../hooks/useUser";
+import { useClients } from "../../context/clientsContext";
+
 
 function Dashboard() {
-  const { openClientDetail, setOpenClientDetail } = useUser();
-
-  const [home, setHome] = useState(true);
-  const [clients, setClients] = useState(false);
-  const [charges, setCharges] = useState(false);
+  const { home, setHome, clients, setClients, charges, setCharges } = useClients();
 
   const [openEdit, setOpenEdit] = useState(false);
   const handleOpenEdit = () => setOpenEdit(true);
@@ -74,6 +70,7 @@ function Dashboard() {
   };
 
   return (
+
     <div className="box-size">
       <VerticalHeader
         home={home}
@@ -86,8 +83,14 @@ function Dashboard() {
       <div className="login-header">
         <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
-      
+
+
+
       {home && <HomeComponent />}
+
+
+
+
       {clients && (
         <ClientsComponent
           openAdd={openAdd}
@@ -97,9 +100,15 @@ function Dashboard() {
       )}
 
       {charges && <ChargesComponent />}
+
+
+
+
+
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
 
     </div>
+
   );
 }
 
