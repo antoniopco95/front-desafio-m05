@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import ClientsIcon from "../../assets/ClientsIcon.svg";
 import FilterIcon from "../../assets/FilterIcon.svg";
 import SearchIcon from "../../assets/SearchIcon.svg";
 import AddCharge from "../../assets/AddCharge.svg";
+import NotFoundIcon from "../../assets/NotFound.svg";
 import { getItem, setItem } from "../../utils/storage";
 import registerUserFecth from "../../axios/config";
 import { useClients } from "../../context/clientsContext";
@@ -14,6 +15,20 @@ import useUser from "../../hooks/useUser";
 function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
   const { clientsData, updateClientsData, allStatus, setAllStatus, resetAllStatus, updateClientStatus, clientStatus, setClientStatus } = useClients();
   const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
+
+  const [searchClient, setSearchClient] = useState("");
+
+  const handleInputSearch = (e) => {
+    setSearchClient(e.target.value);
+  }
+
+  const clientsFilter = clientsData.filter(client => {
+    const nameClient = client.nome.toLowerCase();
+    const query = searchClient.toLowerCase();
+    return nameClient.includes(query);
+
+
+  })
 
   const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")
 
@@ -94,6 +109,8 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
             className="clientstable-searchinput"
             type="text"
             placeholder="Pesquisa"
+            value={searchClient}
+            onChange={handleInputSearch}
           ></input>
           <img src={SearchIcon} alt="searchicon" />
         </div>
@@ -110,7 +127,51 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
           </tr>
         </thead>
         <tbody className="table-body">
-          {allStatus === "clear" && clientStatus === "clear" ? (
+          {clientsFilter.length === 0 ? (
+
+            <tr className="centered">
+              <td colSpan="6">
+                <img className="not-found" src={NotFoundIcon} alt="Not Found" />
+              </td>
+            </tr>
+
+          ) : searchClient !== "" ? (clientsFilter.map((client) => (
+            <tr key={client.cliente_id} className="table-tr">
+              <td
+                className="table-td client-name"
+                onClick={() => {
+                  setOpenClientDetail(true);
+                  setDivIsVisible(false);
+                  setId(client);
+                }}
+              >
+                {client.nome}
+              </td>
+              <td className="table-td">{formatCPF(client.cpf)}</td>
+              <td className="table-td">{client.email}</td>
+              <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
+              <td
+                className={`table-td status ${client.status === "Inadimplente" ? "redStyle" : "blueStyle"
+                  }`}
+              >
+                {client.status}
+              </td>
+              <td className="table-td">
+                <img
+                  className="addcharge-icon"
+                  src={AddCharge}
+                  alt="addchargeicon"
+                  onClick={() => {
+                    setItem("clientsName", client.nome);
+                    setItem("clientsId", client.cliente_id);
+                    handleOpenCreateCharges();
+                  }}
+                />
+              </td>
+            </tr>
+          ))
+
+          ) : allStatus === "clear" && clientStatus === "clear" ? (
 
 
             clientsData.map((client) => (
@@ -222,7 +283,7 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
             ))
 
 
-          ) : clientsData.map((client) => (
+          ) : (clientsData.map((client) => (
             <tr key={client.cliente_id} className="table-tr">
               <td
                 className="table-td client-name"
@@ -257,6 +318,8 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
               </td>
             </tr>
           ))
+
+          )
 
           }
         </tbody>

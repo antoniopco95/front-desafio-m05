@@ -6,6 +6,7 @@ import FilterIcon from '../../assets/FilterIcon.svg';
 import SearchIcon from '../../assets/SearchIcon.svg';
 import EditTable from '../../assets/EditTable.svg';
 import DeleteTable from '../../assets/DeleteTable.svg';
+import NotFoundIcon from "../../assets/NotFound.svg";
 import { useEffect, useState } from 'react';
 import { getItem } from '../../utils/storage';
 import registerUserFecth from '../../axios/config';
@@ -28,6 +29,22 @@ function ChargesTable() {
     const [chargesDue, setChargesDue] = useState([])
     const [chargesExpired, setChargesExpired] = useState([])
     const [chargesPaid, setChargesPaid] = useState([])
+    const [searchCharges, setSearchCharges] = useState("");
+
+    const handleInputSearch = (e) => {
+        setSearchCharges(e.target.value);
+    }
+
+    const chargesFilter = chargesData.filter(charge => {
+        const nameClient = charge.nome.toLowerCase();
+        const idClient = charge.cobranca_id.toString();
+        const query = searchCharges.toLowerCase();
+
+        return nameClient.includes(query) || idClient.includes(query);
+    })
+
+
+
 
 
 
@@ -142,7 +159,14 @@ function ChargesTable() {
                 <div className='chargestable-filterandinput'>
                     <button className='chargestable-filterbutton'><img src={FilterIcon} alt="filtericon" /></button>
                     <div className='chargestable-search'>
-                        <input className='chargestable-searchinput' type="text" placeholder='Pesquisa'></input>
+                        <input
+                            className='chargestable-searchinput'
+                            type="text"
+                            placeholder='Pesquisa'
+                            value={searchCharges}
+                            onChange={handleInputSearch}
+                        >
+                        </input>
                         <img src={SearchIcon} alt="searchicon" />
                     </div>
                 </div>
@@ -161,7 +185,35 @@ function ChargesTable() {
                     </tr>
                 </thead>
                 <tbody className='table-body'>
-                    {
+                    {chargesFilter.length === 0 ? (
+                        <tr className="centered">
+                            <td colSpan="6">
+                                <img className="not-found" src={NotFoundIcon} alt="Not Found" />
+                            </td>
+                        </tr>
+                    ) : searchCharges !== "" ? (
+
+                        chargesFilter.map((charge, index) => (
+                            <tr key={index} className='table-tr'>
+                                <td className='table-td'>{charge.nome}</td>
+                                <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
+                                <td className='table-td'>{Real.format(charge.valor)}</td>
+                                <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
+                                <td className={`table-td status ${charge.status === "vencida"
+                                    ? "red"
+                                    : charge.status === "prevista"
+                                        ? "yellow"
+                                        : charge.status === "paga" && "blue"
+                                    }`}>
+                                    {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
+                                <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
+                                <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                            </tr>
+                        ))
+
+
+                    ) :
 
                         allCharges === "clear" && chargeType === "clear" ? (chargesData.map((charge, index) => (
                             <tr key={index} className='table-tr'>
@@ -190,7 +242,7 @@ function ChargesTable() {
                                     <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
                                     <td className='table-td'>{Real.format(charge.valor)}</td>
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
-                                    <td className='table-td status red'>vencida</td>
+                                    <td className='table-td status red'>Vencida</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                     <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
@@ -204,7 +256,7 @@ function ChargesTable() {
                                     <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
                                     <td className='table-td'>{Real.format(charge.valor)}</td>
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
-                                    <td className='table-td status yellow'>prevista</td>
+                                    <td className='table-td status yellow'>Prevista</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                     <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
@@ -219,7 +271,7 @@ function ChargesTable() {
                                     <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
                                     <td className='table-td'>{Real.format(charge.valor)}</td>
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
-                                    <td className='table-td status blue'>paga</td>
+                                    <td className='table-td status blue'>Paga</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                     <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
