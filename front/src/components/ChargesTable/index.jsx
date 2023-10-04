@@ -24,18 +24,21 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
 
   const {
     chargeType,
-    home,
-    clients,
-    charges,
     allCharges,
-    setAllCharges,
     resetAllCharge,
     updateChargeType,
+    getAllCharges,
+    chargesData,
+    chargesExpired,
+    setChargesExpired
   } = useClients();
 
-  const [chargesData, setChargesData] = useState([]);
+  const handleChargesName = (reset) => {
+    resetAllCharge(reset)
+    updateChargeType("clear")
+  }
+
   const [chargesDue, setChargesDue] = useState([]);
-  const [chargesExpired, setChargesExpired] = useState([]);
   const [chargesPaid, setChargesPaid] = useState([]);
 
   let Real = new Intl.NumberFormat("pt-BR", {
@@ -43,23 +46,9 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
     currency: "BRL",
   });
 
-  async function getAllCharges() {
-    const token = getItem("token");
-    try {
-      const response = await registerUserFecth.get("/cobrancas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setChargesData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
     getAllCharges();
-  }, [update]);
+  }, [update, chargesData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,7 +89,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
       }
     };
     fetchData();
-  }, []);
+  }, [chargesExpired]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,7 +109,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
       }
     };
     fetchData();
-  }, []);
+  }, [chargesDue, chargesExpired, chargesPaid]);
 
   return (
     <div className="chargestable-box">
@@ -165,26 +154,41 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
           {allCharges === "clear" && chargeType === "clear"
             ? chargesData.map((charge, index) => (
               <tr key={index} className="table-tr">
-                <td className="table-td">{charge.nome}</td>
-                <td className="table-td">
+                <td className="table-td" onClick={() => {
+                  setItem("chargesId", charge.cobranca_id);
+                  handleOpenChargesDetails();
+                }}>{charge.nome}</td>
+                <td className="table-td" onClick={() => {
+                  setItem("chargesId", charge.cobranca_id);
+                  handleOpenChargesDetails();
+                }}>
                   {charge.cobranca_id.substring(0, 8)}
                 </td>
-                <td className="table-td">{Real.format(charge.valor)}</td>
-                <td className="table-td">
+                <td className="table-td" onClick={() => {
+                  setItem("chargesId", charge.cobranca_id);
+                  handleOpenChargesDetails();
+                }}>{Real.format(charge.valor)}</td>
+                <td className="table-td" onClick={() => {
+                  setItem("chargesId", charge.cobranca_id);
+                  handleOpenChargesDetails();
+                }}>
                   {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                 </td>
                 <td
                   className={`table-td status ${charge.status === "vencida"
-                      ? "red"
-                      : charge.status === "prevista"
-                        ? "yellow"
-                        : charge.status === "paga" && "blue"
+                    ? "red"
+                    : charge.status === "prevista"
+                      ? "yellow"
+                      : charge.status === "paga" && "blue"
                     }`}
                 >
                   {charge.status.charAt(0).toUpperCase() +
                     charge.status.slice(1)}
                 </td>
-                <td className="table-td">
+                <td className="table-td" onClick={() => {
+                  setItem("chargesId", charge.cobranca_id);
+                  handleOpenChargesDetails();
+                }}>
                   {charge.descricao === null
                     ? ""
                     : `${charge.descricao
@@ -210,6 +214,10 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                     src={DeleteTable}
                     alt="deletetableicon"
                     className="buttons"
+                    onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleDelChargesOpen();
+                    }}
                   />
                 </td>
               </tr>
@@ -227,12 +235,24 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                   }}>
                     {charge.cobranca_id.substring(0, 8)}
                   </td>
-                  <td className="table-td">{Real.format(charge.valor)}</td>
-                  <td className="table-td">
+                  <td className="table-td" onClick={() => {
+                    setItem("chargesId", charge.cobranca_id);
+                    handleOpenChargesDetails();
+                  }}>{Real.format(charge.valor)}</td>
+                  <td className="table-td" onClick={() => {
+                    setItem("chargesId", charge.cobranca_id);
+                    handleOpenChargesDetails();
+                  }}>
                     {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                   </td>
-                  <td className="table-td status red">vencida</td>
-                  <td className="table-td">
+                  <td className="table-td status red" onClick={() => {
+                    setItem("chargesId", charge.cobranca_id);
+                    handleOpenChargesDetails();
+                  }}>Vencida</td>
+                  <td className="table-td" onClick={() => {
+                    setItem("chargesId", charge.cobranca_id);
+                    handleOpenChargesDetails();
+                  }}>
                     {charge.descricao === null
                       ? ""
                       : `${charge.descricao
@@ -258,6 +278,10 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                       src={DeleteTable}
                       alt="deletetableicon"
                       className="buttons"
+                      onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleDelChargesOpen();
+                      }}
                     />
                   </td>
                 </tr>
@@ -265,16 +289,34 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
               : chargeType === "previstas"
                 ? chargesExpired.map((charge, index) => (
                   <tr key={index} className="table-tr">
-                    <td className="table-td">{charge.nome}</td>
-                    <td className="table-td">
+                    <td className="table-td" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>{charge.nome}</td>
+                    <td className="table-td" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>
                       {charge.cobranca_id.substring(0, 8)}
                     </td>
-                    <td className="table-td">{Real.format(charge.valor)}</td>
-                    <td className="table-td">
+                    <td className="table-td" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>{Real.format(charge.valor)}</td>
+                    <td className="table-td" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>
                       {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                     </td>
-                    <td className="table-td status yellow">prevista</td>
-                    <td className="table-td">
+                    <td className="table-td status yellow" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>Prevista</td>
+                    <td className="table-td" onClick={() => {
+                      setItem("chargesId", charge.cobranca_id);
+                      handleOpenChargesDetails();
+                    }}>
                       {charge.descricao === null
                         ? ""
                         : `${charge.descricao
@@ -300,6 +342,10 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                         src={DeleteTable}
                         alt="deletetableicon"
                         className="buttons"
+                        onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleDelChargesOpen();
+                        }}
                       />
                     </td>
                   </tr>
@@ -307,16 +353,34 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                 : chargeType === "pagas"
                   ? chargesPaid.map((charge, index) => (
                     <tr key={index} className="table-tr">
-                      <td className="table-td">{charge.nome}</td>
-                      <td className="table-td">
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>{charge.nome}</td>
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>
                         {charge.cobranca_id.substring(0, 8)}
                       </td>
-                      <td className="table-td">{Real.format(charge.valor)}</td>
-                      <td className="table-td">
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>{Real.format(charge.valor)}</td>
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>
                         {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                       </td>
-                      <td className="table-td status blue">paga</td>
-                      <td className="table-td">
+                      <td className="table-td status blue" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>Paga</td>
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>
                         {charge.descricao === null
                           ? ""
                           : `${charge.descricao
@@ -342,26 +406,42 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                           src={DeleteTable}
                           alt="deletetableicon"
                           className="buttons"
+                          onClick={() => {
+                            setItem("chargesId", charge.cobranca_id);
+                            handleDelChargesOpen();
+                          }}
                         />
                       </td>
                     </tr>
                   ))
                   : chargesData.map((charge, index) => (
                     <tr key={index} className="table-tr">
-                      <td className="table-td">{charge.nome}</td>
-                      <td className="table-td">
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>{charge.nome}</td>
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>
                         {charge.cobranca_id.substring(0, 8)}
                       </td>
-                      <td className="table-td">{Real.format(charge.valor)}</td>
-                      <td className="table-td">
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>{Real.format(charge.valor)}</td>
+                      <td className="table-td" onClick={() => {
+                        setItem("chargesId", charge.cobranca_id);
+                        handleOpenChargesDetails();
+                      }}>
                         {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
                       </td>
                       <td
                         className={`table-td status ${charge.status === "vencida"
-                            ? "red"
-                            : charge.status === "prevista"
-                              ? "yellow"
-                              : charge.status === "paga" && "blue"
+                          ? "red"
+                          : charge.status === "prevista"
+                            ? "yellow"
+                            : charge.status === "paga" && "blue"
                           }`} onClick={() => {
                             setItem("chargesId", charge.cobranca_id);
                             handleOpenChargesDetails();

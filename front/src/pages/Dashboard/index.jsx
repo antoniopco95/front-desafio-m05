@@ -9,12 +9,13 @@ import ChargesComponent from "../../components/ChargesComponent";
 import EditModal from "../../components/EditModal";
 import DeleteChargesModal from "../../components/DeleteChargesModal";
 import { useNavigate } from "react-router-dom";
-import ClientDetails from "../../components/ClientDetails";
+import ChargesDetails from "../../components/ChargesDetails";
 import { useClients } from "../../context/clientsContext";
-import useUser from "../../hooks/useUser";
+import SnackBarSuccess from "../../components/SnackBarSuccess";
+import SnackBarFail from "../../components/SnackBarFail";
 
 function Dashboard() {
-  const { home, setHome, clients, setClients, charges, setCharges } = useUser();
+  const { home, setHome, clients, setClients, charges, setCharges } = useClients();
 
   const [delChargesOpen, setDelChargesOpen] = useState(false);
   const handleDelChargesOpen = () => setDelChargesOpen(true);
@@ -27,13 +28,15 @@ function Dashboard() {
   const [customMessageApprove, setCustomMessageApprove] = useState("");
   const [openSnackApprove, setOpenSnackApprove] = useState(false);
 
+  const [customMessageReprove, setCustomMessageReprove] = useState("");
+  const [openSnackReprove, setOpenSnackReprove] = useState(false);
+
   const handleClickSnack = () => {
     setOpenSnackApprove(true);
   };
-
-  const [home, setHome] = useState(true);
-  const [clients, setClients] = useState(false);
-  const [charges, setCharges] = useState(false);
+  const handleClickSnackFail = () => {
+    setOpenSnackReprove(true);
+  };
 
   const [openEdit, setOpenEdit] = useState(false);
   const handleOpenEdit = () => setOpenEdit(true);
@@ -48,7 +51,7 @@ function Dashboard() {
 
   const token = getItem("token");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) {
       setIsAuthenticated(false);
     }
@@ -104,14 +107,7 @@ function Dashboard() {
       <div className="login-header">
         <AccountMenu handleOpenEdit={handleOpenEdit} handleExit={handleExit} />
       </div>
-
-
-
       {home && <HomeComponent />}
-
-
-
-
       {clients && (
         <ClientsComponent
           openAdd={openAdd}
@@ -126,7 +122,6 @@ function Dashboard() {
           handleOpenChargesDetails={handleOpenChargesDetails}
         />
       )}
-
       {charges && <ChargesComponent
         customMessageApprove={customMessageApprove}
         setCustomMessageApprove={setCustomMessageApprove}
@@ -142,9 +137,10 @@ function Dashboard() {
       />
       }
       <ChargesDetails chargesDetailsOpen={chargesDetailsOpen} handleCloseChargesDetails={handleCloseChargesDetails} />
-      <DeleteChargesModal delChargesOpen={delChargesOpen} handleDelChargesClose={handleDelChargesClose} handleClickSnack={handleClickSnack} setCustomMessageApprove={setCustomMessageApprove} />
+      <DeleteChargesModal delChargesOpen={delChargesOpen} handleDelChargesClose={handleDelChargesClose} handleClickSnack={handleClickSnack} setCustomMessageApprove={setCustomMessageApprove} setCustomMessageReprove={setCustomMessageReprove} handleClickSnackFail={handleClickSnackFail} />
       <EditModal openEdit={openEdit} handleCloseEdit={handleCloseEdit} token={token} />
-
+      <SnackBarSuccess customMessageApprove={customMessageApprove} openSnackApprove={openSnackApprove} setOpenSnackApprove={setOpenSnackApprove} />
+      <SnackBarFail customMessageReprove={customMessageReprove} openSnackReprove={openSnackReprove} setOpenSnackReprove={setOpenSnackReprove} />
     </div>
 
   );

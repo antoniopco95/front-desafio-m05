@@ -7,7 +7,7 @@ import SnackBarSuccess from "../SnackBarSuccess";
 import ClientDetails from "../ClientDetails";
 import useUser from "../../hooks/useUser";
 
-function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, customMessageApprove, setCustomMessageApprove, openSnackApprove, setOpenSnackApprove, handleClickSnack, handleDelChargesOpen, handleOpenChargesDetails }) {
+function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, handleDelChargesOpen, handleOpenChargesDetails }) {
 
   const {
     openClientDetail,

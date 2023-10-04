@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import AlertIcon from '../../assets/AlertIcon.svg'
 import { removeItem } from "../../utils/storage";
+import { getItem } from "../../utils/storage";
+import registerUserFecth from '../../axios/config';
 import "./styles.css";
+import { useClients } from "../../context/clientsContext";
 
-export default function DeleteChargesModal({ delChargesOpen, handleDelChargesClose, handleClickSnack, setCustomMessageApprove }) {
+export default function DeleteChargesModal({ delChargesOpen, handleDelChargesClose, handleClickSnack, setCustomMessageApprove, setCustomMessageReprove, handleClickSnackFail }) {
 
     const style = {
         display: 'flex',
@@ -23,11 +26,41 @@ export default function DeleteChargesModal({ delChargesOpen, handleDelChargesClo
         p: 4,
     };
 
-    function handleSubmit() {
-        handleDelChargesClose();
-        setCustomMessageApprove('Cobrança excluída com sucesso!');
-        handleClickSnack();
+    const {
+        chargesData
+    } = useClients();
+
+    async function handleSubmit() {
+
+        const token = getItem("token");
+        const chargesId = getItem("chargesId");
+
+        try {
+            const response = await registerUserFecth.delete(`/cobrancas/${chargesId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            handleDelChargesClose();
+            setCustomMessageApprove('Cobrança excluída com sucesso!');
+            handleClickSnack();
+            console.log(chargesData);
+
+        } catch (error) {
+            if (error.response.data.error === 'Cobrança não foi excluida,  já se encontra paga') {
+                handleDelChargesClose();
+                setCustomMessageReprove('Esta cobrança não pode ser excluída!');
+                handleClickSnackFail();
+            }
+        }
     };
+
+    useEffect(() => {
+        if (delChargesOpen) {
+            handleSubmit();
+        }
+    }, []);
 
     function handleCancel() {
         removeItem("chargesId");
