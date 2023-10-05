@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 function UseUserProvider() {
+
   const [openClientDetail, setOpenClientDetail] = useState(false);
   const [openEditClientModal, setOpenEditClientModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
@@ -14,7 +15,7 @@ function UseUserProvider() {
     setOpenSnackApprove(true);
   };
 
-  useEffect(() => {}, [divIsVisible, openClientDetail]);
+  useEffect(() => { }, [divIsVisible, openClientDetail]);
 
   return {
     openClientDetail,

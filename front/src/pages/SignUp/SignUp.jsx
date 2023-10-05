@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -194,8 +193,8 @@ const SignUp = () => {
                     step.id === "stepCadastro"
                       ? "4px solid #0E8750"
                       : step.id === "stepSenha"
-                      ? "4px solid #0E8750"
-                      : "none",
+                        ? "4px solid #0E8750"
+                        : "none",
                   minHeight: "90px",
                 }}
               >

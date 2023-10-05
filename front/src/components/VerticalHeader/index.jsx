@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import HomeIcon from '../../assets/HomeIcon.svg';
 import ClientsIcon from '../../assets/ClientsIcon.svg';
 import ChargesIcon from '../../assets/ChargesIcon.svg';

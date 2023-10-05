@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import "./styles.css";
 import ClientsTable from "../ClientsTable";
@@ -9,7 +7,8 @@ import SnackBarSuccess from "../SnackBarSuccess";
 import ClientDetails from "../ClientDetails";
 import useUser from "../../hooks/useUser";
 
-function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
+function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd, handleDelChargesOpen, handleOpenChargesDetails }) {
+
   const {
     openClientDetail,
     divIsVisible,
@@ -79,7 +78,8 @@ function ClientsComponent({ openAdd, handleOpenAdd, handleCloseAdd }) {
         setOpenSnackApprove={setOpenSnackApprove}
       />
       {openClientDetail && (
-        <ClientDetails
+        <ClientDetails handleDelChargesOpen={handleDelChargesOpen}
+          handleOpenChargesDetails={handleOpenChargesDetails}
           handleOpenCreateCharges={handleOpenCreateCharges}
           handleClickSnack={onClickSnack}
           setCustomMessageApprove={setCustomMessageApprove}

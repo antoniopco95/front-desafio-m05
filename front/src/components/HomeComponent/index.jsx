@@ -11,9 +11,10 @@ import ChargePending from '../../assets/ChargePending.svg'
 import { getItem } from '../../utils/storage'
 import registerUserFecth from './../../axios/config';
 import { useClients } from '../../context/clientsContext';
+
 function HomeComponent() {
 
-    const { home, setHome, clients, setClients, charges, setCharges, clientsData, updateChargeType, updateClientStatus } = useClients();
+    const { setHome, setClients, setCharges, clientsData, updateChargeType, updateClientStatus } = useClients();
 
     const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")
 
@@ -25,7 +26,6 @@ function HomeComponent() {
     const [totalPaga, setPagas] = useState('')
     const [totalPrevista, setPrevista] = useState('')
     const [totalVencida, setVencida] = useState('')
-
 
     useEffect(() => {
 
@@ -50,6 +50,7 @@ function HomeComponent() {
         fetchData();
 
     }, []);
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -112,9 +113,6 @@ function HomeComponent() {
         setClients(true);
         setCharges(false);
     };
-
-
-
 
     return (
         <>

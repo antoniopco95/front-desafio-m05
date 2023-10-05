@@ -10,6 +10,8 @@ import EditChargeModal from "../EditChargeModal";
 function ClientDetails({
   handleOpenCreateCharges,
   setCustomMessageApprove,
+  handleDelChargesOpen,
+  handleOpenChargesDetails,
   handleClickSnack,
 }) {
   const [update, setUpdate] = useState(false);
@@ -115,7 +117,7 @@ function ClientDetails({
       }
     }
     getChargesByClient();
-  }, [update]);
+  }, [update, charges]);
 
   const handleUpdate = () => {
     setUpdate(!update);
@@ -415,44 +417,54 @@ function ClientDetails({
                         className="client-charges-details-line"
                         key={charge.cobranca_id}
                       >
-                        <div className="line-id font1">
+                        <div className="line-id font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{charge.cobranca_id.toString().substring(0, 8)}</p>
                         </div>
-                        <div className="line-date font1">
+                        <div className="line-date font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>
-                            {format(
-                              new Date(charge.data_vencimento),
-                              "dd/MM/yyyy"
-                            )}
+                            {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                           </p>
                         </div>
-                        <div className="line-value font1">
+                        <div className="line-value font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{Real.format(charge.valor)}</p>
                         </div>
-                        <div className="line-status-container">
+                        <div className="line-status-container" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <div
-                            className={`line-status ${
-                              charge.status === "Vencida"
-                                ? "overcome-container"
-                                : charge.status === "Prevista"
+                            className={`line-status ${charge.status === "Vencida"
+                              ? "overcome-container"
+                              : charge.status === "Prevista"
                                 ? "pending-container"
                                 : charge.status === "Paga" && "paid-container"
-                            }`}
+                              }`}
                           >
                             <p
-                              className={`font3 ${
-                                charge.status === "Vencida"
-                                  ? "overcome-text"
-                                  : charge.status === "Prevista"
+                              className={`font3 ${charge.status === "Vencida"
+                                ? "overcome-text"
+                                : charge.status === "Prevista"
                                   ? "pending-text"
                                   : charge.status === "Paga" && "paid-text"
-                              }`}
+                                }`}
                             >
                               {charge.status}
                             </p>
                           </div>
                         </div>
-                        <div className="line-description font1">
+                        <div className="line-description font1" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleOpenChargesDetails();
+                        }}>
                           <p>{charge.descricao ? charge.descricao : "-"}</p>
                         </div>
                         <div
@@ -498,7 +510,10 @@ function ClientDetails({
                           </svg>
                           <p>Editar</p>
                         </div>
-                        <div className="line-exclude">
+                        <div className="line-exclude" onClick={() => {
+                          setItem("chargesId", charge.cobranca_id);
+                          handleDelChargesOpen();
+                        }}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="18"
