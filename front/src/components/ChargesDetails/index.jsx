@@ -53,7 +53,7 @@ export default function ChargesDetails({ chargesDetailsOpen, handleCloseChargesD
             setDetailsForm({
                 nome: response.data.nome,
                 descricao: response.data.descricao,
-                data_vencimento: format(new Date(response.data.data_vencimento), "dd/MM/yyy"),
+                data_vencimento: format(new Date(parseInt(response.data.data_vencimento.substr(0, 4)), parseInt(response.data.data_vencimento.substr(5, 2) - 2), parseInt(response.data.data_vencimento.substr(8, 2))), 'dd/MM/yyyy'),
                 valor: response.data.valor,
                 cobranca_id: response.data.cobranca_id,
                 status: response.data.status.toString(),

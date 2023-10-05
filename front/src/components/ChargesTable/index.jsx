@@ -172,7 +172,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                   setItem("chargesId", charge.cobranca_id);
                   handleOpenChargesDetails();
                 }}>
-                  {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                  {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                 </td>
                 <td
                   className={`table-td status ${charge.status === "vencida"
@@ -243,7 +243,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                     setItem("chargesId", charge.cobranca_id);
                     handleOpenChargesDetails();
                   }}>
-                    {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                    {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                   </td>
                   <td className="table-td status red" onClick={() => {
                     setItem("chargesId", charge.cobranca_id);
@@ -307,7 +307,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                       setItem("chargesId", charge.cobranca_id);
                       handleOpenChargesDetails();
                     }}>
-                      {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                      {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                     </td>
                     <td className="table-td status yellow" onClick={() => {
                       setItem("chargesId", charge.cobranca_id);
@@ -371,7 +371,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                         setItem("chargesId", charge.cobranca_id);
                         handleOpenChargesDetails();
                       }}>
-                        {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                        {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                       </td>
                       <td className="table-td status blue" onClick={() => {
                         setItem("chargesId", charge.cobranca_id);
@@ -434,7 +434,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                         setItem("chargesId", charge.cobranca_id);
                         handleOpenChargesDetails();
                       }}>
-                        {format(new Date(charge.data_vencimento), "dd/MM/yyyy")}
+                        {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                       </td>
                       <td
                         className={`table-td status ${charge.status === "vencida"

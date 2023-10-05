@@ -60,9 +60,9 @@ export default function CreateCharges({
 
     let formattedDate = format(
       new Date(
-        inputChargeExpire.substr(6, 4),
-        inputChargeExpire.substr(3, 2),
-        inputChargeExpire.substr(0, 2)
+        parseInt(inputChargeExpire.substr(6, 4)),
+        parseInt(inputChargeExpire.substr(3, 2)),
+        parseInt(inputChargeExpire.substr(0, 2))
       ),
       "yyyy/MM/dd"
     );

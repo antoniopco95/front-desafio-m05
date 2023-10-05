@@ -36,7 +36,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
       setEditForm({
         nome: userName,
         descricao: charge.descricao,
-        data_vencimento: format(new Date(charge.data_vencimento), "dd/MM/yyy"),
+        data_vencimento: format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy'),
         valor: charge.valor,
         paga: charge.paga,
       });
@@ -78,12 +78,12 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
 
     let formattedDate = format(
       new Date(
-        editForm.data_vencimento.substr(6, 4),
-        editForm.data_vencimento.substr(3, 2),
-        editForm.data_vencimento.substr(0, 2)
+        parseInt(editForm.data_vencimento.substr(6, 4)),
+        parseInt(editForm.data_vencimento.substr(3, 2)),
+        parseInt(editForm.data_vencimento.substr(0, 2))
       ),
       "yyyy/MM/dd"
-    );
+    )
 
     try {
       const response = await registerUserFecth.put(

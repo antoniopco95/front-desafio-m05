@@ -428,10 +428,7 @@ function ClientDetails({
                           handleOpenChargesDetails();
                         }}>
                           <p>
-                            {format(
-                              new Date(charge.data_vencimento),
-                              "dd/MM/yyyy"
-                            )}
+                            {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                           </p>
                         </div>
                         <div className="line-value font1" onClick={() => {
