@@ -50,15 +50,18 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let isPaid = "";
+
     if (selectedValue === "a") {
-      setEditForm({ ...editForm, paga: true });
+      isPaid = true;
     } else if (selectedValue === "b") {
-      setEditForm({ ...editForm, paga: false });
+      isPaid = false;
     }
 
     if (editForm.descricao === "") {
@@ -84,7 +87,6 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
       ),
       "yyyy/MM/dd"
     )
-
     try {
       const response = await registerUserFecth.put(
         `/cobrancas/${charge.cobranca_id}`,
@@ -92,7 +94,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
           descricao: editForm.descricao.toString(),
           data_vencimento: formattedDate.toString(),
           valor: editForm.valor.toString(),
-          paga: editForm.paga.toString(),
+          paga: isPaid.toString(),
         },
         {
           headers: {
@@ -266,7 +268,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     <Radio
                       checked={selectedValue === "a"}
                       onChange={handleChange}
-                      value={"a"}
+                      value="a"
                       name="radio-buttons"
                       inputProps={{ "aria-label": "A" }}
                       checkedIcon={<BpCheckedIcon />}
@@ -278,7 +280,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     <Radio
                       checked={selectedValue === "b"}
                       onChange={handleChange}
-                      value={"b"}
+                      value="b"
                       name="radio-buttons"
                       inputProps={{ "aria-label": "B" }}
                       checkedIcon={<BpCheckedIcon />}
