@@ -17,6 +17,28 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
   const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
 
   const [searchClient, setSearchClient] = useState("");
+  const [sortedClients, setSortedClients] = useState([]);
+  const [orderClients, setOrderClients] = useState("");
+  const [orderDirection, setOrderDirection] = useState("asc");
+
+
+
+
+
+  const handleOrderClients = () => {
+    setOrderClients("ordenar")
+
+    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+
+    setAllStatus("")
+    setClientStatus("")
+
+
+
+    console.log(orderClients);
+    console.log(orderDirection);
+  }
+
 
   const handleInputSearch = (e) => {
     setSearchClient(e.target.value);
@@ -63,6 +85,18 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
     fetchData();
   }, [updateClientsData]);
 
+  useEffect(() => {
+    const sorted = [...clientsData].sort((a, b) => {
+      const nameA = a.nome.toLowerCase();
+      const nameB = b.nome.toLowerCase();
+      return orderDirection === "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA);
+    });
+    setSortedClients(sorted);
+    console.log(sorted);
+  }, [clientsData, orderDirection]);
+
   function formatCPF(cpf) {
     const cleanedCPF = cpf.replace(/\D/g, "");
 
@@ -95,7 +129,7 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
             alt="clientsicon"
             onClick={() => handleClientStatus("clear")}
           />
-          <span className="clientstable-title">Clientes</span>
+          <span className="clientstable-title" >Clientes</span>
         </div>
         <button className="clientstable-addbutton" onClick={handleOpenAdd}>
           + Adicionar cliente
@@ -117,7 +151,7 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
       <table className="clientstable-table">
         <thead className="table-titles">
           <tr>
-            <th className="table-th">Cliente</th>
+            <th className="table-th" onClick={handleOrderClients}>Cliente</th>
             <th className="table-th">CPF</th>
             <th className="table-th">E-mail</th>
             <th className="table-th">Telefone</th>
@@ -280,7 +314,7 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
               </tr>
             ))
 
-          ) : (clientsData.map((client) => (
+          ) : orderClients === "ordenar" ? (sortedClients.map((client) => (
             <tr key={client.cliente_id} className="table-tr">
               <td
                 className="table-td client-name"
@@ -316,7 +350,41 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
             </tr>
           ))
 
-          )
+          ) : clientsData.map((client) => (
+            <tr key={client.cliente_id} className="table-tr">
+              <td
+                className="table-td client-name"
+                onClick={() => {
+                  setOpenClientDetail(true);
+                  setDivIsVisible(false);
+                  setId(client);
+                }}
+              >
+                {client.nome}
+              </td>
+              <td className="table-td">{formatCPF(client.cpf)}</td>
+              <td className="table-td">{client.email}</td>
+              <td className="table-td">{formatPhoneNumber(client.telefone)}</td>
+              <td
+                className={`table-td status ${client.status === "Inadimplente" ? "redStyle" : "blueStyle"
+                  }`}
+              >
+                {client.status}
+              </td>
+              <td className="table-td">
+                <img
+                  className="addcharge-icon"
+                  src={AddCharge}
+                  alt="addchargeicon"
+                  onClick={() => {
+                    setItem("clientsName", client.nome);
+                    setItem("clientsId", client.cliente_id);
+                    handleOpenCreateCharges();
+                  }}
+                />
+              </td>
+            </tr>
+          ))
 
           }
         </tbody>
@@ -326,3 +394,19 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
 }
 
 export default ClientsTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

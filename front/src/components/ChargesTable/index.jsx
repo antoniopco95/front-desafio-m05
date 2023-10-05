@@ -5,7 +5,7 @@ import FilterIcon from "../../assets/FilterIcon.svg";
 import SearchIcon from "../../assets/SearchIcon.svg";
 import EditTable from "../../assets/EditTable.svg";
 import DeleteTable from "../../assets/DeleteTable.svg";
-import NotFoundIcon from "../../assets/NotFound.svg";      
+import NotFoundIcon from "../../assets/NotFound.svg";
 import { useEffect, useState } from "react";
 import { getItem } from "../../utils/storage";
 import registerUserFecth from "../../axios/config";
@@ -15,35 +15,54 @@ import useUser from "../../hooks/useUser";
 import { useClients } from "../../context/clientsContext";
 
 function ChargesTable(handleClickSnack, setCustomMessageApprove) {
-  const { openEditChargeModal, setOpenEditChargeModal } = useUser();
-  const [modalCharge, setModalCharge] = useState({});
-  const [update, setUpdate] = useState(false);
+    const { openEditChargeModal, setOpenEditChargeModal } = useUser();
+    const [modalCharge, setModalCharge] = useState({});
+    const [update, setUpdate] = useState(false);
 
-  const handleUpdate = () => {
-    setUpdate(!update);
-  };
+    const handleUpdate = () => {
+        setUpdate(!update);
+    };
 
-  const {
-    chargeType,
-    home,
-    clients,
-    charges,
-    allCharges,
-    setAllCharges,
-    resetAllCharge,
-    updateChargeType,
-  } = useClients();
+    const {
+        chargeType,
+        home,
+        clients,
+        charges,
+        allCharges,
+        setAllCharges,
+        resetAllCharge,
+        updateChargeType,
+        setChargeType,
+    } = useClients();
 
-  const handleChargesName = (reset) => {
-    resetAllCharge(reset);
-    updateChargeType("clear");
-  };
+    const handleChargesName = (reset) => {
+        resetAllCharge(reset);
+        updateChargeType("clear");
+    };
 
-  const [chargesData, setChargesData] = useState([]);
-  const [chargesDue, setChargesDue] = useState([]);
-  const [chargesExpired, setChargesExpired] = useState([]);
-  const [chargesPaid, setChargesPaid] = useState([]);
-  const [searchCharges, setSearchCharges] = useState("");
+    const [chargesData, setChargesData] = useState([]);
+    const [chargesDue, setChargesDue] = useState([]);
+    const [chargesExpired, setChargesExpired] = useState([]);
+    const [chargesPaid, setChargesPaid] = useState([]);
+    const [searchCharges, setSearchCharges] = useState("");
+    const [sortedCharges, setSortedCharges] = useState([]);
+    const [orderCharges, setOrderCharges] = useState("");
+    const [orderDirection, setOrderDirection] = useState("asc");
+
+
+    const handleOrderCharges = () => {
+        setOrderCharges("ordenar")
+
+        setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+
+        setAllCharges("");
+        setChargeType("");
+
+        console.log(orderDirection);
+        console.log(orderCharges);
+
+
+    }
 
     const handleInputSearch = (e) => {
         setSearchCharges(e.target.value);
@@ -58,32 +77,32 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
     })
 
 
-  let Real = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+    let Real = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+    });
 
-  async function getAllCharges() {
-    const token = getItem("token");
-    try {
-      const response = await registerUserFecth.get("/cobrancas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setChargesData(response.data);
-    } catch (error) {
-      console.log(error);
+    async function getAllCharges() {
+        const token = getItem("token");
+        try {
+            const response = await registerUserFecth.get("/cobrancas", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setChargesData(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
 
-  useEffect(() => {
-    getAllCharges();
-  }, [update]);
+    useEffect(() => {
+        getAllCharges();
+    }, [update]);
 
-  
-    
+
+
 
     useEffect(() => {
         getAllCharges();
@@ -161,6 +180,26 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
         fetchData();
     }, []);
 
+
+    useEffect(() => {
+        const sorted = [...chargesData].sort((a, b) => {
+            const nameA = a.nome.toLowerCase();
+            const nameB = b.nome.toLowerCase();
+
+
+            const nameComparison = orderDirection === "asc"
+                ? nameA.localeCompare(nameB)
+                : nameB.localeCompare(nameA);
+
+            const idA = a.cobranca_id;
+            const idB = b.cobranca_id;
+
+            return nameComparison !== 0 ? nameComparison : idA - idB;
+        });
+        setSortedCharges(sorted);
+        console.log(sorted);
+    }, [chargesData, orderDirection]);
+
     return (
         <div className='chargestable-box'>
             <div className='chargestable-header'>
@@ -186,8 +225,8 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
             <table className='chargestable-table'>
                 <thead className='table-titles'>
                     <tr>
-                        <th className='table-th'>Cliente</th>
-                        <th className='table-th'>ID Cob.</th>
+                        <th className='table-th' onClick={handleOrderCharges}>Cliente</th>
+                        <th className='table-th' onClick={handleOrderCharges}>ID Cob.</th>
                         <th className='table-th'>Valor</th>
                         <th className='table-th'>Data de venc.</th>
                         <th className='table-th'>Status</th>
@@ -220,10 +259,10 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                 <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                <td className='table-td' onClick={() => {
+                                    setOpenEditChargeModal(true);
+                                    setModalCharge({ ...charge });
+                                }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
 
@@ -244,10 +283,10 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                 <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                <td className='table-td' onClick={() => {
+                                    setOpenEditChargeModal(true);
+                                    setModalCharge({ ...charge });
+                                }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
 
@@ -262,10 +301,10 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     <td className='table-td status red'>Vencida</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                     <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                    <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                    <td className='table-td' onClick={() => {
+                                        setOpenEditChargeModal(true);
+                                        setModalCharge({ ...charge });
+                                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
                         ) : chargeType === "previstas" ? (
@@ -278,10 +317,10 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
                                     <td className='table-td status yellow'>Prevista</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                    <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                    <td className='table-td' onClick={() => {
+                                        setOpenEditChargeModal(true);
+                                        setModalCharge({ ...charge });
+                                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
@@ -296,10 +335,34 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
                                     <td className='table-td status blue'>Paga</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                    <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                    <td className='table-td' onClick={() => {
+                                        setOpenEditChargeModal(true);
+                                        setModalCharge({ ...charge });
+                                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                    <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                </tr>
+                            ))
+
+                        ) : orderCharges === "ordenar" ? (
+
+                            sortedCharges.map((charge, index) => (
+                                <tr key={index} className='table-tr'>
+                                    <td className='table-td'>{charge.nome}</td>
+                                    <td className='table-td'>{charge.cobranca_id.substring(0, 8)}</td>
+                                    <td className='table-td'>{Real.format(charge.valor)}</td>
+                                    <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
+                                    <td className={`table-td status ${charge.status === "vencida"
+                                        ? "red"
+                                        : charge.status === "prevista"
+                                            ? "yellow"
+                                            : charge.status === "paga" && "blue"
+                                        }`}>
+                                        {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
+                                    <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
+                                    <td className='table-td' onClick={() => {
+                                        setOpenEditChargeModal(true);
+                                        setModalCharge({ ...charge });
+                                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
@@ -318,10 +381,10 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
                                     }`}>
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                <td className='table-td'  onClick={() => {
-                      setOpenEditChargeModal(true);
-                      setModalCharge({ ...charge });
-                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                <td className='table-td' onClick={() => {
+                                    setOpenEditChargeModal(true);
+                                    setModalCharge({ ...charge });
+                                }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                 <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
@@ -331,17 +394,17 @@ function ChargesTable(handleClickSnack, setCustomMessageApprove) {
             </table>
 
 
-      {openEditChargeModal && (
-        <EditChargeModal
-          charge={modalCharge}
-          userName={modalCharge.nome}
-          handleUpdate={handleUpdate}
-          handleClickSnack={handleClickSnack}
-          setCustomMessageApprove={setCustomMessageApprove}
-        />
-      )}
-    </div>
-  );
+            {openEditChargeModal && (
+                <EditChargeModal
+                    charge={modalCharge}
+                    userName={modalCharge.nome}
+                    handleUpdate={handleUpdate}
+                    handleClickSnack={handleClickSnack}
+                    setCustomMessageApprove={setCustomMessageApprove}
+                />
+            )}
+        </div>
+    );
 }
 
 export default ChargesTable;
