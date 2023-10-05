@@ -101,8 +101,6 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
         }
       );
 
-      console.log(response.data);
-
       setEditForm({});
       setSelectedValue("a");
 
@@ -186,9 +184,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     setEditForm({ ...editForm, descricao: e.target.value })
                   }
                   value={editForm.descricao}
-                  className={`createcharges-input createcharges-desc ${
-                    errorChargeDesc ? "border-red" : ""
-                  }`}
+                  className={`createcharges-input createcharges-desc ${errorChargeDesc ? "border-red" : ""
+                    }`}
                   type="text"
                   placeholder="Digite a descrição"
                   size="100"
@@ -218,9 +215,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                         })
                       }
                       value={editForm.data_vencimento}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeExpire ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeExpire ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Data de Vencimento"
                       mask="00/00/0000"
@@ -245,9 +241,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                         setEditForm({ ...editForm, valor: e.target.value })
                       }
                       value={editForm.valor}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeValue ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeValue ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Digite o valor"
                     />

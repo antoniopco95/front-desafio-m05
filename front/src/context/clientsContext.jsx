@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { createContext, useCallback, useContext, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { getItem } from "../utils/storage";
 import registerUserFecth from "../axios/config";
 const ClientsContext = createContext();
 
 export function ClientsProvider({ children }) {
+
     const [clientsData, setClientsData] = useState([]);
     const [chargesData, setChargesData] = useState([]);
     const [chargesExpired, setChargesExpired] = useState([]);
