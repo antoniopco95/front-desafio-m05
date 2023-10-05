@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './styles.css'
 import ChargesTable from '../ChargesTable';
-import ChargesDetails from '../ChargesDetails';
 import SnackBarSuccess from '../SnackBarSuccess';
 import useUser from "../../hooks/useUser";
 
-function ChargesComponent({ setCustomMessageApprove, handleClickSnack, delChargesOpen, handleDelChargesOpen, handleDelChargesClose, chargesDetailsOpen, handleOpenChargesDetails, handleCloseChargesDetails }) {
-  const { customMessageApprove, openSnackApprove, setOpenSnackApprove } =
-    useUser();
+function ChargesComponent({ setCustomMessageApprove, handleClickSnack, handleDelChargesOpen, handleOpenChargesDetails }) {
+
+  const { customMessageApprove, openSnackApprove, setOpenSnackApprove } = useUser();
+
   return (
     <>
       <div className="chargescomponent-box">

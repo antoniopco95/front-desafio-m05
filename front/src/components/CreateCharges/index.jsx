@@ -15,10 +15,9 @@ export default function CreateCharges({
   handleCloseCreateCharges,
   handleClickSnack,
   setCustomMessageApprove,
-  inputChargeName,
-  openAdd,
-  handleCloseAdd,
+  inputChargeName
 }) {
+
   const [inputChargeDesc, setInputChargeDesc] = useState("");
   const [inputChargeExpire, setInputChargeExpire] = useState("");
   const [inputChargeValue, setInputChargeValue] = useState("");
@@ -84,8 +83,6 @@ export default function CreateCharges({
           },
         }
       );
-
-      console.log(response.data);
 
       setInputChargeDesc("");
       setInputChargeExpire("");
@@ -169,9 +166,8 @@ export default function CreateCharges({
                 <textarea
                   onChange={(e) => setInputChargeDesc(e.target.value)}
                   value={inputChargeDesc}
-                  className={`createcharges-input createcharges-desc ${
-                    errorChargeDesc ? "border-red" : ""
-                  }`}
+                  className={`createcharges-input createcharges-desc ${errorChargeDesc ? "border-red" : ""
+                    }`}
                   type="text"
                   placeholder="Digite a descrição"
                   size="100"
@@ -196,9 +192,8 @@ export default function CreateCharges({
                     <IMaskInput
                       onChange={(e) => setInputChargeExpire(e.target.value)}
                       value={inputChargeExpire}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeExpire ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeExpire ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Data de Vencimento"
                       mask="00/00/0000"
@@ -221,9 +216,8 @@ export default function CreateCharges({
                     <input
                       onChange={(e) => setInputChargeValue(e.target.value)}
                       value={inputChargeValue}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeValue ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeValue ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Digite o valor"
                     />

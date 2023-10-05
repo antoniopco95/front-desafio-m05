@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import "./styles.css";
 import ClientsIcon from "../../assets/ClientsIcon.svg";
@@ -12,7 +10,8 @@ import { useClients } from "../../context/clientsContext";
 import useUser from "../../hooks/useUser";
 
 function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
-  const { clientsData, updateClientsData, allStatus, setAllStatus, resetAllStatus, updateClientStatus, clientStatus, setClientStatus } = useClients();
+
+  const { clientsData, updateClientsData, allStatus, resetAllStatus, updateClientStatus, clientStatus } = useClients();
   const { setOpenClientDetail, setDivIsVisible, setId } = useUser();
 
   const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")
@@ -22,8 +21,6 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
   const handleClientStatus = (reset) => {
     resetAllStatus(reset);
     updateClientStatus("clear");
-
-
   }
 
   useEffect(() => {

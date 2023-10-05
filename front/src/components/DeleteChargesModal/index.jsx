@@ -45,7 +45,6 @@ export default function DeleteChargesModal({ delChargesOpen, handleDelChargesClo
             handleDelChargesClose();
             setCustomMessageApprove('Cobrança excluída com sucesso!');
             handleClickSnack();
-            console.log(chargesData);
 
         } catch (error) {
             if (error.response.data.error === 'Cobrança não foi excluida,  já se encontra paga') {
