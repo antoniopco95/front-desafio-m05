@@ -1,34 +1,49 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import './styles.css'
-import ChargesIcon from '../../assets/ChargesIcon.svg';
-import FilterIcon from '../../assets/FilterIcon.svg';
-import SearchIcon from '../../assets/SearchIcon.svg';
-import EditTable from '../../assets/EditTable.svg';
-import DeleteTable from '../../assets/DeleteTable.svg';
-import NotFoundIcon from "../../assets/NotFound.svg";
-import { useEffect, useState } from 'react';
-import { getItem } from '../../utils/storage';
-import registerUserFecth from '../../axios/config';
-import { format } from 'date-fns';
-import { useClients } from '../../context/clientsContext';
+import React from "react";
+import "./styles.css";
+import ChargesIcon from "../../assets/ChargesIcon.svg";
+import FilterIcon from "../../assets/FilterIcon.svg";
+import SearchIcon from "../../assets/SearchIcon.svg";
+import EditTable from "../../assets/EditTable.svg";
+import DeleteTable from "../../assets/DeleteTable.svg";
+import NotFoundIcon from "../../assets/NotFound.svg";      
+import { useEffect, useState } from "react";
+import { getItem } from "../../utils/storage";
+import registerUserFecth from "../../axios/config";
+import { format } from "date-fns";
+import EditChargeModal from "../EditChargeModal";
+import useUser from "../../hooks/useUser";
+import { useClients } from "../../context/clientsContext";
 
-function ChargesTable() {
+function ChargesTable(handleClickSnack, setCustomMessageApprove) {
+  const { openEditChargeModal, setOpenEditChargeModal } = useUser();
+  const [modalCharge, setModalCharge] = useState({});
+  const [update, setUpdate] = useState(false);
 
-    const { chargeType, home, clients, charges, allCharges, setAllCharges, resetAllCharge, updateChargeType } = useClients();
+  const handleUpdate = () => {
+    setUpdate(!update);
+  };
 
-    const handleChargesName = (reset) => {
+  const {
+    chargeType,
+    home,
+    clients,
+    charges,
+    allCharges,
+    setAllCharges,
+    resetAllCharge,
+    updateChargeType,
+  } = useClients();
 
-        resetAllCharge(reset)
-        updateChargeType("clear")
+  const handleChargesName = (reset) => {
+    resetAllCharge(reset);
+    updateChargeType("clear");
+  };
 
-    }
-
-    const [chargesData, setChargesData] = useState([]);
-    const [chargesDue, setChargesDue] = useState([])
-    const [chargesExpired, setChargesExpired] = useState([])
-    const [chargesPaid, setChargesPaid] = useState([])
-    const [searchCharges, setSearchCharges] = useState("");
+  const [chargesData, setChargesData] = useState([]);
+  const [chargesDue, setChargesDue] = useState([]);
+  const [chargesExpired, setChargesExpired] = useState([]);
+  const [chargesPaid, setChargesPaid] = useState([]);
+  const [searchCharges, setSearchCharges] = useState("");
 
     const handleInputSearch = (e) => {
         setSearchCharges(e.target.value);
@@ -42,27 +57,33 @@ function ChargesTable() {
         return nameClient.includes(query) || idClient.includes(query);
     })
 
-    let Real = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-    });
 
-    async function getAllCharges() {
+  let Real = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 
-        const token = getItem('token');
-        try {
-            const response = await registerUserFecth.get('/cobrancas', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            setChargesData(response.data);
-
-        } catch (error) {
-            console.log(error)
-        }
+  async function getAllCharges() {
+    const token = getItem("token");
+    try {
+      const response = await registerUserFecth.get("/cobrancas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setChargesData(response.data);
+    } catch (error) {
+      console.log(error);
     }
+  }
+
+
+  useEffect(() => {
+    getAllCharges();
+  }, [update]);
+
+  
+    
 
     useEffect(() => {
         getAllCharges();
@@ -199,7 +220,10 @@ function ChargesTable() {
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                 <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
 
@@ -220,7 +244,10 @@ function ChargesTable() {
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                 <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
 
@@ -235,7 +262,10 @@ function ChargesTable() {
                                     <td className='table-td status red'>Vencida</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
                                     <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
-                                    <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
+                                    <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
                         ) : chargeType === "previstas" ? (
@@ -248,7 +278,10 @@ function ChargesTable() {
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
                                     <td className='table-td status yellow'>Prevista</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                    <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                    <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
@@ -263,7 +296,10 @@ function ChargesTable() {
                                     <td className='table-td'>{format(new Date(charge.data_vencimento), "dd/MM/yyyy")}</td>
                                     <td className='table-td status blue'>Paga</td>
                                     <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                    <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                    <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                     <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                                 </tr>
                             ))
@@ -282,7 +318,10 @@ function ChargesTable() {
                                     }`}>
                                     {charge.status.charAt(0).toUpperCase() + charge.status.slice(1)}</td>
                                 <td className='table-td'>{charge.descricao === null ? '' : `${charge.descricao.split(' ').slice(0, 5).join(' ')} ...`}</td>
-                                <td className='table-td'><img src={EditTable} alt="edittableicon" className='buttons' /></td>
+                                <td className='table-td'  onClick={() => {
+                      setOpenEditChargeModal(true);
+                      setModalCharge({ ...charge });
+                    }}><img src={EditTable} alt="edittableicon" className='buttons' /></td>
                                 <td className='table-td'><img src={DeleteTable} alt="deletetableicon" className='buttons' /></td>
                             </tr>
                         ))
@@ -290,8 +329,19 @@ function ChargesTable() {
 
                 </tbody>
             </table>
-        </div>
-    )
+
+
+      {openEditChargeModal && (
+        <EditChargeModal
+          charge={modalCharge}
+          userName={modalCharge.nome}
+          handleUpdate={handleUpdate}
+          handleClickSnack={handleClickSnack}
+          setCustomMessageApprove={setCustomMessageApprove}
+        />
+      )}
+    </div>
+  );
 }
 
 export default ChargesTable;
