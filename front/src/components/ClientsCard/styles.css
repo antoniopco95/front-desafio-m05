@@ -1,6 +1,4 @@
 .clients-card {
-    display: flex;
-    flex-direction: column;
     width: 556px;
     background-color: white;
     color: #3F3F55;
@@ -27,6 +25,7 @@
 }
 
 .clients-table {
+    width: 556px;
     border-collapse: collapse;
 }
 
@@ -42,6 +41,7 @@
     font-weight: 400;
     letter-spacing: 0.07px;
     line-height: 40px;
+    padding: 8px 0px;
 }
 
 .border-bottom {
