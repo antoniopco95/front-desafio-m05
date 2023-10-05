@@ -117,7 +117,7 @@ function ClientDetails({
       }
     }
     getChargesByClient();
-  }, [update]);
+  }, [update, charges]);
 
   const handleUpdate = () => {
     setUpdate(!update);
