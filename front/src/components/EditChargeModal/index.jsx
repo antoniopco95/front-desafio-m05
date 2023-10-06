@@ -36,7 +36,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
       setEditForm({
         nome: userName,
         descricao: charge.descricao,
-        data_vencimento: format(new Date(charge.data_vencimento), "dd/MM/yyy"),
+        data_vencimento: format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy'),
         valor: charge.valor,
         paga: charge.paga,
       });
@@ -50,15 +50,18 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let isPaid = "";
+
     if (selectedValue === "a") {
-      setEditForm({ ...editForm, paga: true });
+      isPaid = true;
     } else if (selectedValue === "b") {
-      setEditForm({ ...editForm, paga: false });
+      isPaid = false;
     }
 
     if (editForm.descricao === "") {
@@ -78,13 +81,12 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
 
     let formattedDate = format(
       new Date(
-        editForm.data_vencimento.substr(6, 4),
-        editForm.data_vencimento.substr(3, 2),
-        editForm.data_vencimento.substr(0, 2)
+        parseInt(editForm.data_vencimento.substr(6, 4)),
+        parseInt(editForm.data_vencimento.substr(3, 2)),
+        parseInt(editForm.data_vencimento.substr(0, 2))
       ),
       "yyyy/MM/dd"
-    );
-
+    )
     try {
       const response = await registerUserFecth.put(
         `/cobrancas/${charge.cobranca_id}`,
@@ -92,7 +94,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
           descricao: editForm.descricao.toString(),
           data_vencimento: formattedDate.toString(),
           valor: editForm.valor.toString(),
-          paga: editForm.paga.toString(),
+          paga: isPaid.toString(),
         },
         {
           headers: {
@@ -100,8 +102,6 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
           },
         }
       );
-
-      console.log(response.data);
 
       setEditForm({});
       setSelectedValue("a");
@@ -186,9 +186,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     setEditForm({ ...editForm, descricao: e.target.value })
                   }
                   value={editForm.descricao}
-                  className={`createcharges-input createcharges-desc ${
-                    errorChargeDesc ? "border-red" : ""
-                  }`}
+                  className={`createcharges-input createcharges-desc ${errorChargeDesc ? "border-red" : ""
+                    }`}
                   type="text"
                   placeholder="Digite a descrição"
                   size="100"
@@ -218,9 +217,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                         })
                       }
                       value={editForm.data_vencimento}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeExpire ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeExpire ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Data de Vencimento"
                       mask="00/00/0000"
@@ -245,9 +243,8 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                         setEditForm({ ...editForm, valor: e.target.value })
                       }
                       value={editForm.valor}
-                      className={`createcharges-input createcharges-middleinput ${
-                        errorChargeValue ? "border-red" : ""
-                      }`}
+                      className={`createcharges-input createcharges-middleinput ${errorChargeValue ? "border-red" : ""
+                        }`}
                       type="text"
                       placeholder="Digite o valor"
                     />
@@ -271,7 +268,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     <Radio
                       checked={selectedValue === "a"}
                       onChange={handleChange}
-                      value={"a"}
+                      value="a"
                       name="radio-buttons"
                       inputProps={{ "aria-label": "A" }}
                       checkedIcon={<BpCheckedIcon />}
@@ -283,7 +280,7 @@ export default function EditChargeModal({ charge, userName, handleUpdate }) {
                     <Radio
                       checked={selectedValue === "b"}
                       onChange={handleChange}
-                      value={"b"}
+                      value="b"
                       name="radio-buttons"
                       inputProps={{ "aria-label": "B" }}
                       checkedIcon={<BpCheckedIcon />}

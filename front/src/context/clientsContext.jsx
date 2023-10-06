@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { createContext, useCallback, useContext, useState } from "react";
-
+import { getItem } from "../utils/storage";
+import registerUserFecth from "../axios/config";
 const ClientsContext = createContext();
 
 export function ClientsProvider({ children }) {
+
     const [clientsData, setClientsData] = useState([]);
+    const [chargesData, setChargesData] = useState([]);
+    const [chargesExpired, setChargesExpired] = useState([]);
     const [chargesDue, setChargesDue] = useState([]);
     const [chargeType, setChargeType] = useState(null);
     const [home, setHome] = useState(true);
@@ -42,6 +46,19 @@ export function ClientsProvider({ children }) {
         setAllStatus(resetStatus);
     }, []);
 
+    async function getAllCharges() {
+        const token = getItem("token");
+        try {
+            const response = await registerUserFecth.get("/cobrancas", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setChargesData(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     function formatCPF(cpf) {
         const cleanedCPF = cpf.replace(/\D/g, "");
@@ -81,7 +98,12 @@ export function ClientsProvider({ children }) {
             updateClientStatus,
             allStatus,
             setAllStatus,
-            resetAllStatus
+            resetAllStatus,
+            getAllCharges,
+            setChargesData,
+            chargesData,
+            chargesExpired,
+            setChargesExpired
         }}>
             {children}
         </ClientsContext.Provider>

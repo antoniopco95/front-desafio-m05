@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -266,7 +263,6 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 <IMaskInput
                   onChange={(e) => {
                     const newCpf = e.target.value;
-                    console.log(newCpf);
                     setInputCpf(unformatCPF(newCpf));
                   }}
                   value={inputCpf}
