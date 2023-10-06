@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 import ChargesIcon from "../../assets/ChargesIcon.svg";
@@ -29,14 +26,9 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
 
   const {
     chargeType,
-    home,
-    clients,
-    charges,
     allCharges,
-    setAllCharges,
     resetAllCharge,
     updateChargeType,
-    setChargeType,
     getAllCharges,
     chargesData,
     chargesExpired,
@@ -56,20 +48,17 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
   const [sortedCharges, setSortedCharges] = useState([]);
   const [orderCharges, setOrderCharges] = useState("");
   const [orderDirection, setOrderDirection] = useState("asc");
+  const [orderBy, setOrderBy] = useState("");
 
 
-  const handleOrderCharges = () => {
-    setOrderCharges("ordenar")
-
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
-
-    setAllCharges("");
-    setChargeType("");
-
-    console.log(orderDirection);
-    console.log(orderCharges);
-
-
+  const handleOrderCharges = (column) => {
+    if (column === orderBy) {
+      setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+    } else {
+      setOrderBy(column);
+      setOrderDirection("asc");
+    }
+    setOrderCharges('ordenar');
   }
 
   const handleInputSearch = (e) => {
@@ -157,22 +146,21 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
 
   useEffect(() => {
     const sorted = [...chargesData].sort((a, b) => {
-      const nameA = a.nome.toLowerCase();
-      const nameB = b.nome.toLowerCase();
-
-
-      const nameComparison = orderDirection === "asc"
-        ? nameA.localeCompare(nameB)
-        : nameB.localeCompare(nameA);
-
-      const idA = a.cobranca_id;
-      const idB = b.cobranca_id;
-
-      return nameComparison !== 0 ? nameComparison : idA - idB;
+      if (orderBy === "nome") {
+        const nameA = a.nome.toLowerCase();
+        const nameB = b.nome.toLowerCase();
+        return orderDirection === "asc"
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA);
+      } else if (orderBy === "id") {
+        const idA = parseInt(a.cobranca_id);
+        const idB = parseInt(b.cobranca_id);
+        return orderDirection === "asc" ? idA - idB : idB - idA;
+      }
+      return 0;
     });
     setSortedCharges(sorted);
-    console.log(sorted);
-  }, [chargesData, orderDirection]);
+  }, [chargesData, orderDirection, orderBy]);
 
   return (
     <div className='chargestable-box'>
@@ -199,8 +187,8 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
       <table className='chargestable-table'>
         <thead className='table-titles'>
           <tr>
-            <th className='table-th' onClick={handleOrderCharges}>Cliente</th>
-            <th className='table-th' onClick={handleOrderCharges}>ID Cob.</th>
+            <th className='table-th' onClick={() => handleOrderCharges("nome")}>Cliente</th>
+            <th className='table-th' onClick={() => handleOrderCharges("id")}>ID Cob.</th>
             <th className='table-th'>Valor</th>
             <th className='table-th'>Data de venc.</th>
             <th className='table-th'>Status</th>
