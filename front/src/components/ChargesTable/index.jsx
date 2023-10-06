@@ -394,7 +394,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                     }}>
                       {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                     </td>
-                    <td className="table-td status red" onClick={() => {
+                    <td className="table-td status yellow" onClick={() => {
                       setItem("chargesId", charge.cobranca_id);
                       handleOpenChargesDetails();
                     }}>Prevista</td>
@@ -460,7 +460,7 @@ function ChargesTable({ handleClickSnack, setCustomMessageApprove, handleDelChar
                     }}>
                       {format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy')}
                     </td>
-                    <td className="table-td status red" onClick={() => {
+                    <td className="table-td status blue" onClick={() => {
                       setItem("chargesId", charge.cobranca_id);
                       handleOpenChargesDetails();
                     }}>Paga</td>
