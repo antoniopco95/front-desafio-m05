@@ -46,10 +46,15 @@ function ClientsTable({ handleOpenAdd, handleOpenCreateCharges }) {
 
   const clientsFilter = clientsData.filter(client => {
     const nameClient = client.nome.toLowerCase();
+    const cpfClientNumbers = client.cpf.toLowerCase();
+    const cpfClientFormatted = client.cpf.replace(
+      /(\d{3})(\d{3})(\d{3})(\d{2})/,
+      "$1.$2.$3-$4"
+    );
+    const emailClient = client.email.toLowerCase();
     const query = searchClient.toLowerCase();
-    return nameClient.includes(query);
 
-
+    return nameClient.includes(query) || cpfClientNumbers.includes(query) || cpfClientFormatted.includes(query) || emailClient.includes(query);
   })
 
   const inadimplentes = clientsData.filter(client => client.status === "Inadimplente")

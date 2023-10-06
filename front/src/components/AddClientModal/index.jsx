@@ -147,12 +147,12 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
         email: inputEmail,
         cpf: inputCpf,
         telefone: inputPhone,
-        // endereco: address,
-        // complemento: addressComplement,
-        // cep,
-        // bairro: neighborhood,
-        // cidade: city,
-        // uf
+        endereco: address,
+        complemento: addressComplement,
+        cep,
+        bairro: neighborhood,
+        cidade: city,
+        uf
       };
 
       const res = await registerUserFecth.post(
