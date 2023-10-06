@@ -1,0 +1,78 @@
+.chargesdetails-box {
+    font-family: Nunito;
+}
+
+.chargesdetails-iconandtitle {
+    display: flex;
+    align-items: center;
+}
+
+.chargesdetails-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.chargesdetails-title {
+    color: #3F3F55;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 130%;
+}
+
+.chargesdetails-pandspan {}
+
+.chargesdetails-p {
+    color: #3F3F55;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.chargesdetails-span {
+    color: #3F3F55;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.chargesdetails-desc {
+    color: #000;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 130%;
+}
+
+.chargesdetails-fourboxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chargesdetails-minorbox {
+    width: 243px;
+}
+
+.chargesdetails-status {
+    font-weight: 600;
+    padding: 0px 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.chargesdetails-red {
+    color: #971D1D;
+    background: #FFEFEF;
+}
+
+.chargesdetails-yellow {
+    color: #C5A605;
+    background: #FCF6DC;
+}
+
+.chargesdetails-blue {
+    color: #1FA7AF;
+    background: #EEF6F6;
+}

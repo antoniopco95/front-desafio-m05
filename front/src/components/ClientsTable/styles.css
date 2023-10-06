@@ -19,6 +19,7 @@
   width: 32px;
   height: 32px;
   margin-right: 16px;
+  cursor: pointer;
 }
 
 .clientstable-title {
@@ -103,9 +104,10 @@
 .table-th,
 .table-td {
   padding: 12px 23px;
+  cursor: pointer;
 }
 
-.client-name{
+.client-name {
   cursor: pointer;
 }
 
@@ -142,4 +144,12 @@
 .blueStyle {
   color: #1fa7af;
   background-color: #eef6f6;
+}
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 80px;
 }

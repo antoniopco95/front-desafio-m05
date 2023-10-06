@@ -1,7 +1,17 @@
-import React from 'react'
+import { Link } from 'react-router-dom';
 import './styles.css'
+import { useClients } from '../../context/clientsContext';
 
-function ClientsCard({ clientsName, clientsNumber, clientsColor, iconChoose }) {
+function ClientsCard({ clientsName, clientsNumber, clientsColor, iconChoose, filterStatus, onSeeAllStatus }) {
+
+    const { clientsData, formatCPF } = useClients();
+
+    const filteredClients = clientsData.filter(client => client.status === filterStatus)
+
+
+    const handleSeeAllStatus = () => {
+        onSeeAllStatus();
+    }
 
     return (
         <div className='clients-card'>
@@ -21,32 +31,29 @@ function ClientsCard({ clientsName, clientsNumber, clientsColor, iconChoose }) {
                     </tr>
                 </thead>
                 <tbody className='clients-body'>
-                    <tr className='border-bottom'>
-                        <td className='clients-left'>Cameron Williamson</td>
-                        <td className='clients-middle'>223456787</td>
-                        <td className='clients-right'>041.477.456-56</td>
-                    </tr>
-                    <tr className='border-bottom'>
-                        <td className='clients-left'>Savannah Nguyen</td>
-                        <td className='clients-middle'>223456787</td>
-                        <td className='clients-right'>041.477.456-56</td>
-                    </tr>
-                    <tr className='border-bottom'>
-                        <td className='clients-left'>Darlene Robertson</td>
-                        <td className='clients-middle'>223456787</td>
-                        <td className='clients-right'>041.477.456-56</td>
-                    </tr>
-                    <tr className='border-bottom'>
-                        <td className='clients-left'>Marvin McKinney</td>
-                        <td className='clients-middle'>223456787</td>
-                        <td className='clients-right'>041.477.456-56</td>
-                    </tr>
+                    {filteredClients.slice(0, 5).map((client) => {
+                        return (
+
+                            <tr key={client.cliente_id} className='border-bottom'>
+                                <td className='clients-left'>{client.nome}</td>
+                                <td className='clients-middle'>{client.cliente_id}</td>
+                                <td className='clients-right'>{formatCPF(client.cpf)}</td>
+                            </tr>
+
+                        )
+                    })}
+
                 </tbody>
             </table>
-            <span className='see-all'><a className='link' href="">Ver todos</a></span>
+            <span
+                className='see-all'>
+
+                <Link className='link' onClick={handleSeeAllStatus}>Ver todos</Link>
+
+            </span>
         </div>
 
     )
-};
+}
 
 export default ClientsCard;

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -56,7 +55,7 @@ const LoginUser = () => {
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response.data;
+        const errorMessage = error.response.data.error;
         useToast(errorMessage, "error");
       }
     }

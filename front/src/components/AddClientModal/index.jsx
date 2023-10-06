@@ -147,12 +147,12 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
         email: inputEmail,
         cpf: inputCpf,
         telefone: inputPhone,
-        // endereco: address,
-        // complemento: addressComplement,
-        // cep,
-        // bairro: neighborhood,
-        // cidade: city,
-        // uf
+        endereco: address,
+        complemento: addressComplement,
+        cep,
+        bairro: neighborhood,
+        cidade: city,
+        uf
       };
 
       const res = await registerUserFecth.post(
@@ -214,9 +214,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <input
                 onChange={(e) => setInputName(e.target.value)}
                 value={inputName}
-                className={`addclientmodal-input ${
-                  showErrorName ? "border-red" : ""
-                }`}
+                className={`addclientmodal-input ${showErrorName ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu nome"
                 type="text"
                 id="nome"
@@ -239,9 +238,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
               <input
                 onChange={(e) => setInputEmail(e.target.value)}
                 value={inputEmail}
-                className={`addclientmodal-input ${
-                  showErrorEmail ? "border-red" : ""
-                }`}
+                className={`addclientmodal-input ${showErrorEmail ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu e-mail"
                 type="email"
                 id="email"
@@ -265,13 +263,11 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 <IMaskInput
                   onChange={(e) => {
                     const newCpf = e.target.value;
-                    console.log(newCpf);
                     setInputCpf(unformatCPF(newCpf));
                   }}
                   value={inputCpf}
-                  className={`addclientmodal-input middle-input-both ${
-                    showErrorCpf ? "border-red" : ""
-                  }`}
+                  className={`addclientmodal-input middle-input-both ${showErrorCpf ? "border-red" : ""
+                    }`}
                   placeholder="Digite seu CPF"
                   type="text"
                   id="cpf"
@@ -295,9 +291,8 @@ export default function AddClientModal({ openAdd, handleCloseAdd }) {
                 <IMaskInput
                   onChange={(e) => setInputPhone(unformatPhone(e.target.value))}
                   value={inputPhone}
-                  className={`addclientmodal-input middle-input-both ${
-                    showErrorPhone ? "border-red" : ""
-                  }`}
+                  className={`addclientmodal-input middle-input-both ${showErrorPhone ? "border-red" : ""
+                    }`}
                   placeholder="Digite seu Telefone"
                   type="text"
                   id="telefone"

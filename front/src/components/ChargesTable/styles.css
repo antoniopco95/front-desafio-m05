@@ -19,6 +19,7 @@
     width: 32px;
     height: 32px;
     margin-right: 16px;
+    cursor: pointer;
 }
 
 .chargestable-title {
@@ -69,6 +70,7 @@
     border-radius: 30px;
     background: #FFF;
     border-collapse: collapse;
+    width: 1074px;
 }
 
 .table-titles {
@@ -95,6 +97,7 @@
 
 .table-tr {
     border-top: 1px solid #EFF0F6;
+    cursor: pointer;
 }
 
 .status {

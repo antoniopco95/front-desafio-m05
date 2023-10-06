@@ -1,12 +1,11 @@
 .clients-card {
-    display: flex;
-    flex-direction: column;
     width: 556px;
+    background-color: white;
     color: #3F3F55;
     justify-content: center;
     box-shadow: 0px 4px 4px rgba(172, 217, 197, 0.25);
     border-radius: 20px;
-    margin: 0px 16px 37px 16px;
+    margin: 32px 0px 37px 0px;
 }
 
 .clients-title {
@@ -26,6 +25,7 @@
 }
 
 .clients-table {
+    width: 556px;
     border-collapse: collapse;
 }
 
@@ -41,6 +41,7 @@
     font-weight: 400;
     letter-spacing: 0.07px;
     line-height: 40px;
+    padding: 8px 0px;
 }
 
 .border-bottom {

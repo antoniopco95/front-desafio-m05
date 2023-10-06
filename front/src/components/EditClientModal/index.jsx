@@ -7,7 +7,6 @@ import { IMaskInput } from "react-imask";
 import { getItem } from "../../utils/storage";
 import registerUserFecth from "../../axios/config";
 import useToast from "../../hooks/useToast";
-import { useClients } from "../../context/clientsContext";
 import useUser from "../../hooks/useUser";
 
 const style = {
@@ -23,11 +22,8 @@ const style = {
   p: 4,
 };
 
-export default function EditClientModal({
-  userData,
-  function1,
-  update,
-}) {
+export default function EditClientModal({ userData, handleUpdate, update, }) {
+
   const { openEditClientModal, setOpenEditClientModal } = useUser();
 
   const [form, setForm] = useState({
@@ -157,7 +153,7 @@ export default function EditClientModal({
           uf: "",
         });
 
-        function1();
+        handleUpdate();
       }
     } catch (error) {
       if (error.response) {
@@ -169,25 +165,6 @@ export default function EditClientModal({
     }
   };
 
-  const cleanInput = (e) => {
-    e.preventDefault();
-
-    setForm({
-      nome: "",
-      email: "",
-      cpf: "",
-      telefone: "",
-      endereco: "",
-      complemento: "",
-      cep: "",
-      bairro: "",
-      cidade: "",
-      uf: "",
-    });
-
-    handleCloseEditModal();
-  };
-
   function handleCloseEditModal() {
     setOpenEditClientModal(false);
   }
@@ -196,7 +173,7 @@ export default function EditClientModal({
     <div>
       <Modal open={openEditClientModal} onClose={handleCloseEditModal}>
         <Box className="add-box" sx={style}>
-          <form className="addclientmodal-box">
+          <form className="addclientmodal-box" onSubmit={handleSubmit2}>
             <div className="addclientmodal-fulltitle">
               <img
                 src={ClientsIcon}
@@ -210,9 +187,8 @@ export default function EditClientModal({
               <input
                 onChange={(e) => setForm({ ...form, nome: e.target.value })}
                 value={form.nome}
-                className={`addclientmodal-input ${
-                  showErrorName2 ? "border-red" : ""
-                }`}
+                className={`addclientmodal-input ${showErrorName2 ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu nome"
                 type="text"
                 id="nome"
@@ -235,9 +211,8 @@ export default function EditClientModal({
               <input
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 value={form.email}
-                className={`addclientmodal-input ${
-                  showErrorEmail2 ? "border-red" : ""
-                }`}
+                className={`addclientmodal-input ${showErrorEmail2 ? "border-red" : ""
+                  }`}
                 placeholder="Digite seu e-mail"
                 type="email"
                 id="email"
@@ -263,9 +238,8 @@ export default function EditClientModal({
                     setForm({ ...form, cpf: unformatCPF(e.target.value) });
                   }}
                   value={form.cpf}
-                  className={`addclientmodal-input middle-input-both ${
-                    showErrorCpf2 ? "border-red" : ""
-                  }`}
+                  className={`addclientmodal-input middle-input-both ${showErrorCpf2 ? "border-red" : ""
+                    }`}
                   placeholder="Digite seu CPF"
                   type="text"
                   id="cpf"
@@ -294,9 +268,8 @@ export default function EditClientModal({
                     })
                   }
                   value={form.telefone}
-                  className={`addclientmodal-input middle-input-both ${
-                    showErrorPhone2 ? "border-red" : ""
-                  }`}
+                  className={`addclientmodal-input middle-input-both ${showErrorPhone2 ? "border-red" : ""
+                    }`}
                   placeholder="Digite seu Telefone"
                   type="text"
                   id="telefone"
@@ -395,19 +368,15 @@ export default function EditClientModal({
             <div className="addclientmodal-buttons">
               <button
                 className="addclientmodal-cancelbtn"
-                onClick={() => {
-                  cleanInput();
-                }}
+                onClick={handleCloseEditModal}
                 id="aplicar"
+                type="button"
               >
                 Cancelar
               </button>
               <button
-                onClick={(e) => {
-                  handleSubmit2(e);
-                }}
                 className="addclientmodal-button"
-                type="button"
+                type="submit"
                 id="aplicar"
               >
                 Aplicar

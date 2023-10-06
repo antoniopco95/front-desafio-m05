@@ -9,72 +9,91 @@ import CheckIcon from "../../assets/CheckIcon.svg";
 import registerUserFecth from "../../axios/config";
 import { IMaskInput } from "react-imask";
 import { format } from "date-fns";
+import useUser from "../../hooks/useUser";
 
-export default function CreateCharges({
-  openCreateCharges,
-  handleCloseCreateCharges,
-  handleClickSnack,
-  setCustomMessageApprove,
-  inputChargeName
-}) {
-
-  const [inputChargeDesc, setInputChargeDesc] = useState("");
-  const [inputChargeExpire, setInputChargeExpire] = useState("");
-  const [inputChargeValue, setInputChargeValue] = useState("");
+export default function EditChargeModal({ charge, userName, handleUpdate }) {
+  const { onClickSnack, setCustomMessageApprove } = useUser();
   const [selectedValue, setSelectedValue] = useState("a");
 
   const [errorChargeDesc, setErrorChargeDesc] = useState(false);
   const [errorChargeExpire, setErrorChargeExpire] = useState(false);
   const [errorChargeValue, setErrorChargeValue] = useState(false);
 
+  const { openEditChargeModal, setOpenEditChargeModal } = useUser();
+
+  const [editForm, setEditForm] = useState({
+    nome: "",
+    descricao: "",
+    data_vencimento: "",
+    valor: "",
+    paga: "",
+  });
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (openEditChargeModal) {
+      setEditForm({
+        nome: userName,
+        descricao: charge.descricao,
+        data_vencimento: format(new Date(parseInt(charge.data_vencimento.substr(0, 4)), parseInt(charge.data_vencimento.substr(5, 2) - 2), parseInt(charge.data_vencimento.substr(8, 2))), 'dd/MM/yyyy'),
+        valor: charge.valor,
+        paga: charge.paga,
+      });
+      charge.paga ? setSelectedValue("a") : setSelectedValue("b");
+    }
+  }, [openEditChargeModal, charge, userName]);
+
+  const handleCloseEditChargeModal = () => {
+    setOpenEditChargeModal(false);
+  };
+
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = localStorage.getItem("clientsId");
-    const token = localStorage.getItem("token");
 
     let isPaid = "";
+
     if (selectedValue === "a") {
       isPaid = true;
     } else if (selectedValue === "b") {
       isPaid = false;
     }
 
-    if (inputChargeDesc === "") {
+    if (editForm.descricao === "") {
       setErrorChargeDesc(true);
       return;
     }
 
-    if (inputChargeExpire === "") {
+    if (editForm.data_vencimento === "") {
       setErrorChargeExpire(true);
       return;
     }
 
-    if (inputChargeValue === "") {
+    if (editForm.valor === "") {
       setErrorChargeValue(true);
       return;
     }
 
     let formattedDate = format(
       new Date(
-        parseInt(inputChargeExpire.substr(6, 4)),
-        parseInt(inputChargeExpire.substr(3, 2)),
-        parseInt(inputChargeExpire.substr(0, 2))
+        parseInt(editForm.data_vencimento.substr(6, 4)),
+        parseInt(editForm.data_vencimento.substr(3, 2)),
+        parseInt(editForm.data_vencimento.substr(0, 2))
       ),
       "yyyy/MM/dd"
-    );
-
+    )
     try {
-      const response = await registerUserFecth.post(
-        "/create-charge",
+      const response = await registerUserFecth.put(
+        `/cobrancas/${charge.cobranca_id}`,
         {
-          cliente_id: id.toString(),
-          descricao: inputChargeDesc.toString(),
+          descricao: editForm.descricao.toString(),
           data_vencimento: formattedDate.toString(),
-          valor: inputChargeValue.toString(),
+          valor: editForm.valor.toString(),
           paga: isPaid.toString(),
         },
         {
@@ -84,9 +103,7 @@ export default function CreateCharges({
         }
       );
 
-      setInputChargeDesc("");
-      setInputChargeExpire("");
-      setInputChargeValue("");
+      setEditForm({});
       setSelectedValue("a");
 
       setErrorChargeDesc(false);
@@ -96,10 +113,11 @@ export default function CreateCharges({
       localStorage.removeItem("clientsId");
       localStorage.removeItem("clientsName");
 
-      handleCloseCreateCharges();
-      handleClickSnack();
+      handleCloseEditChargeModal();
+      handleUpdate();
+      onClickSnack();
 
-      setCustomMessageApprove("Cobrança cadastrada com sucesso");
+      setCustomMessageApprove("Cobrança editada com sucesso");
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +143,7 @@ export default function CreateCharges({
 
   return (
     <>
-      <Modal open={openCreateCharges} onClose={handleCloseCreateCharges}>
+      <Modal open={openEditChargeModal} onClose={handleCloseEditChargeModal}>
         <Box
           sx={{
             display: "flex",
@@ -149,13 +167,13 @@ export default function CreateCharges({
                   src={ChargesIcon}
                   alt="chargesicon"
                 />
-                <p className="createcharges-title">Cadastro de Cobrança</p>
+                <p className="createcharges-title">Edição de Cobrança</p>
               </div>
               <div className="createcharges-inputandp">
                 <p className="createcharges-p">Nome*</p>
                 <input
                   readOnly={true}
-                  value={inputChargeName}
+                  value={editForm.nome}
                   className="createcharges-input"
                   type="text"
                   placeholder="Digite o nome"
@@ -164,8 +182,10 @@ export default function CreateCharges({
               <div className="createcharges-inputandp">
                 <p className="createcharges-p">Descrição*</p>
                 <textarea
-                  onChange={(e) => setInputChargeDesc(e.target.value)}
-                  value={inputChargeDesc}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, descricao: e.target.value })
+                  }
+                  value={editForm.descricao}
                   className={`createcharges-input createcharges-desc ${errorChargeDesc ? "border-red" : ""
                     }`}
                   type="text"
@@ -190,8 +210,13 @@ export default function CreateCharges({
                   <div className="createcharges-inputandp">
                     <p className="createcharges-p">Vencimento:*</p>
                     <IMaskInput
-                      onChange={(e) => setInputChargeExpire(e.target.value)}
-                      value={inputChargeExpire}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          data_vencimento: e.target.value,
+                        })
+                      }
+                      value={editForm.data_vencimento}
                       className={`createcharges-input createcharges-middleinput ${errorChargeExpire ? "border-red" : ""
                         }`}
                       type="text"
@@ -214,8 +239,10 @@ export default function CreateCharges({
                   <div className="createcharges-inputandp">
                     <p className="createcharges-p">Valor:*</p>
                     <input
-                      onChange={(e) => setInputChargeValue(e.target.value)}
-                      value={inputChargeValue}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, valor: e.target.value })
+                      }
+                      value={editForm.valor}
                       className={`createcharges-input createcharges-middleinput ${errorChargeValue ? "border-red" : ""
                         }`}
                       type="text"
@@ -269,7 +296,7 @@ export default function CreateCharges({
             <div className="createcharges-buttons">
               <button
                 className="createcharges-button createcharges-cancel"
-                onClick={handleCloseCreateCharges}
+                onClick={handleCloseEditChargeModal}
               >
                 Cancelar
               </button>

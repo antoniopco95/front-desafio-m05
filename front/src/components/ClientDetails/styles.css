@@ -4,7 +4,8 @@
   background-color: #f8f8f9;
   overflow: none;
 }
-.user-name-detail{
+
+.user-name-detail {
   display: flex;
   gap: 16px;
   align-items: center;
@@ -44,6 +45,7 @@
   height: 35px;
   padding: 0px 3px 0px 4px;
 }
+
 .sub-title h2 {
   color: #3f3f55;
   font-family: Montserrat, sans-serif;
@@ -147,15 +149,19 @@
   width: 184px;
   margin-right: 84.79px;
 }
+
 .client-details-second .neighborhood {
   margin-right: 139.02px;
 }
+
 .client-details-second .complement {
   margin-right: 110.9px;
 }
+
 .client-details-second .cep {
   margin-right: 84.78px;
 }
+
 .client-details-second .city {
   margin-right: 95.46px;
 }
@@ -236,6 +242,7 @@
   display: flex;
   width: 100%;
 }
+
 .client-all-charges .client-charges-header .idCob {
   display: flex;
   align-items: center;
@@ -318,6 +325,10 @@
   justify-content: center;
 }
 
+.line-status-container {
+  cursor: pointer;
+}
+
 .client-charges-details-line .line-status {
   display: flex;
   padding: 0px 8px;
@@ -335,6 +346,7 @@
   display: flex;
   align-items: center;
 }
+
 .client-charges-details-line .line-edit {
   display: flex;
   flex-direction: column;
@@ -386,6 +398,7 @@
   font-weight: 400;
   line-height: 40px;
   letter-spacing: 0.07px;
+  cursor: pointer;
 }
 
 .font2 {
